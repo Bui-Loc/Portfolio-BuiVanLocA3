@@ -1369,11 +1369,6 @@ a.text-link:hover {
 }
 
 @media (max-width: 800px) {
-    .pixel-hunt,
-    .pixel-burst-layer {
-        display: none;
-    }
-
     .nav {
         align-items: flex-start;
         flex-direction: column;
