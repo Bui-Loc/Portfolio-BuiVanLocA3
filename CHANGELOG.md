@@ -12,6 +12,7 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Thêm nhật ký sử dụng công cụ AI vào `AI_LOG.md`.
 - Tạo khung portfolio sinh viên năm nhất trong `Portfolio.html` và `Portfolio.css`.
 - Thêm vị trí ảnh avatar và khung giữ chỗ ảnh cho các dự án trong `Portfolio.html`.
+- Chụp ảnh giao diện portfolio chủ đề tận thế dung nham và dùng làm ảnh minh họa dự án cá nhân.
 - Thêm kiểu hiển thị ảnh avatar dạng tròn và ảnh dự án tỷ lệ 16:9 trong `Portfolio.css`.
 - Thêm chuyển động nổi nhẹ, vòng quỹ đạo, ánh sáng nhấp nháy và hiệu ứng nâng/phóng khi rê chuột hoặc focus bàn phím cho avatar.
 - Thêm hiệu ứng xuất hiện, phóng nhẹ khi rê chuột và chuyển động thẻ cho các khu vực ảnh; hỗ trợ tùy chọn giảm chuyển động của hệ điều hành.
@@ -34,6 +35,15 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Thêm hiệu ứng xuất hiện khi cuộn, chuyển động nhẹ cho thẻ kỹ năng và các nhân vật pixel ngẫu nhiên có thể nhấn để tạo vụ nổ hạt pixel.
 - Thu nhỏ nhân vật pixel nổi trên trang và cho phép kéo-thả bằng chuột hoặc cảm ứng; sau khi thả, nhân vật tiếp tục tự di chuyển.
 - Cho nhân vật pixel xuất hiện từ ngoài mép màn hình và đổi hướng tránh con trỏ khi con trỏ đến gần.
+- Tăng hiệu ứng chuyển động/hover xuyên suốt các mục portfolio: điều hướng, tiêu đề, nút, thẻ thông tin/kỹ năng/dự án, dòng thời gian, liên hệ và chân trang.
+- Khắc phục nhân vật pixel đứng yên khi bật giảm chuyển động; giờ vẫn di chuyển chậm hơn và né con trỏ nhẹ nhàng.
+- Tăng bán kính nhận biết con trỏ và lực/tốc độ né của các nhân vật pixel để chúng phản ứng nhanh hơn.
+- Hiển thị đủ sáu sprite player/player-evolution/boss; thu nhỏ hơn, cho nhân vật tự đấu bằng đạn pixel khi chạm và thêm hiệu ứng cào, trúng đòn, hồi sinh.
+- Kéo dài các trận đấu sprite bằng cách tăng máu, cho phép tấn công khi ở gần và thêm sáu bộ kỹ năng pixel riêng, có nhãn kỹ năng, loại đạn và hiệu ứng trúng đòn riêng biệt.
+- Thay bảng màu bạc hà bằng chủ đề tận thế dung nham đỏ-đen; tự chuyển thiết lập đã lưu trước đây từ bạc hà sang chủ đề mới.
+- Giới hạn mỗi lượt chỉ một cặp sprite giao chiến, các sprite còn lại tránh khu vực đấu; thu nhỏ thêm sprite và làm vệt cào ba đường sáng, có hướng cùng hiệu ứng va chạm.
+- Sửa lỗi hạ mục tiêu bằng đòn cào làm dừng vòng lặp hoạt ảnh; giữ sprite tiếp tục bay vào từ ngoài màn hình và chỉ cào khi ở gần.
+- Tăng độ tương phản của thẻ liên hệ trong chủ đề dung nham bằng nền đỏ đen tối và màu chữ nút dễ đọc.
 
 ### Cập nhật
 

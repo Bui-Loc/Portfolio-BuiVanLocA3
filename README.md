@@ -6,6 +6,9 @@ Trang portfolio cá nhân giới thiệu thông tin, mục tiêu học tập và
 
 - Họ và tên: Bùi Văn Lộc
 - Hồ sơ GitHub: [github.com/Bui-Loc](https://github.com/Bui-Loc)
+- Facebook: [facebook.com/morganlef4y](https://www.facebook.com/morganlef4y)
+- Email: [rokkudark@gmail.com](mailto:rokkudark@gmail.com)
+- Điện thoại: [0934 288 498](tel:+84934288498)
 - Nơi lưu trữ phiên bản và các phân nhánh phiên bản,commit: [https://github.com/Bui-Loc/Portfolio-BuiVanLocA3.git]
 - Trang GitHub Pages: [https://bui-loc.github.io/Portfolio-BuiVanLocA3/]
 
@@ -25,6 +28,7 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 - `Portfolio.css`: Kiểu dáng và bố cục của trang.
 - `img/avatar.jpg`: Ảnh đang được dùng cho avatar.
 - `img/`: Thư mục lưu ảnh avatar và ảnh minh họa dự án.
+- `img/portfolio-preview.jpg`: Ảnh chụp giao diện portfolio đang hiển thị trong thẻ dự án cá nhân.
 - `img/game-start-screen.svg`: Ảnh giao diện bắt đầu game hiển thị tại thẻ dự án trong portfolio.
 - `img/game-characters/`: Sprite PNG nhân vật và bốn boss đã tách nền, được game nạp trực tiếp.
 - `img/game-backgrounds/`: Bốn ảnh nền được chọn ngẫu nhiên trong các màn boss.
@@ -57,7 +61,7 @@ Sau đó truy cập `http://localhost:8000/Portfolio.html`.
 ## Thay ảnh
 
 - Thay ảnh avatar bằng cách đặt ảnh mới tại `img/avatar.jpg` hoặc cập nhật đường dẫn `src` của thẻ ảnh trong `Portfolio.html`.
-- Thêm ảnh dự án vào thư mục `img`, rồi thay khung giữ chỗ trong `Portfolio.html` bằng thẻ `<img>` mẫu ở ngay phần dự án. Cập nhật `src` và nội dung `alt` cho đúng ảnh.
+- Ảnh chụp portfolio hiện được dùng tại `img/portfolio-preview.jpg`. Với ảnh dự án khác, thêm ảnh vào thư mục `img` và cập nhật thẻ `<img>` cùng nội dung `alt` trong phần dự án của `Portfolio.html`.
 
 ## Công nghệ
 
@@ -68,7 +72,7 @@ Sau đó truy cập `http://localhost:8000/Portfolio.html`.
 
 ## Tương tác giao diện portfolio
 
-Trên thanh điều hướng, chọn một trong bốn bảng màu (tím, đại dương, hoàng hôn, bạc hà); lựa chọn được lưu trên trình duyệt. Các mục nội dung có hiệu ứng xuất hiện khi cuộn. Nhân vật và boss pixel kích thước nhỏ bay vào từ ngoài mép màn hình, né con trỏ chuột, tự di chuyển và có thể kéo-thả bằng chuột hoặc cảm ứng; nhấn hoặc chạm để tạo hiệu ứng nổ pixel. Các chuyển động tuân theo thiết lập giảm chuyển động của thiết bị.
+Trên thanh điều hướng, chọn một trong bốn bảng màu (tím, đại dương, hoàng hôn, tận thế dung nham đỏ-đen); lựa chọn được lưu trên trình duyệt. Nội dung xuất hiện theo nhịp khi cuộn; các nút, thẻ, kỹ năng, dòng thời gian, khu vực liên hệ và điều hướng có hiệu ứng tương tác riêng. Toàn bộ sáu sprite trong `img/game-characters/` (player, player-evolution và bốn boss) lần lượt bay vào màn hình với kích thước nhỏ, né con trỏ, rồi tự di chuyển. Trong mỗi lượt chỉ một cặp sprite đấu nhau; các sprite còn lại tránh xa khu vực giao tranh. Mỗi nhân vật có 12 điểm máu và một kỹ năng pixel riêng (tia pixel, tam tiễn, ảnh trảo, cầu lửa, hổ trảo, bão dung nham); tên kỹ năng, đạn, vệt cào ba đường và hiệu ứng trúng đòn đều hiển thị rõ. Nhân vật bị hạ có thể xuất hiện lại. Người xem cũng có thể kéo-thả hoặc nhấn sprite để tạo vụ nổ pixel. Các chuyển động tuân theo thiết lập giảm chuyển động của thiết bị.
 
 ## Dự án web game
 

@@ -5,11 +5,11 @@ Tài liệu này tập hợp các minh chứng cho quá trình thiết kế, tri
 | STT | Tệp hoặc tài nguyên | Mô tả | Trạng thái |
 |---:|---|---|---|
 | 1 | [README.md](README.md) | Mô tả tác giả, mục tiêu, cấu trúc và cách chạy dự án | Đã có |
-| 2 | [Portfolio.html](Portfolio.html) và [Portfolio.css](Portfolio.css) | Portfolio có avatar động, bộ chọn bốn bảng màu, hiệu ứng cuộn và nhân vật pixel nhỏ bay vào, né con trỏ, kéo-thả/tương tác | Đã có |
+| 2 | [Portfolio.html](Portfolio.html) và [Portfolio.css](Portfolio.css) | Portfolio có hiệu ứng động, chủ đề tận thế dung nham đỏ-đen, đủ sáu sprite pixel; mỗi lượt chỉ một cặp giao chiến, sprite còn lại né khu vực đấu, kèm kỹ năng riêng và vệt cào pixel rõ | Đã có |
 | 3 | [CHANGELOG.md](CHANGELOG.md) | Lịch sử thay đổi của dự án | Đã có |
 | 4 | [AI_LOG.md](AI_LOG.md) | Ghi nhận quá trình hỗ trợ bằng AI | Đã có |
 | 5 | `img/avatar.jpg` | Ảnh đang được dùng cho avatar | Đã có |
-| 6 | `img/portfolio-preview.jpg`, `img/ten-du-an.jpg` | Tên file ví dụ cho ảnh dự án; cần thêm ảnh thật vào thư mục `img` | Chưa có |
+| 6 | [img/portfolio-preview.jpg](img/portfolio-preview.jpg) | Ảnh chụp thật giao diện portfolio chủ đề tận thế dung nham, được gán vào thẻ dự án cá nhân | Đã có |
 | 7 | [GitHub repository](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) | Kho lưu trữ phiên bản, nhánh và commit | Đã có |
 | 8 | [GitHub Pages](https://bui-loc.github.io/Portfolio-BuiVanLocA3/) | Trang portfolio đã được triển khai và truy cập được | Đã xuất bản |
 | 9 | [game.html](du%20an%20game/game.html), [game.css](du%20an%20game/game.css) | Prototype hai chế độ; ba boss đầu lần lượt và trận cuối cả bốn boss cùng chiến đấu; có vật phẩm tiến hóa, khiên, hồi máu, thêm máu, tăng sát thương và sprite PNG đã tách nền | Prototype đang phát triển |

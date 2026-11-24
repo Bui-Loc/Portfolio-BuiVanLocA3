@@ -25,7 +25,7 @@
                     <option value="violet">Tím mộng mơ</option>
                     <option value="ocean">Đại dương</option>
                     <option value="sunset">Hoàng hôn</option>
-                    <option value="mint">Bạc hà</option>
+                    <option value="lava">Tận thế dung nham</option>
                 </select>
             </label>
         </nav>
@@ -130,12 +130,7 @@
             <div class="projects-grid">
                 <article class="card project-card">
                     <span class="project-status">Bài tập lớn giữa kỳ</span>
-                    <div class="project-image-placeholder">
-                        <span>Thêm ảnh chụp portfolio<br><code>img/portfolio-preview.jpg</code></span>
-                    </div>
-                    <!-- Khi có ảnh, thay placeholder bằng:
-                    <img class="project-image" src="img/portfolio-preview.jpg" alt="Ảnh chụp giao diện portfolio cá nhân">
-                    -->
+                    <img class="project-image" src="img/portfolio-preview.jpg" alt="Ảnh chụp giao diện portfolio cá nhân với chủ đề tận thế dung nham">
                     <h3>Portfolio cá nhân</h3>
                     <p>
                         Trang web giới thiệu bản thân được xây dựng để thực hành HTML và CSS, trình bày thông tin,
@@ -190,16 +185,35 @@
                 <div>
                     <p class="eyebrow">Kết nối</p>
                     <h2 id="contact-title">Cảm ơn bạn đã ghé thăm!</h2>
-                    <p>Hãy kết nối với mình trên GitHub để xem các bài tập và dự án đang thực hiện.</p>
+                    <p>Kết nối với mình qua mạng xã hội hoặc liên hệ trực tiếp nhé.</p>
                 </div>
-                <a class="button button-light" href="https://github.com/Bui-Loc">Ghé thăm GitHub</a>
+                <div class="contact-links" aria-label="Thông tin liên hệ">
+                    <a class="contact-link" href="https://www.facebook.com/morganlef4y" target="_blank" rel="noopener noreferrer">
+                        <span class="contact-icon" aria-hidden="true">f</span>
+                        <span><small>Facebook</small><strong>Morgan Lefay</strong></span>
+                        <span class="contact-arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a class="contact-link" href="mailto:rokkudark@gmail.com">
+                        <span class="contact-icon" aria-hidden="true">@</span>
+                        <span><small>Email</small><strong>rokkudark@gmail.com</strong></span>
+                        <span class="contact-arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a class="contact-link" href="tel:+84934288498">
+                        <span class="contact-icon" aria-hidden="true">☎</span>
+                        <span><small>Điện thoại</small><strong>0934 288 498</strong></span>
+                        <span class="contact-arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a class="button button-light contact-github" href="https://github.com/Bui-Loc" target="_blank" rel="noopener noreferrer">
+                        GitHub của mình <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
             </div>
         </section>
     </main>
 
     <footer class="site-footer">
         <div class="container">
-            <p class="pixel-hunt-tip">Mẹo nhỏ: chạm vào các nhân vật pixel đang bay để tạo hiệu ứng nổ!</p>
+            <p class="pixel-hunt-tip">Mẹo nhỏ: các nhân vật sở hữu chiêu pixel riêng — chạm để tạo vụ nổ!</p>
             <p>&copy; 2026 Bùi Văn Lộc · Portfolio cá nhân</p>
         </div>
     </footer>
@@ -210,8 +224,9 @@
             const themeStorageKey = "portfolio-color-theme";
             try {
                 const savedTheme = localStorage.getItem(themeStorageKey);
-                if (savedTheme && [...themePicker.options].some((option) => option.value === savedTheme)) {
-                    themePicker.value = savedTheme;
+                const migratedTheme = savedTheme === "mint" ? "lava" : savedTheme;
+                if (migratedTheme && [...themePicker.options].some((option) => option.value === migratedTheme)) {
+                    themePicker.value = migratedTheme;
                 }
             } catch {
                 themeLabel.title = "Không thể lưu màu giao diện; lựa chọn vẫn hoạt động trong phiên này.";
@@ -227,7 +242,8 @@
             });
 
             const revealItems = document.querySelectorAll(
-                ".section-heading, .card, .skill-card, .timeline li, .contact-card"
+                ".hero-content, .profile-card, .section-heading, .card, .skill-card, " +
+                ".timeline, .timeline li, .contact-card, .facts div, .site-footer .container"
             );
             if ("IntersectionObserver" in window) {
                 const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -237,8 +253,9 @@
                         observer.unobserve(entry.target);
                     });
                 }, { threshold: 0.12 });
-                revealItems.forEach((item) => {
+                revealItems.forEach((item, index) => {
                     item.classList.add("scroll-reveal");
+                    item.style.setProperty("--reveal-delay", `${(index % 4) * 75}ms`);
                     revealObserver.observe(item);
                 });
             }
@@ -257,9 +274,27 @@
             const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
             const characters = [];
             const particles = [];
-            let nextSpawn = 1.8;
+            const combatShots = [];
+            const clawMarks = [];
+            const combatEffects = [];
+            const evadeRadius = 210;
+            const evadeAcceleration = 1800;
+            const escapeSpeed = 360;
+            const duelApproachAcceleration = 220;
+            const duelAvoidanceRadius = 180;
+            const combatSkills = [
+                { name: "Tia pixel", color: "#ffe27a", type: "bolt", cooldown: 1.15, speed: 330, damage: 1 },
+                { name: "Tam tiễn tiến hóa", color: "#8df5dc", type: "spread", cooldown: 1.55, speed: 275, damage: 1 },
+                { name: "Ảnh trảo", color: "#b8a4ff", type: "claw", cooldown: 1.35, speed: 0, damage: 1 },
+                { name: "Cầu lửa", color: "#ff7856", type: "fireball", cooldown: 1.25, speed: 225, damage: 1 },
+                { name: "Hổ trảo pixel", color: "#ffcf74", type: "tiger", cooldown: 1.4, speed: 300, damage: 1 },
+                { name: "Bão dung nham", color: "#ff4a38", type: "lava", cooldown: 1.8, speed: 230, damage: 1 }
+            ];
+            let nextSpawn = 0.65;
+            let nextSpriteIndex = 0;
             let previousFrame = 0;
-            let width = window.innerWidth;
+            let activeDuel = null;
+            let width = document.documentElement.clientWidth;
             let height = window.innerHeight;
             let pixelRatio = 1;
             const pointer = { x: -1000, y: -1000, active: false };
@@ -275,7 +310,7 @@
             });
 
             function resizeBurstCanvas() {
-                width = window.innerWidth;
+                width = document.documentElement.clientWidth;
                 height = window.innerHeight;
                 pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
                 burstCanvas.width = Math.round(width * pixelRatio);
@@ -285,10 +320,10 @@
                 burstContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
             }
 
-            function spawnCharacter() {
-                if (characters.length >= 3) return;
-                const [file, name] = sprites[Math.floor(Math.random() * sprites.length)];
-                const size = 34 + Math.random() * 12;
+            function spawnCharacter(spriteIndex = nextSpriteIndex) {
+                if (characters.length >= sprites.length || spriteIndex >= sprites.length) return;
+                const [file, name] = sprites[spriteIndex];
+                const size = 20 + Math.random() * 5;
                 const button = document.createElement("button");
                 button.className = "pixel-character";
                 button.type = "button";
@@ -299,26 +334,46 @@
                 image.alt = "";
                 image.draggable = false;
                 button.append(image);
+                const skillLabel = document.createElement("span");
+                skillLabel.className = "pixel-skill-label";
+                skillLabel.setAttribute("aria-hidden", "true");
+                button.append(skillLabel);
 
                 const safeTop = (document.querySelector(".site-header")?.getBoundingClientRect().bottom || 72) + 12;
                 const safeBottom = Math.max(safeTop, height - 28);
-                const edge = Math.floor(Math.random() * 3);
-                const y = safeTop + Math.random() * Math.max(0, safeBottom - safeTop - size);
-                const x = edge === 0 ? -size
-                    : edge === 1 ? width
-                        : Math.random() * Math.max(0, width - size);
-                const vx = edge === 0 ? 75 + Math.random() * 45
-                    : edge === 1 ? -(75 + Math.random() * 45)
-                        : (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 35);
-                const vy = edge === 2 ? -(65 + Math.random() * 45)
-                    : (Math.random() < 0.5 ? -1 : 1) * (28 + Math.random() * 38);
+                const edge = Math.floor(Math.random() * 4);
+                let x = Math.random() * Math.max(0, width - size);
+                let y = safeTop + Math.random() * Math.max(0, safeBottom - safeTop - size);
+                let vx = (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 35);
+                let vy = (Math.random() < 0.5 ? -1 : 1) * (28 + Math.random() * 38);
+                if (edge === 0) {
+                    x = -size;
+                    vx = 110 + Math.random() * 60;
+                } else if (edge === 1) {
+                    x = width;
+                    vx = -(110 + Math.random() * 60);
+                } else if (edge === 2) {
+                    y = height;
+                    vy = -(110 + Math.random() * 60);
+                } else {
+                    y = safeTop - size;
+                    vy = 110 + Math.random() * 60;
+                }
                 const character = {
                     button,
                     x,
                     y,
                     size,
+                    spriteIndex,
+                    skillLabel,
                     vx,
                     vy,
+                    health: 12,
+                    maxHealth: 12,
+                    attackCooldown: 1 + Math.random() * 1.2,
+                    contactCooldown: 0.2 + Math.random() * 0.5,
+                    hitFlash: 0,
+                    spawnFromEdge: true,
                     phase: Math.random() * Math.PI * 2,
                     dragging: false,
                     dragOffsetX: 0,
@@ -373,8 +428,7 @@
                         return;
                     }
                     burst(character.x + size / 2, character.y + size / 2);
-                    button.remove();
-                    characters.splice(characters.indexOf(character), 1);
+                    removeCharacter(character, true);
                     layer.setAttribute("aria-label", "Nhân vật pixel bị tiêu diệt bằng hiệu ứng nổ pixel!");
                     window.setTimeout(() => layer.setAttribute("aria-label", "Nhân vật pixel tương tác"), 1200);
                 });
@@ -382,8 +436,19 @@
                 characters.push(character);
             }
 
-            function burst(x, y) {
-                const colors = ["#fff1a8", "#8cebd1", "#a99bff", "#ff8aa0", "#ffffff"];
+            function removeCharacter(character, respawn) {
+                character.button.remove();
+                const index = characters.indexOf(character);
+                if (index >= 0) characters.splice(index, 1);
+                if (activeDuel?.includes(character)) activeDuel = null;
+                if (respawn) {
+                    window.setTimeout(() => {
+                        if (characters.length < sprites.length) spawnCharacter(character.spriteIndex);
+                    }, 2400);
+                }
+            }
+
+            function burst(x, y, palette = ["#fff1a8", "#8cebd1", "#a99bff", "#ff8aa0", "#ffffff"]) {
                 const particleCount = reducedMotion.matches ? 10 : 26;
                 for (let index = 0; index < particleCount; index++) {
                     const angle = Math.random() * Math.PI * 2;
@@ -394,8 +459,168 @@
                         vy: Math.sin(angle) * speed,
                         life: reducedMotion.matches ? 0.18 : 0.42 + Math.random() * 0.35,
                         size: reducedMotion.matches ? 2 : 3 + Math.random() * 5,
-                        color: colors[Math.floor(Math.random() * colors.length)]
+                        color: palette[Math.floor(Math.random() * palette.length)]
                     });
+                }
+            }
+
+            function slash(x, y, color = "#ff7894", angle = Math.PI / 4) {
+                clawMarks.push({ x, y, life: 0.62, color, angle });
+                burst(x, y, [color, "#ffffff", "#fff1a8"]);
+            }
+
+            function fireCombatShot(attacker, target) {
+                const startX = attacker.x + attacker.size / 2;
+                const startY = attacker.y + attacker.size / 2;
+                const targetX = target.x + target.size / 2;
+                const targetY = target.y + target.size / 2;
+                const angle = Math.atan2(targetY - startY, targetX - startX);
+                const skill = combatSkills[attacker.spriteIndex];
+                const patterns = {
+                    bolt: [angle],
+                    spread: [angle - 0.2, angle, angle + 0.2],
+                    fireball: [angle],
+                    tiger: [angle - 0.1, angle + 0.1],
+                    lava: Array.from({ length: 5 }, (_, index) => angle + (index - 2) * 0.34)
+                };
+                if (skill.type === "claw") {
+                    target.health -= skill.damage;
+                    target.hitFlash = 0.38;
+                    slash(targetX, targetY, skill.color, angle + Math.PI / 4);
+                    combatEffects.push({ x: targetX, y: targetY, life: 0.45, type: "claw", color: skill.color });
+                    if (target.health <= 0) {
+                        burst(targetX, targetY, [skill.color, "#ffffff"]);
+                        removeCharacter(target, true);
+                    }
+                } else {
+                    const shotDamage = skill.type === "spread" ? 0.55
+                        : skill.type === "tiger" ? 0.7
+                            : skill.type === "lava" ? 0.4 : skill.damage;
+                    for (const shotAngle of patterns[skill.type]) {
+                        combatShots.push({
+                            x: startX,
+                            y: startY,
+                            vx: Math.cos(shotAngle) * skill.speed,
+                            vy: Math.sin(shotAngle) * skill.speed,
+                            target,
+                            owner: attacker,
+                            life: skill.type === "lava" ? 1.7 : 1.35,
+                            color: skill.color,
+                            type: skill.type,
+                            radius: skill.type === "fireball" || skill.type === "lava" ? 5 : 3,
+                            damage: shotDamage
+                        });
+                    }
+                    combatEffects.push({ x: startX, y: startY, life: 0.35, type: skill.type, color: skill.color });
+                }
+                attacker.button.classList.remove("is-attacking");
+                void attacker.button.offsetWidth;
+                attacker.button.classList.add("is-attacking");
+                window.setTimeout(() => attacker.button.classList.remove("is-attacking"), 240);
+                attacker.skillLabel.textContent = skill.name;
+                attacker.button.classList.remove("show-skill");
+                void attacker.button.offsetWidth;
+                attacker.button.classList.add("show-skill");
+                window.setTimeout(() => attacker.button.classList.remove("show-skill"), 900);
+                attacker.attackCooldown = skill.cooldown;
+            }
+
+            function updateAnimalCombat(dt) {
+                if (!activeDuel || !activeDuel.every((character) => characters.includes(character))) {
+                    activeDuel = null;
+                    const readyCharacters = characters.filter((character) =>
+                        !character.dragging && !character.spawnFromEdge
+                    );
+                    let nearestPair = null;
+                    let nearestDistance = Infinity;
+                    for (let first = 0; first < readyCharacters.length; first++) {
+                        for (let second = first + 1; second < readyCharacters.length; second++) {
+                            const distance = Math.hypot(
+                                readyCharacters[first].x - readyCharacters[second].x,
+                                readyCharacters[first].y - readyCharacters[second].y
+                            );
+                            if (distance < nearestDistance) {
+                                nearestDistance = distance;
+                                nearestPair = [readyCharacters[first], readyCharacters[second]];
+                            }
+                        }
+                    }
+                    activeDuel = nearestPair;
+                }
+
+                for (const character of characters) {
+                    character.contactCooldown = Math.max(0, character.contactCooldown - dt);
+                    character.attackCooldown = Math.max(0, character.attackCooldown - dt);
+                    character.hitFlash = Math.max(0, character.hitFlash - dt);
+                    character.button.classList.toggle("is-hit", character.hitFlash > 0);
+                }
+
+                const duel = activeDuel;
+                if (duel) {
+                    for (const attacker of duel) {
+                        if (!characters.includes(attacker)) continue;
+                        const target = duel.find((character) => character !== attacker);
+                        if (!target || attacker.dragging || target.dragging ||
+                            !characters.includes(target) || attacker.spawnFromEdge || target.spawnFromEdge ||
+                            attacker.attackCooldown > 0) continue;
+                        const distance = Math.hypot(target.x - attacker.x, target.y - attacker.y);
+                        const skill = combatSkills[attacker.spriteIndex];
+                        const attackRange = skill.type === "claw" ? 64 : 270;
+                        if (distance < attackRange) {
+                            fireCombatShot(attacker, target);
+                            if (distance <= (attacker.size + target.size) * 0.42 &&
+                                attacker.contactCooldown <= 0) {
+                                slash(
+                                    (attacker.x + target.x + attacker.size + target.size) / 2,
+                                    (attacker.y + target.y + attacker.size + target.size) / 2,
+                                    combatSkills[attacker.spriteIndex].color,
+                                    Math.atan2(target.y - attacker.y, target.x - attacker.x) + Math.PI / 4
+                                );
+                                attacker.contactCooldown = 0.7;
+                                target.contactCooldown = 0.7;
+                            }
+                        }
+                    }
+                }
+
+                for (let index = combatShots.length - 1; index >= 0; index--) {
+                    const shot = combatShots[index];
+                    if (!characters.includes(shot.target) || !characters.includes(shot.owner)) {
+                        combatShots.splice(index, 1);
+                        continue;
+                    }
+                    shot.life -= dt;
+                    shot.x += shot.vx * dt;
+                    shot.y += shot.vy * dt;
+                    const targetX = shot.target.x + shot.target.size / 2;
+                    const targetY = shot.target.y + shot.target.size / 2;
+                    if (Math.hypot(shot.x - targetX, shot.y - targetY) < shot.target.size * 0.52) {
+                        shot.target.health -= shot.damage;
+                        shot.target.hitFlash = 0.2;
+                        slash(
+                            targetX,
+                            targetY,
+                            shot.color,
+                            Math.atan2(shot.vy, shot.vx) + Math.PI / 4
+                        );
+                        combatEffects.push({ x: targetX, y: targetY, life: 0.28, type: shot.type, color: shot.color });
+                        if (shot.target.health <= 0) {
+                            burst(targetX, targetY);
+                            removeCharacter(shot.target, true);
+                        }
+                        combatShots.splice(index, 1);
+                    } else if (shot.life <= 0) {
+                        combatShots.splice(index, 1);
+                    }
+                }
+
+                for (let index = clawMarks.length - 1; index >= 0; index--) {
+                    clawMarks[index].life -= dt;
+                    if (clawMarks[index].life <= 0) clawMarks.splice(index, 1);
+                }
+                for (let index = combatEffects.length - 1; index >= 0; index--) {
+                    combatEffects[index].life -= dt;
+                    if (combatEffects[index].life <= 0) combatEffects.splice(index, 1);
                 }
             }
 
@@ -403,57 +628,190 @@
                 const dt = previousFrame ? Math.min((timestamp - previousFrame) / 1000, 0.04) : 0;
                 previousFrame = timestamp;
                 nextSpawn -= dt;
-                if (nextSpawn <= 0) {
-                    spawnCharacter();
-                    nextSpawn = 2.8 + Math.random() * 2.6;
+                if (nextSpawn <= 0 && nextSpriteIndex < sprites.length) {
+                    spawnCharacter(nextSpriteIndex);
+                    nextSpriteIndex += 1;
+                    nextSpawn = 0.48;
                 }
 
                 const floor = Math.max(90, height - 90);
                 const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom || 72;
+                const motionScale = reducedMotion.matches ? 0.3 : 1;
                 characters.forEach((character) => {
                     character.phase += dt * 5;
-                    if (!reducedMotion.matches && !character.dragging) {
+                    if (!character.dragging) {
                         const centerX = character.x + character.size / 2;
                         const centerY = character.y + character.size / 2;
                         const awayX = centerX - pointer.x;
                         const awayY = centerY - pointer.y;
                         const distance = Math.hypot(awayX, awayY);
-                        if (pointer.active && distance < 145) {
-                            const strength = 1 - distance / 145;
-                            const directionX = distance > 0 ? awayX / distance : (Math.random() < 0.5 ? -1 : 1);
-                            const directionY = distance > 0 ? awayY / distance : -1;
-                            character.vx += directionX * 620 * strength * dt;
-                            character.vy += directionY * 620 * strength * dt;
+                        if (!character.spawnFromEdge && activeDuel) {
+                            const duel = activeDuel;
+                            if (duel.includes(character)) {
+                                const opponent = duel.find((candidate) => candidate !== character);
+                                if (opponent && !opponent.dragging) {
+                                    const towardX = opponent.x + opponent.size / 2 - centerX;
+                                    const towardY = opponent.y + opponent.size / 2 - centerY;
+                                    const towardDistance = Math.hypot(towardX, towardY);
+                                    if (towardDistance > 58) {
+                                        character.vx += towardX / towardDistance * duelApproachAcceleration * dt;
+                                        character.vy += towardY / towardDistance * duelApproachAcceleration * dt;
+                                    }
+                                }
+                            } else {
+                                const duelCenterX = (duel[0].x + duel[0].size / 2 +
+                                    duel[1].x + duel[1].size / 2) / 2;
+                                const duelCenterY = (duel[0].y + duel[0].size / 2 +
+                                    duel[1].y + duel[1].size / 2) / 2;
+                                const awayFromDuelX = centerX - duelCenterX;
+                                const awayFromDuelY = centerY - duelCenterY;
+                                const duelDistance = Math.hypot(awayFromDuelX, awayFromDuelY);
+                                if (duelDistance < duelAvoidanceRadius && duelDistance > 0) {
+                                    const strength = 1 - duelDistance / duelAvoidanceRadius;
+                                    character.vx += awayFromDuelX / duelDistance *
+                                        duelApproachAcceleration * strength * dt;
+                                    character.vy += awayFromDuelY / duelDistance *
+                                        duelApproachAcceleration * strength * dt;
+                                }
+                            }
+                        }
+                        if (character.spawnFromEdge) {
+                            character.vy += (height * 0.5 - centerY) * 0.12 * dt * motionScale;
+                        }
+                        if (!character.spawnFromEdge && pointer.active && distance < evadeRadius && distance > 0) {
+                            const strength = 1 - distance / evadeRadius;
+                            const directionX = awayX / distance;
+                            const directionY = awayY / distance;
+                            character.vx += directionX * evadeAcceleration * strength * dt * motionScale;
+                            character.vy += directionY * evadeAcceleration * strength * dt * motionScale;
+                            if (distance < 70) {
+                                character.vx += directionX * escapeSpeed * dt * motionScale;
+                                character.vy += directionY * escapeSpeed * dt * motionScale;
+                            }
                         }
                         const speed = Math.hypot(character.vx, character.vy);
-                        const maxSpeed = pointer.active && distance < 145 ? 230 : 125;
+                        const maxSpeed = (!character.spawnFromEdge && pointer.active && distance < evadeRadius
+                            ? 330
+                            : character.spawnFromEdge ? 180 : 135) * motionScale;
+                        const minSpeed = (character.spawnFromEdge ? 48 : 22) * motionScale;
+                        if (speed < minSpeed) {
+                            const directionX = speed > 0 ? character.vx / speed : (Math.random() < 0.5 ? -1 : 1);
+                            const directionY = speed > 0 ? character.vy / speed : 0;
+                            character.vx = directionX * minSpeed;
+                            character.vy = directionY * minSpeed;
+                        }
                         if (speed > maxSpeed) {
                             character.vx = character.vx / speed * maxSpeed;
                             character.vy = character.vy / speed * maxSpeed;
                         }
                         character.x += character.vx * dt;
-                        character.y += character.vy * dt + Math.sin(character.phase) * 0.45;
-                        if (character.x < 8 && character.vx < 0) {
+                        character.y += character.vy * dt + Math.sin(character.phase) * 0.45 * motionScale;
+                        if (
+                            character.spawnFromEdge &&
+                            character.x >= 8 &&
+                            character.x + character.size <= width - 8 &&
+                            character.y >= headerBottom + 8
+                        ) {
+                            character.spawnFromEdge = false;
+                        }
+                        if (character.spawnFromEdge && character.x + character.size < 0 && character.vx < 0) {
+                            character.vx = Math.abs(character.vx);
+                        } else if (character.spawnFromEdge && character.x > width && character.vx > 0) {
+                            character.vx = -Math.abs(character.vx);
+                        } else if (!character.spawnFromEdge && character.x < 8 && character.vx < 0) {
                             character.vx *= -1;
                             character.x = 8;
-                        } else if (character.x + character.size > width - 8 && character.vx > 0) {
+                        } else if (!character.spawnFromEdge && character.x + character.size > width - 8 && character.vx > 0) {
                             character.vx *= -1;
                             character.x = width - character.size - 8;
                         }
-                        if (character.y < headerBottom + 8 && character.vy < 0) {
+                        if (!character.spawnFromEdge && character.y < headerBottom + 8 && character.vy < 0) {
                             character.vy *= -1;
                             character.y = headerBottom + 8;
-                        } else if (character.y + character.size > floor && character.vy > 0) {
+                        } else if (!character.spawnFromEdge && character.y + character.size > floor && character.vy > 0) {
                             character.vy *= -1;
                             character.y = floor - character.size;
                         }
-                        character.x = Math.max(8, Math.min(width - character.size - 8, character.x));
-                        character.y = Math.max(headerBottom + 8, Math.min(floor - character.size, character.y));
+                        if (!character.spawnFromEdge) {
+                            character.x = Math.max(8, Math.min(width - character.size - 8, character.x));
+                            character.y = Math.max(headerBottom + 8, Math.min(floor - character.size, character.y));
+                        }
                     }
                     character.button.style.transform = `translate(${character.x}px, ${character.y}px)`;
                 });
 
+                updateAnimalCombat(dt);
                 burstContext.clearRect(0, 0, width, height);
+                for (const mark of clawMarks) {
+                    const alpha = Math.min(1, mark.life / 0.42);
+                    burstContext.globalAlpha = alpha;
+                    burstContext.save();
+                    burstContext.translate(mark.x, mark.y);
+                    burstContext.rotate(mark.angle);
+                    burstContext.lineCap = "square";
+                    for (let claw = 0; claw < 3; claw++) {
+                        const offset = (claw - 1) * 6;
+                        burstContext.beginPath();
+                        burstContext.moveTo(-11, offset - 5);
+                        burstContext.lineTo(-3, offset - 2);
+                        burstContext.lineTo(5, offset + 2);
+                        burstContext.lineTo(12, offset + 5);
+                        burstContext.strokeStyle = mark.color;
+                        burstContext.lineWidth = 4;
+                        burstContext.shadowColor = mark.color;
+                        burstContext.shadowBlur = 9;
+                        burstContext.stroke();
+                        burstContext.beginPath();
+                        burstContext.moveTo(-10, offset - 5);
+                        burstContext.lineTo(-3, offset - 2);
+                        burstContext.lineTo(5, offset + 2);
+                        burstContext.lineTo(11, offset + 5);
+                        burstContext.strokeStyle = "#fff7e8";
+                        burstContext.lineWidth = 1.5;
+                        burstContext.shadowBlur = 0;
+                        burstContext.stroke();
+                    }
+                    burstContext.restore();
+                    burstContext.globalAlpha = 1;
+                }
+                for (const shot of combatShots) {
+                    burstContext.fillStyle = shot.color;
+                    if (shot.type === "fireball" || shot.type === "lava") {
+                        burstContext.fillRect(shot.x - shot.radius, shot.y - shot.radius, shot.radius * 2, shot.radius * 2);
+                        burstContext.fillStyle = "#fff1a8";
+                        burstContext.fillRect(shot.x - 2, shot.y - 2, 4, 4);
+                        if (shot.type === "lava") {
+                            burstContext.globalAlpha = 0.5;
+                            burstContext.fillRect(shot.x - 8, shot.y - 2, 4, 4);
+                            burstContext.globalAlpha = 1;
+                        }
+                    } else {
+                        burstContext.save();
+                        burstContext.translate(shot.x, shot.y);
+                        burstContext.rotate(Math.atan2(shot.vy, shot.vx));
+                        burstContext.fillRect(-6, -2, 12, 4);
+                        burstContext.fillStyle = "#ffffff";
+                        burstContext.fillRect(-2, -1, 5, 2);
+                        burstContext.restore();
+                    }
+                }
+                for (const effect of combatEffects) {
+                    burstContext.globalAlpha = Math.min(1, effect.life / 0.45);
+                    burstContext.strokeStyle = effect.color;
+                    burstContext.lineWidth = 2;
+                    burstContext.beginPath();
+                    if (effect.type === "lava") {
+                        burstContext.rect(effect.x - 12, effect.y - 12, 24, 24);
+                    } else if (effect.type === "spread") {
+                        burstContext.moveTo(effect.x - 14, effect.y);
+                        burstContext.lineTo(effect.x, effect.y - 14);
+                        burstContext.lineTo(effect.x + 14, effect.y);
+                    } else {
+                        burstContext.arc(effect.x, effect.y, 8 + (0.45 - effect.life) * 55, 0, Math.PI * 2);
+                    }
+                    burstContext.stroke();
+                    burstContext.globalAlpha = 1;
+                }
                 for (let index = particles.length - 1; index >= 0; index--) {
                     const particle = particles[index];
                     particle.life -= dt;

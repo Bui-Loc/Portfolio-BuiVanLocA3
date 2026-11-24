@@ -35,6 +35,16 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | Tôi (Bùi Văn Lộc) | Yêu cầu trang portfolio sinh động hơn, có thể đổi bảng màu và có nhân vật pixel ngẫu nhiên để nhấn tiêu diệt kèm hiệu ứng nổ. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu thu nhỏ các hình nhân vật pixel và cho phép chúng di chuyển trên trang. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu nhân vật pixel bay vào từ ngoài màn hình và né con trỏ chuột để khó bị nhấn trúng hơn. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu bổ sung hiệu ứng sinh động, hấp dẫn cho tất cả các mục trên portfolio. |
+| Tôi (Bùi Văn Lộc) | Báo rằng các hình ảnh trang trí không còn di chuyển và bị đứng hình. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu tăng tốc độ phản ứng né con trỏ của các hình ảnh nhân vật. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu thu nhỏ các sprite, hiển thị toàn bộ nhân vật trong `game-characters`, cho chúng bắn nhau khi va chạm và có hiệu ứng cào pixel. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu kéo dài giao tranh, thể hiện kỹ năng pixel riêng cho từng nhân vật và đổi chủ đề bạc hà thành phong cách tận thế dung nham đỏ-đen. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu mỗi lượt chỉ hai nhân vật mèo đánh nhau, các nhân vật còn lại tránh khu vực đấu; thu nhỏ chúng và làm hiệu ứng cào rõ, chân thực hơn. |
+| Tôi (Bùi Văn Lộc) | Báo lỗi nhân vật đứng hình và không xuất hiện từ ngoài màn hình. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu chụp ảnh portfolio cá nhân và gán ảnh vào phần dự án. |
+| Tôi (Bùi Văn Lộc) | Báo màu nền phần thông tin kết nối/liên hệ khó nhìn. |
+| Tôi (Bùi Văn Lộc) | Cung cấp đường dẫn Facebook, email và số điện thoại để thêm vào mục liên hệ của portfolio. |
 | Tôi (Bùi Văn Lộc) | Chịu trách nhiệm bổ sung thông tin cá nhân, ảnh và dự án thật, kiểm tra liên kết, rà soát nội dung và hoàn thiện sản phẩm cuối cùng trước khi nộp. |
 | GitHub Copilot | Hỗ trợ soạn bản nháp README, changelog, danh mục minh chứng và nhật ký AI theo yêu cầu. |
 | GitHub Copilot | Tạo khung ban đầu cho `Portfolio.html` và `Portfolio.css`, gồm các khu vực phổ biến của portfolio và bố cục đáp ứng màn hình. |
@@ -55,7 +65,17 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | GitHub Copilot | Cập nhật chặng cuối thành trận chiến đồng thời bốn boss với thanh máu tổng; thêm biến thể đạn nhắm người chơi cho boss cuối, vật phẩm hồi máu/thêm máu/tăng 50% sát thương trong 12 giây và tăng tần suất vật phẩm trong trận cuối. |
 | GitHub Copilot | Thêm bộ chọn bốn bảng màu lưu trên thiết bị, hiệu ứng xuất hiện khi cuộn và thẻ tương tác; tạo nhân vật pixel xuất hiện/ngẫu nhiên di chuyển, có thể nhấn để tạo nổ pixel, đồng thời hỗ trợ giảm chuyển động. |
 | GitHub Copilot | Thu nhỏ sprite trang trí còn khoảng 34–46 px và bổ sung kéo-thả bằng chuột/cảm ứng; sprite vẫn tiếp tục chuyển động sau khi được thả. |
+| GitHub Copilot | Thêm các liên kết Facebook, email (mailto), điện thoại (tel) và GitHub vào khu vực liên hệ; cập nhật README cùng thông tin liên hệ. |
 | GitHub Copilot | Cho sprite đi vào từ mép trái/phải/dưới màn hình, giới hạn chuyển động trong vùng nhìn và thêm lực đẩy tránh con trỏ gần nhân vật. |
+| GitHub Copilot | Tăng hiệu ứng vào cảnh theo cuộn và hiệu ứng tương tác ở điều hướng, tiêu đề, nút, thẻ nội dung, thông tin cá nhân, kỹ năng, dự án, dòng thời gian, liên hệ và chân trang; giữ tôn trọng tùy chọn giảm chuyển động. |
+| GitHub Copilot | Khắc phục việc tùy chọn giảm chuyển động vô hiệu hóa hoàn toàn chuyển động sprite; giữ chuyển động chậm, liên tục trong chế độ này và kiểm tra trên trình duyệt. |
+| GitHub Copilot | Tăng vùng phát hiện con trỏ lên 210 px, tăng gia tốc né và tốc độ tối đa khi cần thoát khỏi vùng con trỏ gần. |
+| GitHub Copilot | Hiển thị sáu sprite theo danh sách, cho chúng đấu bằng đạn pixel khi tiếp xúc, giảm HP khi trúng đạn, phát hiệu ứng cào/hạt pixel và hồi sinh sprite bị hạ. |
+| GitHub Copilot | Tăng HP để giao tranh lâu hơn, thêm tấn công tầm gần cùng sáu chiêu pixel riêng có hiệu ứng/nhãn trực quan; thay preset bạc hà bằng palette tận thế dung nham đỏ-đen và di trú giá trị giao diện đã lưu. |
+| GitHub Copilot | Giới hạn giao tranh vào một cặp sprite cùng lúc, điều hướng các sprite còn lại tránh xa; giảm kích thước còn khoảng 20–25 px và vẽ ba vệt cào pixel có hướng, viền sáng, tia va chạm. |
+| GitHub Copilot | Khắc phục lỗi tham chiếu cặp đấu bị xóa trong vòng lặp khi đòn cào hạ mục tiêu, gây dừng hoạt ảnh; giới hạn đòn cào vào tầm gần. |
+| GitHub Copilot | Chụp ảnh trang portfolio ở desktop với giao diện dung nham, lưu tại `img/portfolio-preview.jpg` và gắn ảnh vào thẻ dự án cá nhân. |
+| GitHub Copilot | Sửa tương phản thẻ liên hệ ở chủ đề dung nham: thay nền bị sáng thành đỏ đen và chỉnh màu nhấn, nút GitHub. |
 
 ## Nội dung AI hỗ trợ trong phiên làm việc
 
