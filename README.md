@@ -46,7 +46,7 @@ Mở file `Portfolio.html` bằng trình duyệt.
 
 ### Xem trên GitHub Pages
 
-Trang được triển khai từ repository [Portfolio-BuiVanLocA3](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) tại [bui-loc.github.io/Portfolio-BuiVanLocA3](https://bui-loc.github.io/Portfolio-BuiVanLocA3/).
+Trang được tự động triển khai từ nhánh `main` của repository [Portfolio-BuiVanLocA3](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) bằng GitHub Actions tại [bui-loc.github.io/Portfolio-BuiVanLocA3](https://bui-loc.github.io/Portfolio-BuiVanLocA3/). Workflow đóng gói portfolio, ảnh và game để các liên kết trên website đều dùng được.
 
 ### Chạy bằng máy chủ cục bộ
 

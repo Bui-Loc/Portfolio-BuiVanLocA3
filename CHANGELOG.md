@@ -6,6 +6,7 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 
 ### Thêm
 
+- Khôi phục tự động triển khai GitHub Pages từ `main`, kèm game và ảnh; thêm phiên bản cho URL CSS để trình duyệt di động lấy stylesheet mới thay vì dùng bản cache cũ.
 - Thêm hiệu ứng nền động riêng và biểu tượng đặc trưng cho từng chủ đề màu portfolio: sao, sóng biển, mặt trời và hơi nóng.
 - Chuyển chặng cuối thành bốn boss hợp thể theo lượt (100/600/1.100/1.600 HP), hiệu ứng hợp thể và boss khổng lồ 100.000 HP có khiên, hình dạng ngẫu nhiên và các kiểu tấn công của bốn boss.
 - Thêm lõi tiến hóa cầu vồng lấp lánh cho trận boss khổng lồ: 10 tim, mỗi viên đạn gây 36 sát thương và bắn nhanh hơn, kiếm khí, khả năng bay trong Dash và tia sáng toàn màn hình gây 1.000 sát thương mỗi 4 giây; đồng bộ màu sàn, chướng ngại và bục với ảnh nền từng chặng.
