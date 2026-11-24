@@ -1369,15 +1369,21 @@ a.text-link:hover {
 }
 
 @media (max-width: 800px) {
+    .pixel-hunt,
+    .pixel-burst-layer {
+        display: none;
+    }
+
     .nav {
         align-items: flex-start;
         flex-direction: column;
         justify-content: center;
-        gap: 5px;
+        gap: 8px;
         padding-block: 12px;
     }
 
     .nav-links {
+        width: 100%;
         gap: 8px 17px;
     }
 
@@ -1414,7 +1420,7 @@ a.text-link:hover {
     }
 
     .nav-links {
-        gap: 7px 13px;
+        gap: 8px 9px;
     }
 
     .nav-links a {
