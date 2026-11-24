@@ -12,7 +12,8 @@ Tài liệu này tập hợp các minh chứng cho quá trình thiết kế, tri
 | 6 | `img/portfolio-preview.jpg`, `img/ten-du-an.jpg` | Tên file ví dụ cho ảnh dự án; cần thêm ảnh thật vào thư mục `img` | Chưa có |
 | 7 | [GitHub repository](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) | Kho lưu trữ phiên bản, nhánh và commit | Đã có |
 | 8 | [GitHub Pages](https://bui-loc.github.io/Portfolio-BuiVanLocA3/) | Trang portfolio đã được triển khai và truy cập được | Đã xuất bản |
-| 9 | [game.html](du%20an%20game/game.html), [game.css](du%20an%20game/game.css) | Prototype chơi được với hai chế độ, boss cơ bản, khiên và điều khiển bàn phím/cảm ứng | Prototype v1 |
+| 9 | [game.html](du%20an%20game/game.html), [game.css](du%20an%20game/game.css) | Prototype hai chế độ với bốn boss lần lượt, vật phẩm tiến hóa, khiên và sprite PNG đã tách nền | Prototype đang phát triển |
+| 10 | `img/game-characters/` | Ảnh player, player-evolution và boss1–boss4 đã xử lý nền trong suốt để dùng trong game | Đã có |
 
 ## Việc tôi cần bổ sung
 

@@ -29,7 +29,7 @@
                     <strong id="health-label">♥ ♥ ♥</strong>
                 </div>
                 <div class="hud-item">
-                    <span class="hud-label">Khiên</span>
+                    <span class="hud-label">Vật phẩm</span>
                     <strong id="shield-label">Chưa có</strong>
                 </div>
                 <div class="hud-item boss-hud" id="boss-hud" hidden>
@@ -47,17 +47,17 @@
                     <div class="screen-card">
                         <p class="eyebrow">Chọn đường đua</p>
                         <h2>Sẵn sàng vào trận?</h2>
-                        <p class="screen-copy">Chọn một chế độ. Né chướng ngại vật, bắn trả và hạ boss để thắng.</p>
+                        <p class="screen-copy">Né chướng ngại vật, nhặt vật phẩm và lần lượt hạ bốn boss. Ăn vật phẩm tiến hóa để đổi hình nhân vật!</p>
                         <div class="mode-buttons">
                             <button class="mode-button" type="button" data-mode="flappy">
                                 <span class="mode-icon" aria-hidden="true">✦</span>
                                 <strong>Flappy Boss</strong>
-                                <small>Space / W / ↑ / chạm: bay lên · F: bắn</small>
+                                <small><kbd>Space</kbd> / chạm: bay lên · <kbd>F</kbd>: bắn</small>
                             </button>
                             <button class="mode-button" type="button" data-mode="dash">
                                 <span class="mode-icon" aria-hidden="true">➤</span>
                                 <strong>Dash Boss</strong>
-                                <small>Space / W / ↑ / chạm: nhảy · F: bắn</small>
+                                <small><kbd>Space</kbd> / chạm: nhảy · <kbd>F</kbd>: bắn</small>
                             </button>
                         </div>
                         <p class="best-score">Kỷ lục: <span id="menu-best">Flappy 0 · Dash 0</span></p>
@@ -85,8 +85,8 @@
         </section>
 
         <p class="prototype-note">
-            Bản đầu tiên: có hai chế độ, một boss mỗi lượt và khiên cơ bản. Các kiểu boss, power-up khác,
-            nhiều màn và cân bằng gameplay sẽ được bổ sung sau.
+            Bốn boss và hai dạng nhân vật dùng ảnh PNG đã tách nền; vật phẩm tiến hóa đổi nhân vật trong lượt chơi.
+            Các kiểu tấn công, power-up khác và cân bằng gameplay sẽ được bổ sung sau.
         </p>
     </main>
 
@@ -120,6 +120,40 @@
         const FLOOR = 454;
         const STORAGE_KEY = "skyRhythmBossRushBest";
         const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+        const spriteFiles = {
+            player: "player.png",
+            playerEvolution: "player-evolution.png",
+            boss1: "boss1.png",
+            boss2: "boss2.png",
+            boss3: "boss3.png",
+            boss4: "boss4.png"
+        };
+        const sprites = Object.fromEntries(Object.entries(spriteFiles).map(([name, file]) => {
+            const image = new Image();
+            image.addEventListener("error", () => {
+                ui.hint.textContent = `Không tải được ảnh ${file}; hãy kiểm tra thư mục img/game-characters.`;
+            });
+            image.src = `../img/game-characters/${file}`;
+            return [name, image];
+        }));
+        const bossRoster = [
+            { name: "Mèo Bóng Đêm", sprite: "boss1", health: 12 },
+            { name: "Gà Mèo Hỏa", sprite: "boss2", health: 15 },
+            { name: "Mèo Hổ", sprite: "boss3", health: 18 },
+            { name: "Báo Tuyết", sprite: "boss4", health: 21 }
+        ];
+        const PLAYER_SPRITE = [
+            "....OO....",
+            "...OHHO...",
+            "..OHYYHO..",
+            ".OHYYYYHOB",
+            "OHYYYYYYYO",
+            "OYYYYYYYYO",
+            "OYYYEEYYYO",
+            ".OYYYYYYO.",
+            "..OYYYYO..",
+            "...OYYO..."
+        ];
 
         class SoundManager {
             constructor() {
@@ -164,6 +198,7 @@
                 this.velocityY = 0;
                 this.health = 3;
                 this.shield = false;
+                this.evolved = false;
                 this.invulnerable = 0;
                 this.jumpHeld = false;
                 this.shotCooldown = 0;
@@ -202,17 +237,59 @@
                 ctx.save();
                 ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
                 ctx.rotate(this.mode === "flappy" ? clamp(this.velocityY / 700, -0.5, 0.65) : 0);
-                ctx.fillStyle = this.shield ? "#77e9ff" : "#ffd166";
-                ctx.strokeStyle = "#fff4d1";
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.roundRect(-this.width / 2, -this.height / 2, this.width, this.height, 12);
-                ctx.fill();
-                ctx.stroke();
-                ctx.fillStyle = "#20233a";
-                ctx.beginPath();
-                ctx.arc(7, -5, 3, 0, Math.PI * 2);
-                ctx.fill();
+                const sprite = this.evolved ? sprites.playerEvolution : sprites.player;
+                if (sprite.complete && sprite.naturalWidth > 0) {
+                    if (this.shield) {
+                        ctx.strokeStyle = "#70dfff";
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(-this.width * 0.72, -this.height * 0.72, this.width * 1.44, this.height * 1.44);
+                    }
+                    const scale = Math.min(this.width * 1.35 / sprite.naturalWidth, this.height * 1.35 / sprite.naturalHeight);
+                    const drawWidth = sprite.naturalWidth * scale;
+                    const drawHeight = sprite.naturalHeight * scale;
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.drawImage(sprite, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
+                    ctx.restore();
+                    return;
+                }
+                const pixel = this.width / PLAYER_SPRITE[0].length;
+                const palette = {
+                    O: "#34385f",
+                    H: "#fff4d1",
+                    Y: this.shield ? "#70dfff" : "#ffd166",
+                    B: "#ff8b67",
+                    E: "#252546"
+                };
+
+                if (this.shield) {
+                    ctx.fillStyle = "#70dfff";
+                    ctx.globalAlpha = 0.8;
+                    ctx.fillRect(-this.width / 2 - pixel, -this.height / 2 + pixel * 2, pixel, pixel);
+                    ctx.fillRect(this.width / 2, -this.height / 2 + pixel * 5, pixel, pixel);
+                    ctx.fillRect(-this.width / 2 + pixel * 2, this.height / 2, pixel, pixel);
+                    ctx.fillRect(this.width / 2 - pixel * 2, -this.height / 2 - pixel, pixel, pixel);
+                    ctx.globalAlpha = 1;
+                }
+
+                const flameOffset = Math.sin(time * 24) * pixel * 0.3;
+                ctx.fillStyle = "#ff8b67";
+                ctx.fillRect(-this.width / 2 - pixel * 2, -pixel / 2 + flameOffset, pixel * 2, pixel);
+                ctx.fillStyle = "#ffd166";
+                ctx.fillRect(-this.width / 2 - pixel, -pixel / 2 + flameOffset, pixel, pixel);
+
+                for (let row = 0; row < PLAYER_SPRITE.length; row++) {
+                    for (let column = 0; column < PLAYER_SPRITE[row].length; column++) {
+                        const color = palette[PLAYER_SPRITE[row][column]];
+                        if (!color) continue;
+                        ctx.fillStyle = color;
+                        ctx.fillRect(
+                            -this.width / 2 + column * pixel,
+                            -this.height / 2 + row * pixel,
+                            pixel,
+                            pixel
+                        );
+                    }
+                }
                 ctx.restore();
             }
 
@@ -270,30 +347,38 @@
         }
 
         class Boss {
-            constructor(mode) {
+            constructor(mode, bossIndex) {
                 this.mode = mode;
-                this.x = 710;
-                this.y = mode === "flappy" ? 235 : FLOOR - 126;
-                this.width = 112;
-                this.height = 112;
-                this.maxHealth = 12;
+                this.definition = bossRoster[bossIndex];
+                this.index = bossIndex;
+                this.sprite = sprites[this.definition.sprite];
+                this.x = WIDTH - 250;
+                this.y = mode === "flappy" ? 235 : FLOOR - 180;
+                this.width = 150;
+                this.height = 150;
+                this.maxHealth = this.definition.health;
                 this.health = this.maxHealth;
-                this.attackTimer = 1.6;
+                this.attackTimer = Math.max(0.75, 1.6 - bossIndex * 0.16);
                 this.telegraph = 0;
                 this.attackY = this.y + this.height / 2;
                 this.shotTimer = 0;
             }
 
             update(dt, engine) {
+                this.x = WIDTH - 250 + Math.sin(engine.elapsed * 0.75) * 18;
                 this.y = this.mode === "flappy"
-                    ? 220 + Math.sin(engine.elapsed * 1.5) * 92
-                    : FLOOR - 125 + Math.sin(engine.elapsed * 1.1) * 12;
+                    ? clamp(
+                        220 + Math.sin(engine.elapsed * (1.5 + this.index * 0.12)) * (92 - this.index * 6),
+                        100,
+                        FLOOR - this.height
+                    )
+                    : FLOOR - 180 + Math.sin(engine.elapsed * 1.1) * 12;
 
                 if (this.telegraph > 0) {
                     this.telegraph -= dt;
                     if (this.telegraph <= 0) {
-                        engine.hostileProjectiles.push(new Projectile(this.x, this.attackY, -320, false));
-                        this.attackTimer = 1.65;
+                        engine.hostileProjectiles.push(new Projectile(this.x, this.attackY, -320 - this.index * 35, false));
+                        this.attackTimer = Math.max(0.85, 1.65 - this.index * 0.14);
                         engine.shake = 0.12;
                         engine.sound.play(180, 0.16);
                     }
@@ -309,18 +394,22 @@
 
             draw(ctx) {
                 ctx.save();
-                ctx.fillStyle = this.telegraph > 0 ? "#ff6482" : "#ba73ff";
-                ctx.strokeStyle = "#f4d8ff";
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.ellipse(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.stroke();
-                ctx.fillStyle = "#292044";
-                ctx.beginPath();
-                ctx.arc(this.x + 38, this.y + 42, 7, 0, Math.PI * 2);
-                ctx.arc(this.x + 72, this.y + 42, 7, 0, Math.PI * 2);
-                ctx.fill();
+                if (this.sprite.complete && this.sprite.naturalWidth > 0) {
+                    const scale = Math.min(this.width / this.sprite.naturalWidth, this.height / this.sprite.naturalHeight);
+                    const drawWidth = this.sprite.naturalWidth * scale;
+                    const drawHeight = this.sprite.naturalHeight * scale;
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.drawImage(
+                        this.sprite,
+                        this.x + (this.width - drawWidth) / 2,
+                        this.y + (this.height - drawHeight) / 2,
+                        drawWidth,
+                        drawHeight
+                    );
+                } else {
+                    ctx.fillStyle = this.telegraph > 0 ? "#ff6482" : "#ba73ff";
+                    ctx.fillRect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
+                }
                 ctx.strokeStyle = this.telegraph > 0 ? "#ff6482" : "#dcb5ff";
                 ctx.lineWidth = 5;
                 ctx.beginPath();
@@ -336,7 +425,12 @@
             }
 
             get hitbox() {
-                return { x: this.x + 12, y: this.y + 12, width: this.width - 24, height: this.height - 24 };
+                return {
+                    x: this.x + this.width * 0.2,
+                    y: this.y + this.height * 0.15,
+                    width: this.width * 0.6,
+                    height: this.height * 0.7
+                };
             }
         }
 
@@ -371,12 +465,13 @@
         }
 
         class PowerUp {
-            constructor(x, y) {
+            constructor(x, y, type) {
                 this.x = x;
                 this.y = y;
                 this.radius = 15;
                 this.dead = false;
                 this.phase = 0;
+                this.type = type;
             }
 
             update(dt, speed) {
@@ -388,18 +483,16 @@
             draw(ctx) {
                 ctx.save();
                 ctx.translate(this.x, this.y + Math.sin(this.phase) * 5);
-                ctx.fillStyle = "#70e1ff";
-                ctx.shadowColor = "#70e1ff";
+                ctx.fillStyle = this.type === "evolution" ? "#ffd166" : "#70e1ff";
+                ctx.shadowColor = ctx.fillStyle;
                 ctx.shadowBlur = 16;
-                ctx.beginPath();
-                ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillRect(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
                 ctx.shadowBlur = 0;
                 ctx.fillStyle = "#17213c";
-                ctx.font = "bold 17px system-ui";
+                ctx.font = "bold 17px monospace";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText("S", 0, 1);
+                ctx.fillText(this.type === "evolution" ? "E" : "S", 0, 1);
                 ctx.restore();
             }
 
@@ -466,6 +559,8 @@
                 this.elapsed = 0;
                 this.spawnTimer = 0;
                 this.powerUpTimer = 5;
+                this.powerUpCount = 0;
+                this.bossIndex = 0;
                 this.bossSpawned = false;
                 this.shake = 0;
                 this.best = this.loadBest();
@@ -509,6 +604,8 @@
                 this.elapsed = 0;
                 this.spawnTimer = 0.65;
                 this.powerUpTimer = 5;
+                this.powerUpCount = 0;
+                this.bossIndex = 0;
                 this.bossSpawned = false;
                 this.shake = 0;
                 this.particles.items = [];
@@ -553,7 +650,7 @@
                 }
                 const heading = won ? "Boss đã bị đánh bại!" : "Thử lại nhé!";
                 const detail = won
-                    ? `Bạn đã hoàn thành ${this.mode === "flappy" ? "Flappy Boss" : "Dash Boss"} với ${this.score} điểm.`
+                    ? `Bạn đã hạ đủ bốn boss trong ${this.mode === "flappy" ? "Flappy Boss" : "Dash Boss"} với ${this.score} điểm.`
                     : `Bạn đạt ${this.score} điểm. Kỷ lục ${this.mode === "flappy" ? "Flappy" : "Dash"}: ${this.best[key]}.`;
                 this.showMessage(won ? "Chiến thắng" : "Game over", heading, detail);
                 ui.hud.hidden = true;
@@ -571,9 +668,13 @@
 
                 const speed = this.mode === "flappy" ? 235 : 330;
                 this.powerUpTimer -= dt;
-                if (this.powerUpTimer <= 0 && !this.player.shield) {
+                if (this.powerUpTimer <= 0) {
+                    const type = !this.player.evolved && this.powerUpCount % 2 === 0 ? "evolution" : "shield";
                     const pickupY = this.mode === "flappy" ? 160 + Math.random() * 230 : FLOOR - 95;
-                    this.powerUps.push(new PowerUp(WIDTH + 20, pickupY));
+                    if (type !== "shield" || !this.player.shield) {
+                        this.powerUps.push(new PowerUp(WIDTH + 20, pickupY, type));
+                    }
+                    this.powerUpCount += 1;
                     this.powerUpTimer = 8;
                 }
                 if (!this.bossSpawned) {
@@ -591,7 +692,7 @@
                         obstacle.passed = true;
                         this.score += 1;
                         this.refreshHud();
-                        if (this.score >= 6 && !this.bossSpawned) this.spawnBoss();
+                        if (this.score >= (this.bossIndex + 1) * 6 && !this.bossSpawned) this.spawnBoss();
                     }
                     for (const hitbox of obstacle.hitboxes) {
                         if (this.overlaps(this.player.hitbox, hitbox)) this.damagePlayer();
@@ -603,10 +704,18 @@
                     powerUp.update(dt, speed);
                     if (this.overlaps(this.player.hitbox, powerUp.hitbox)) {
                         powerUp.dead = true;
-                        this.player.shield = true;
-                        this.particles.burst(powerUp.x, powerUp.y, "#70e1ff", 14);
+                        if (powerUp.type === "evolution") {
+                            this.player.evolved = true;
+                        } else {
+                            this.player.shield = true;
+                        }
+                        const pickupColor = powerUp.type === "evolution" ? "#ffd166" : "#70e1ff";
+                        this.particles.burst(powerUp.x, powerUp.y, pickupColor, 14);
                         this.sound.play(900, 0.12);
                         this.refreshHud();
+                        ui.hint.textContent = powerUp.type === "evolution"
+                            ? "Tiến hóa thành công! Nhân vật đã thay đổi hình dạng."
+                            : "Đã nhặt khiên! Khiên hấp thụ một lần va chạm.";
                     }
                 }
                 this.powerUps = this.powerUps.filter((item) => !item.dead);
@@ -624,9 +733,7 @@
                         this.particles.burst(projectile.x, projectile.y, "#fff08a", 5);
                         this.sound.play(340, 0.04);
                         if (this.boss.health <= 0) {
-                            this.particles.burst(this.boss.x + 50, this.boss.y + 50, "#ba73ff", 34);
-                            this.boss = null;
-                            this.end(true);
+                            this.defeatBoss();
                         }
                     }
                 }
@@ -645,12 +752,32 @@
 
             spawnBoss() {
                 this.bossSpawned = true;
-                this.boss = new Boss(this.mode);
+                this.boss = new Boss(this.mode, this.bossIndex);
                 this.obstacles = [];
                 ui.bossHud.hidden = false;
-                ui.bossName.textContent = "Rhythm Core";
-                ui.hint.textContent = "Boss sắp tấn công: né đạn đỏ và tiếp tục bắn!";
+                ui.bossName.textContent = `${this.boss.definition.name} (${this.bossIndex + 1}/4)`;
+                ui.bossHealth.style.width = "100%";
+                ui.hint.textContent = `Boss ${this.bossIndex + 1}/4: né đạn đỏ và tiếp tục bắn!`;
                 this.sound.play(240, 0.3);
+            }
+
+            defeatBoss() {
+                const defeated = this.boss;
+                this.particles.burst(defeated.x + defeated.width / 2, defeated.y + defeated.height / 2, "#ba73ff", 34);
+                this.boss = null;
+                this.bossIndex += 1;
+                this.hostileProjectiles = [];
+                this.projectiles = [];
+
+                if (this.bossIndex >= bossRoster.length) {
+                    this.end(true);
+                    return;
+                }
+
+                this.bossSpawned = false;
+                this.spawnTimer = 1.1;
+                ui.bossHud.hidden = true;
+                ui.hint.textContent = `${defeated.definition.name} đã bị đánh bại! Vượt thêm ${this.bossIndex * 6 - this.score} chướng ngại vật để gặp boss tiếp theo.`;
             }
 
             damagePlayer() {
@@ -672,7 +799,10 @@
             refreshHud() {
                 ui.score.textContent = String(this.score);
                 ui.health.textContent = "♥ ".repeat(Math.max(0, this.player?.health || 0)).trim() || "0";
-                ui.shield.textContent = this.player?.shield ? "Sẵn sàng" : "Chưa có";
+                const upgrades = [];
+                if (this.player?.shield) upgrades.push("Khiên");
+                if (this.player?.evolved) upgrades.push("Tiến hóa");
+                ui.shield.textContent = upgrades.join(" + ") || "Chưa có";
             }
 
             overlaps(a, b) {

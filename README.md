@@ -25,6 +25,7 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 - `Portfolio.css`: Kiểu dáng và bố cục của trang.
 - `img/avatar.jpg`: Ảnh đang được dùng cho avatar.
 - `img/`: Thư mục lưu ảnh avatar và ảnh minh họa dự án.
+- `img/game-characters/`: Sprite PNG nhân vật và bốn boss đã tách nền, được game nạp trực tiếp.
 - `du an game/game.html` và `du an game/game.css`: Prototype web game arcade 2D; mở `game.html` để chơi.
 - `README.md`: Mô tả tổng quan và hướng dẫn sử dụng dự án.
 - `CHANGELOG.md`: Lịch sử các thay đổi.
@@ -73,4 +74,4 @@ python -m http.server 8000
 
 Sau đó truy cập `http://localhost:8000/du%20an%20game/game.html`.
 
-Prototype hiện có hai chế độ, chướng ngại vật, một boss mỗi lượt, bắn tự động/nhấn `F`, khiên, hiệu ứng hạt, âm thanh tùy chọn, tạm dừng và lưu kỷ lục cục bộ. Các power-up khác, nhiều boss/nhiều màn và cân bằng nâng cao chưa được triển khai.
+Prototype hiện có hai chế độ, chướng ngại vật, bốn boss xuất hiện lần lượt, bắn tự động/nhấn `F`, khiên, vật phẩm tiến hóa đổi sprite người chơi, hiệu ứng hạt, âm thanh tùy chọn, tạm dừng và lưu kỷ lục cục bộ. Ảnh nhân vật nằm trong `img/game-characters/`; ảnh gốc được giữ riêng trong `img/`.

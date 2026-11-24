@@ -17,6 +17,7 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Thêm mục dự án web game đang khởi tạo vào portfolio; ghi rõ các tệp nguồn hiện chưa có nội dung.
 - Thêm GitHub Actions workflow để tạo trang chủ từ `Portfolio.html` và triển khai portfolio lên GitHub Pages khi cập nhật nhánh `main`.
 - Thay các tệp game trống bằng prototype arcade 2D chơi được, gồm Flappy Boss, Dash Boss, một boss mỗi lượt, khiên, HUD, tạm dừng, âm thanh tùy chọn và lưu điểm cao.
+- Thêm bộ sprite PNG đã tách nền gồm người chơi, dạng tiến hóa và bốn boss; dùng ảnh trong game thay cho hình vẽ tạm.
 - Thêm hướng dẫn mở/chạy game và mô tả giới hạn prototype vào `README.md`.
 - Làm nổi bật liên kết mở game bằng nút “Chơi game ngay” trong thẻ dự án portfolio.
 
@@ -28,3 +29,8 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Ghi nhận yêu cầu bổ sung ảnh và phân biệt ảnh avatar hiện có với ảnh dự án còn cần bổ sung.
 - Cập nhật README, nhật ký AI và danh mục minh chứng để phản ánh đúng trạng thái khởi tạo của dự án web game.
 - Cập nhật mục web game trên portfolio từ “đang khởi tạo” thành prototype chơi được và thêm liên kết mở game.
+- Làm mới giao diện game theo phong cách pixel với bảng màu sáng, khung đổ khối, thẻ chọn chế độ và phím điều khiển dễ nhận biết; tinh chỉnh menu cho màn hình nhỏ.
+- Tối ưu bố cục game theo chiều rộng và chiều cao viewport; giữ tỷ lệ canvas, thu gọn giao diện ở màn hình thấp và đảm bảo menu/tạm dừng vừa khung trên thiết bị di động.
+- Thay hình nhân vật bo tròn bằng sprite pixel vẽ trực tiếp trên canvas, có mắt, mỏ, hiệu ứng đuôi lửa và biến thể màu khi có khiên.
+- Bổ sung tiến trình bốn boss theo các mốc điểm; thêm vật phẩm tiến hóa để đổi sprite nhân vật sang `player-evolution.png`.
+- Giữ ảnh gốc trong `img/` và tạo các bản sprite nền trong suốt trong `img/game-characters/` để game chỉ hiển thị chủ thể.
