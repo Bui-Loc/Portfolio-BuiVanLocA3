@@ -191,6 +191,135 @@ canvas {
     touch-action: none;
 }
 
+.claw-controls {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: none;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 12px;
+    pointer-events: none;
+}
+
+.flight-controls {
+    position: absolute;
+    z-index: 2;
+    left: 12px;
+    bottom: 12px;
+    display: none;
+    grid-template-columns: repeat(3, clamp(42px, 10vw, 56px));
+    grid-template-rows: repeat(2, clamp(42px, 10vw, 56px));
+    gap: 4px;
+    pointer-events: none;
+}
+
+.flight-up {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.flight-left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.flight-down {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.flight-right {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.canvas-wrap > .sound-button {
+    position: absolute;
+    z-index: 3;
+    top: 12px;
+    right: 12px;
+}
+
+.dodge-control-button {
+    position: absolute;
+    z-index: 3;
+    right: 12px;
+    bottom: 12px;
+    display: none;
+    width: clamp(48px, 12vw, 64px);
+    height: clamp(48px, 12vw, 64px);
+    place-items: center;
+    border: 3px solid #fff3b0;
+    border-radius: 4px;
+    background: rgb(37 34 61 / 84%);
+    color: #fff;
+    font: 800 1.65rem "Courier New", monospace;
+    box-shadow: 3px 3px 0 rgb(0 0 0 / 45%);
+    touch-action: none;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.touch-device .claw-controls:not([hidden]) {
+    display: flex;
+}
+
+.touch-device .dodge-control-button:not([hidden]) {
+    display: grid;
+}
+
+.touch-device .flight-controls:not([hidden]) {
+    display: grid;
+}
+
+.claw-control-button {
+    display: grid;
+    width: clamp(48px, 12vw, 64px);
+    height: clamp(48px, 12vw, 64px);
+    place-items: center;
+    border: 3px solid #d8ffef;
+    border-radius: 4px;
+    background: rgb(20 39 55 / 82%);
+    color: #fff;
+    font: 800 2rem "Courier New", monospace;
+    box-shadow: 3px 3px 0 rgb(0 0 0 / 45%);
+    touch-action: none;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.flight-control-button {
+    display: grid;
+    width: clamp(42px, 10vw, 56px);
+    height: clamp(42px, 10vw, 56px);
+    place-items: center;
+    border: 2px solid #fff3b0;
+    border-radius: 4px;
+    background: rgb(37 34 61 / 84%);
+    color: #fff;
+    font: 800 1.65rem "Courier New", monospace;
+    box-shadow: 3px 3px 0 rgb(0 0 0 / 45%);
+    touch-action: none;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.claw-control-button:active {
+    transform: translateY(2px);
+    background: #23876c;
+}
+
+.dodge-control-button:active {
+    transform: translateY(2px);
+    background: #7854a7;
+}
+
+.flight-control-button:active {
+    transform: translateY(2px);
+    background: #7854a7;
+}
+
 .screen {
     position: absolute;
     z-index: 2;
@@ -211,7 +340,7 @@ button[hidden] {
 
 .screen-card {
     position: relative;
-    width: min(600px, 100%);
+    width: min(760px, 100%);
     padding: clamp(22px, 4vw, 38px);
     border: 4px solid var(--pixel-line);
     border-radius: 4px;
@@ -301,6 +430,74 @@ button[hidden] {
 .best-score span {
     color: var(--ink);
     font-weight: 700;
+}
+
+.leaderboard {
+    margin-top: 18px;
+    padding: 14px;
+    border: 2px solid #c7b98e;
+    background: #fff9e9;
+    text-align: left;
+}
+
+.leaderboard h3 {
+    margin: 0;
+    color: var(--ink);
+    font: 800 1rem "Courier New", monospace;
+    text-align: center;
+}
+
+.leaderboard-note {
+    margin: 5px 0 12px;
+    color: #626986;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.leaderboard-modes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.leaderboard-mode {
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid #d5cca9;
+    background: #fffdf6;
+}
+
+.leaderboard-mode h4 {
+    margin: 0 0 6px;
+    color: var(--ink);
+    font: 800 0.8rem "Courier New", monospace;
+}
+
+.leaderboard-mode ol {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.leaderboard-mode li {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: #586181;
+    font-size: 0.78rem;
+}
+
+.leaderboard-mode li strong {
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.leaderboard-mode li.personal-entry,
+.leaderboard-mode li.personal-entry strong {
+    color: #17684f;
+    font-weight: 800;
 }
 
 .compact-card {
@@ -449,6 +646,20 @@ button[hidden] {
     .best-score {
         margin-top: 12px;
     }
+
+    .leaderboard-modes {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .leaderboard {
+        margin-top: 10px;
+        padding: 8px;
+    }
+
+    .leaderboard-mode {
+        padding: 6px 8px;
+    }
 }
 
 @media (max-width: 400px) {
@@ -501,6 +712,20 @@ button[hidden] {
 
     .start-screen .best-score {
         margin-top: 8px;
+    }
+
+    .start-screen .leaderboard {
+        margin-top: 6px;
+        padding: 6px;
+    }
+
+    .start-screen .leaderboard-note {
+        margin: 3px 0 6px;
+        font-size: 0.62rem;
+    }
+
+    .start-screen .leaderboard-mode li {
+        font-size: 0.68rem;
     }
 }
 
@@ -654,5 +879,97 @@ button[hidden] {
         scroll-behavior: auto !important;
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+body {
+    display: block;
+    padding: 0;
+    background: #101326;
+}
+
+.game-shell {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    display: block;
+}
+
+.page-heading,
+.game-footer,
+.prototype-note {
+    display: none;
+}
+
+.game-panel {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.canvas-wrap {
+    flex: 1 1 0;
+    min-height: 0;
+    aspect-ratio: auto;
+    display: flex;
+}
+
+canvas {
+    flex: 0 1 auto;
+    min-width: 0;
+    min-height: 0;
+    width: auto;
+    max-width: 100%;
+    height: min(100%, calc(100vw * 9 / 16));
+    max-height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+}
+
+.orientation-prompt {
+    display: none;
+}
+
+@media (orientation: portrait) and (pointer: coarse) {
+    .orientation-prompt {
+        position: fixed;
+        z-index: 10;
+        top: max(12px, env(safe-area-inset-top));
+        left: 50%;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 4px 12px;
+        width: min(92vw, 430px);
+        padding: 12px 16px;
+        border: 2px solid #343c67;
+        border-radius: 4px;
+        background: rgb(16 19 38 / 94%);
+        color: #f5f4ff;
+        text-align: center;
+        transform: translateX(-50%);
+    }
+
+    .orientation-prompt strong {
+        font: 800 clamp(0.9rem, 4vw, 1.15rem) "Courier New", monospace;
+    }
+
+    .orientation-prompt span:last-child {
+        grid-column: 2;
+        color: #c1c7df;
+        font-size: 0.8rem;
+        line-height: 1.35;
+    }
+
+    .orientation-icon {
+        grid-row: span 2;
+        color: #9ce8bf;
+        font-size: 2rem;
+        line-height: 1;
+        transform: rotate(-45deg);
     }
 }

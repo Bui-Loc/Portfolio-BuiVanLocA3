@@ -44,6 +44,8 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | Tôi (Bùi Văn Lộc) | Báo lỗi nhân vật đứng hình và không xuất hiện từ ngoài màn hình. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu chụp ảnh portfolio cá nhân và gán ảnh vào phần dự án. |
 | Tôi (Bùi Văn Lộc) | Báo màu nền phần thông tin kết nối/liên hệ khó nhìn. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu mỗi đường dẫn đến boss dài hơn 5 giây, bắt đầu 10 giây; thêm cào rộng có chỗ an toàn để di chuyển vào và làm chậm/giãn cách đòn trong trận cuối. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu chụp thêm ba ảnh portfolio cho các chủ đề còn lại và tạo hiệu ứng chuyển đổi ngẫu nhiên giữa bốn ảnh trong thẻ dự án. |
 | Tôi (Bùi Văn Lộc) | Cung cấp đường dẫn Facebook, email và số điện thoại để thêm vào mục liên hệ của portfolio. |
 | Tôi (Bùi Văn Lộc) | Chịu trách nhiệm bổ sung thông tin cá nhân, ảnh và dự án thật, kiểm tra liên kết, rà soát nội dung và hoàn thiện sản phẩm cuối cùng trước khi nộp. |
 | GitHub Copilot | Hỗ trợ soạn bản nháp README, changelog, danh mục minh chứng và nhật ký AI theo yêu cầu. |
@@ -76,6 +78,8 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | GitHub Copilot | Khắc phục lỗi tham chiếu cặp đấu bị xóa trong vòng lặp khi đòn cào hạ mục tiêu, gây dừng hoạt ảnh; giới hạn đòn cào vào tầm gần. |
 | GitHub Copilot | Chụp ảnh trang portfolio ở desktop với giao diện dung nham, lưu tại `img/portfolio-preview.jpg` và gắn ảnh vào thẻ dự án cá nhân. |
 | GitHub Copilot | Sửa tương phản thẻ liên hệ ở chủ đề dung nham: thay nền bị sáng thành đỏ đen và chỉnh màu nhấn, nút GitHub. |
+| GitHub Copilot | Đổi thời lượng bốn chặng tiếp cận thành 10/15/20/25 giây, thêm điều khiển ngang và vùng an toàn cho cào rộng, đồng thời xếp lượt boss cuối tuần tự với cảnh báo dài/đạn chậm. |
+| GitHub Copilot | Chụp ảnh portfolio ở bốn chủ đề, tạo lớp ảnh chồng với chuyển mờ ngẫu nhiên trong thẻ dự án và tạm dừng luân phiên khi bật giảm chuyển động. |
 
 ## Nội dung AI hỗ trợ trong phiên làm việc
 
@@ -83,9 +87,20 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 - Soạn mã HTML/CSS ban đầu để minh họa cấu trúc và giao diện.
 - Thêm vị trí ảnh cho avatar và ảnh dự án; các khung dự án hiện là chỗ giữ chỗ, chưa phải ảnh dự án thật.
 - Prototype game có giao diện pixel thích nghi màn hình; đã kiểm tra menu, HUD và màn tạm dừng ở các cỡ điện thoại, desktop và landscape, không thấy trang tràn ngang/dọc.
+- Vùng an toàn của đòn cào rộng được chọn ngẫu nhiên theo vị trí người chơi, có khoảng cách đủ để cần di chuyển nhưng vẫn nằm trong tầm; vị trí dọc được điều chỉnh để phù hợp từng chế độ.
+- Vật phẩm tiến hóa có xác suất rơi thấp hơn; lần đầu tăng 3 máu tối đa/hiện tại và mở đòn lốc xoáy, lần nhặt tiếp theo hồi tối đa 2 máu.
+- Thêm hai nút điều khiển trái/phải chỉ hiện trên thiết bị cảm ứng khi boss báo trước hoặc đang tung đòn cào rộng; nhấn giữ để di chuyển.
+- Bỏ khung trang, tiêu đề và chân trang của game để canvas tràn viewport; giữ menu/HUD và đặt nút âm thanh nổi để dùng được cả ở menu.
+- Ưu tiên chơi ngang trên điện thoại, tự yêu cầu khóa hướng nếu hỗ trợ; giữ game hiển thị và chơi được ở dọc nếu không thể xoay.
+- Khắc phục màn chơi giữ nguyên hình menu sau khi chọn chế độ; vẽ lại canvas ngay khi bắt đầu, không chờ khung hình kế tiếp.
 - Nhân vật và boss trong game dùng sprite PNG đã tách nền; vật phẩm tiến hóa đổi sprite người chơi từ `player.png` sang `player-evolution.png`.
 - README hiện có thông tin nơi lưu trữ phiên bản và địa chỉ Pages mới; các liên kết cần được kiểm tra khi đổi tên repository hoặc cấu hình xuất bản.
-- Prototype có ba boss đầu theo lượt và chặng cuối cả bốn boss cùng tham chiến; nền đồng bộ theo chặng, đường tiếp cận dài dần, parkour trong Dash, chiêu boss riêng có cảnh báo và HP tăng 1,5x. Trận cuối có khiên, tiến hóa, hồi máu, thêm máu và tăng sát thương; phá chướng ngại vật và cân bằng nâng cao vẫn chưa được làm.
+- Prototype có ba boss thường theo lượt; chặng cuối thêm bốn boss hợp thể theo lượt (100/600/1.100/1.600 HP), hoạt ảnh hợp thể và boss khổng lồ 100.000 HP với khiên định kỳ cùng chiêu từ cả bốn boss. Mỗi boss có năm đòn đánh vùng riêng, chuyển động né đòn và mật độ tấn công tăng theo cấp. Lõi tiến hóa cầu vồng lấp lánh hiếm cho 10 tim, đạn 36 sát thương bắn nhanh, kiếm khí, bay tự do và tia sáng toàn màn hình gây 1.000 sát thương mỗi 4 giây. Màu sàn, chướng ngại và bục được đồng bộ với ảnh nền từng chặng.
+- Sau khi nhặt lõi cầu vồng ở trận boss khổng lồ, người chơi bay tự do bốn hướng bằng `WASD`/phím mũi tên; điện thoại hiện cụm nút cảm ứng bốn hướng trong lúc nâng cấp còn hiệu lực.
+- Mọi đòn đánh vùng của boss đều có vùng xanh báo trước để né; vùng an toàn miễn sát thương khi người chơi đứng trọn bên trong.
+- Giới hạn khoảng cách vùng an toàn theo 72% quãng đường người chơi có thể di chuyển trong thời gian cảnh báo; tăng sát thương boss theo thứ tự, boss khổng lồ gây 15 sát thương, thêm né bằng `J` (0,42 giây miễn sát thương, hồi chiêu 1,35 giây) và đổi phím bắn thành `I`.
+- Thêm xu vàng trong các chặng trước boss, mỗi xu cộng 10 điểm; thêm bảng xếp hạng Flappy/Dash với đối thủ mô phỏng và kỷ lục cá nhân lưu trong trình duyệt, không kết nối bảng xếp hạng trực tuyến.
+- Làm hiệu ứng nền động riêng theo bốn chủ đề portfolio và cập nhật biểu tượng đặc trưng (tia sao, sóng biển, mặt trời, hơi nóng) khi đổi bảng màu.
 - Gợi ý nội dung mẫu phù hợp với portfolio của sinh viên năm nhất làm bài tập giữa kỳ.
 - Cập nhật các tài liệu dự án,báo cáo lên các mục .
 

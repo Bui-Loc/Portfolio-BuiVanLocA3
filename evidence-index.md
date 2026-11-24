@@ -9,7 +9,7 @@ Tài liệu này tập hợp các minh chứng cho quá trình thiết kế, tri
 | 3 | [CHANGELOG.md](CHANGELOG.md) | Lịch sử thay đổi của dự án | Đã có |
 | 4 | [AI_LOG.md](AI_LOG.md) | Ghi nhận quá trình hỗ trợ bằng AI | Đã có |
 | 5 | `img/avatar.jpg` | Ảnh đang được dùng cho avatar | Đã có |
-| 6 | [img/portfolio-preview.jpg](img/portfolio-preview.jpg) | Ảnh chụp thật giao diện portfolio chủ đề tận thế dung nham, được gán vào thẻ dự án cá nhân | Đã có |
+| 6 | `img/portfolio-preview.jpg`, `img/portfolio-preview-violet.jpg`, `img/portfolio-preview-ocean.jpg`, `img/portfolio-preview-sunset.jpg` | Bốn ảnh chụp portfolio theo các chủ đề dung nham, tím, đại dương và hoàng hôn; thẻ dự án chuyển ảnh ngẫu nhiên | Đã có |
 | 7 | [GitHub repository](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) | Kho lưu trữ phiên bản, nhánh và commit | Đã có |
 | 8 | [GitHub Pages](https://bui-loc.github.io/Portfolio-BuiVanLocA3/) | Trang portfolio đã được triển khai và truy cập được | Đã xuất bản |
 | 9 | [game.html](du%20an%20game/game.html), [game.css](du%20an%20game/game.css) | Prototype hai chế độ; ba boss đầu lần lượt và trận cuối cả bốn boss cùng chiến đấu; có vật phẩm tiến hóa, khiên, hồi máu, thêm máu, tăng sát thương và sprite PNG đã tách nền | Prototype đang phát triển |

@@ -16,6 +16,8 @@
     --header-bg: rgb(251 251 254 / 94%);
     --accent-soft: #e3f7ef;
     --accent-ink: #17684d;
+    --theme-glow: #9087ff;
+    --theme-glow-secondary: #f0ad3d;
     --radius: 20px;
 }
 
@@ -29,6 +31,8 @@
     --line: #d7edf3;
     --accent-soft: #ddf7ed;
     --accent-ink: #14664e;
+    --theme-glow: #32b9d8;
+    --theme-glow-secondary: #73e5bc;
 }
 
 :root[data-theme="sunset"] {
@@ -41,6 +45,8 @@
     --line: #f3dfd3;
     --accent-soft: #fff0ce;
     --accent-ink: #87531d;
+    --theme-glow: #ff9a4d;
+    --theme-glow-secondary: #ec6e7c;
 }
 
 :root[data-theme="lava"] {
@@ -57,6 +63,8 @@
     --header-bg: rgb(16 7 7 / 94%);
     --accent-soft: #492016;
     --accent-ink: #ffc098;
+    --theme-glow: #ff472e;
+    --theme-glow-secondary: #ffbb55;
 }
 
 :root[data-theme="lava"] body {
@@ -85,6 +93,8 @@ html {
 }
 
 body {
+    position: relative;
+    isolation: isolate;
     min-width: 320px;
     margin: 0;
     line-height: 1.7;
@@ -94,6 +104,61 @@ body {
         var(--page-bg);
     background-attachment: fixed;
     transition: background-color 350ms ease, color 350ms ease;
+}
+
+body::before {
+    position: fixed;
+    z-index: -1;
+    inset: -24%;
+    background:
+        radial-gradient(ellipse at 18% 28%, color-mix(in srgb, var(--theme-glow) 18%, transparent), transparent 34%),
+        radial-gradient(ellipse at 82% 66%, color-mix(in srgb, var(--theme-glow-secondary) 15%, transparent), transparent 32%);
+    content: "";
+    pointer-events: none;
+    animation: violet-aurora 19s ease-in-out infinite alternate;
+}
+
+@keyframes violet-aurora {
+    to {
+        transform: translate(4%, -2%) rotate(-5deg) scale(1.08);
+        filter: hue-rotate(18deg);
+    }
+}
+
+:root[data-theme="ocean"] body::before {
+    animation-name: ocean-tide;
+    animation-duration: 12s;
+}
+
+@keyframes ocean-tide {
+    to {
+        transform: translate(-3%, 2%) scale(1.14, 0.94);
+        filter: hue-rotate(-16deg);
+    }
+}
+
+:root[data-theme="sunset"] body::before {
+    animation-name: sunset-glow;
+    animation-duration: 10s;
+}
+
+@keyframes sunset-glow {
+    to {
+        transform: translate(2%, 3%) scale(1.1);
+        filter: saturate(1.3) hue-rotate(-8deg);
+    }
+}
+
+:root[data-theme="lava"] body::before {
+    animation-name: lava-embers;
+    animation-duration: 8s;
+}
+
+@keyframes lava-embers {
+    to {
+        transform: translate(-2%, -3%) scale(1.12);
+        filter: saturate(1.6) hue-rotate(12deg);
+    }
 }
 
 a {
@@ -141,7 +206,47 @@ a:focus-visible {
     box-shadow: 0 5px 16px rgb(32 35 58 / 6%);
 }
 
-.theme-control > span:first-child {
+.theme-symbol {
+    display: inline-grid;
+    width: 1.15em;
+    place-items: center;
+    color: var(--purple);
+    font-size: 1.2rem;
+    line-height: 1;
+    text-shadow: 0 0 12px color-mix(in srgb, var(--purple) 55%, transparent);
+    animation: theme-symbol-idle 2.8s ease-in-out infinite;
+}
+
+.theme-symbol.is-changing {
+    animation: theme-symbol-change 520ms cubic-bezier(.2, .8, .2, 1);
+}
+
+@keyframes theme-symbol-idle {
+    50% {
+        transform: translateY(-2px) rotate(8deg);
+        filter: drop-shadow(0 0 5px color-mix(in srgb, var(--purple) 60%, transparent));
+    }
+}
+
+@keyframes theme-symbol-change {
+    45% {
+        transform: scale(1.65) rotate(28deg);
+    }
+}
+
+.theme-control[data-theme="ocean"] .theme-symbol {
+    color: #168aad;
+}
+
+.theme-control[data-theme="sunset"] .theme-symbol {
+    color: #e06c48;
+}
+
+.theme-control[data-theme="lava"] .theme-symbol {
+    color: #ff5638;
+}
+
+.theme-control > span:first-child:not(.theme-symbol) {
     animation: avatar-sparkle 2.4s ease-in-out infinite;
 }
 
@@ -879,7 +984,8 @@ a:focus-visible {
     box-shadow: 0 18px 38px rgb(32 35 58 / 10%);
 }
 
-.project-image {
+.project-image,
+.portfolio-preview {
     width: 100%;
     aspect-ratio: 16 / 9;
     margin-bottom: 20px;
@@ -888,15 +994,49 @@ a:focus-visible {
     animation: image-appear 600ms ease-out both;
 }
 
+.portfolio-preview {
+    position: relative;
+}
+
 .project-image {
     display: block;
     object-fit: cover;
     transition: transform 500ms cubic-bezier(.2, .8, .2, 1), filter 350ms ease;
 }
 
-.project-card:hover .project-image {
+.portfolio-preview-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 850ms ease, transform 500ms cubic-bezier(.2, .8, .2, 1), filter 350ms ease;
+}
+
+.portfolio-preview-image.is-active {
+    opacity: 1;
+}
+
+.project-card:hover .project-image,
+.project-card:hover .portfolio-preview-image {
     transform: scale(1.06) rotate(-.5deg);
     filter: saturate(1.18) contrast(1.03);
+}
+
+.portfolio-preview-theme {
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    right: 12px;
+    padding: 4px 9px;
+    border: 1px solid rgb(255 255 255 / 38%);
+    border-radius: 999px;
+    background: rgb(16 7 7 / 78%);
+    color: #fff1e8;
+    font-size: 0.72rem;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
 }
 
 .project-status {

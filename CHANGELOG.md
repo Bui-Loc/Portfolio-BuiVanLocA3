@@ -6,6 +6,14 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 
 ### Thêm
 
+- Thêm hiệu ứng nền động riêng và biểu tượng đặc trưng cho từng chủ đề màu portfolio: sao, sóng biển, mặt trời và hơi nóng.
+- Chuyển chặng cuối thành bốn boss hợp thể theo lượt (100/600/1.100/1.600 HP), hiệu ứng hợp thể và boss khổng lồ 100.000 HP có khiên, hình dạng ngẫu nhiên và các kiểu tấn công của bốn boss.
+- Thêm lõi tiến hóa cầu vồng lấp lánh cho trận boss khổng lồ: 10 tim, mỗi viên đạn gây 36 sát thương và bắn nhanh hơn, kiếm khí, khả năng bay trong Dash và tia sáng toàn màn hình gây 1.000 sát thương mỗi 4 giây; đồng bộ màu sàn, chướng ngại và bục với ảnh nền từng chặng.
+- Thêm điều khiển bay tự do bốn hướng bằng `WASD`/phím mũi tên và cụm nút giữ hướng trên điện thoại sau khi nhặt lõi tiến hóa cầu vồng ở trận boss khổng lồ.
+- Thêm năm đòn đánh vùng riêng cho từng boss, chuyển động né đòn và mật độ tấn công tăng dần đến boss khổng lồ.
+- Bổ sung ô xanh miễn sát thương và cảnh báo trước cho các đòn đánh vùng khó né; vùng an toàn dùng được trên cả Flappy và Dash.
+- Đặt vùng an toàn trong tầm di chuyển theo thời gian cảnh báo; tăng sát thương boss theo thứ tự (boss khổng lồ gây 15), thêm né bằng `J` và đổi bắn từ `F` sang `I`.
+- Thêm xu vàng trên các chặng dẫn đến boss (mỗi xu +10 điểm) và bảng xếp hạng mô phỏng Flappy/Dash, so sánh kỷ lục cục bộ với đối thủ ảo.
 - Tạo cấu trúc tài liệu dự án.
 - Thêm mô tả dự án và hướng dẫn sử dụng vào `README.md`.
 - Thêm danh mục minh chứng vào `evidence-index.md`.
@@ -13,6 +21,7 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Tạo khung portfolio sinh viên năm nhất trong `Portfolio.html` và `Portfolio.css`.
 - Thêm vị trí ảnh avatar và khung giữ chỗ ảnh cho các dự án trong `Portfolio.html`.
 - Chụp ảnh giao diện portfolio chủ đề tận thế dung nham và dùng làm ảnh minh họa dự án cá nhân.
+- Chụp thêm ảnh portfolio cho ba chủ đề còn lại; thêm hiệu ứng chuyển mờ ngẫu nhiên giữa bốn ảnh trong thẻ dự án.
 - Thêm kiểu hiển thị ảnh avatar dạng tròn và ảnh dự án tỷ lệ 16:9 trong `Portfolio.css`.
 - Thêm chuyển động nổi nhẹ, vòng quỹ đạo, ánh sáng nhấp nháy và hiệu ứng nâng/phóng khi rê chuột hoặc focus bàn phím cho avatar.
 - Thêm hiệu ứng xuất hiện, phóng nhẹ khi rê chuột và chuyển động thẻ cho các khu vực ảnh; hỗ trợ tùy chọn giảm chuyển động của hệ điều hành.
@@ -44,6 +53,13 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Giới hạn mỗi lượt chỉ một cặp sprite giao chiến, các sprite còn lại tránh khu vực đấu; thu nhỏ thêm sprite và làm vệt cào ba đường sáng, có hướng cùng hiệu ứng va chạm.
 - Sửa lỗi hạ mục tiêu bằng đòn cào làm dừng vòng lặp hoạt ảnh; giữ sprite tiếp tục bay vào từ ngoài màn hình và chỉ cào khi ở gần.
 - Tăng độ tương phản của thẻ liên hệ trong chủ đề dung nham bằng nền đỏ đen tối và màu chữ nút dễ đọc.
+- Kéo dài các chặng tiếp cận boss lần lượt 10/15/20/25 giây; thêm di chuyển ngang, đòn cào rộng với vùng an toàn hiển thị và điều phối chậm các đòn trong trận cuối.
+- Đặt vùng an toàn của đòn cào rộng ngẫu nhiên về bên trái hoặc phải người chơi, trong phạm vi có thể di chuyển tới; giữ vị trí dọc phù hợp với từng chế độ.
+- Làm vật phẩm tiến hóa hiếm hơn; lần đầu tăng 3 máu hiện tại/tối đa và mở đòn bắn lốc xoáy, nhặt lõi lần nữa hồi tối đa 2 máu.
+- Hiển thị nút giữ-di-chuyển trái/phải trên thiết bị cảm ứng trong thời gian boss cảnh báo và tung đòn cào rộng.
+- Chuyển trang game sang bố cục tràn viewport, bỏ khung, tiêu đề và chân trang; giữ menu/HUD và đặt nút âm thanh nổi trên khu vực chơi.
+- Tối ưu trải nghiệm điện thoại theo chiều ngang; nhắc xoay nhưng không ẩn game khi ở dọc, đồng thời tự yêu cầu khóa ngang nếu trình duyệt hỗ trợ.
+- Sửa màn chơi không cập nhật ngay sau khi chọn chế độ bằng cách vẽ khung gameplay tức thời lúc bắt đầu trận.
 
 ### Cập nhật
 

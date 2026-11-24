@@ -19,7 +19,7 @@
                 <li><a href="#lien-he">Liên hệ</a></li>
             </ul>
             <label class="theme-control" for="theme-picker">
-                <span aria-hidden="true">✦</span>
+                <span class="theme-symbol" data-theme-symbol aria-hidden="true">✦</span>
                 <span class="sr-only">Màu giao diện</span>
                 <select id="theme-picker" aria-label="Chọn màu giao diện">
                     <option value="violet">Tím mộng mơ</option>
@@ -130,7 +130,13 @@
             <div class="projects-grid">
                 <article class="card project-card">
                     <span class="project-status">Bài tập lớn giữa kỳ</span>
-                    <img class="project-image" src="img/portfolio-preview.jpg" alt="Ảnh chụp giao diện portfolio cá nhân với chủ đề tận thế dung nham">
+                    <div class="portfolio-preview" data-portfolio-preview aria-label="Ảnh chụp portfolio cá nhân với bốn chủ đề màu">
+                        <img class="portfolio-preview-image is-active" src="img/portfolio-preview.jpg" data-theme-name="Tận thế dung nham" alt="Ảnh chụp portfolio cá nhân với chủ đề tận thế dung nham">
+                        <img class="portfolio-preview-image" src="img/portfolio-preview-violet.jpg" data-theme-name="Tím mộng mơ" alt="Ảnh chụp portfolio cá nhân với chủ đề tím mộng mơ" aria-hidden="true">
+                        <img class="portfolio-preview-image" src="img/portfolio-preview-ocean.jpg" data-theme-name="Đại dương" alt="Ảnh chụp portfolio cá nhân với chủ đề đại dương" aria-hidden="true">
+                        <img class="portfolio-preview-image" src="img/portfolio-preview-sunset.jpg" data-theme-name="Hoàng hôn" alt="Ảnh chụp portfolio cá nhân với chủ đề hoàng hôn" aria-hidden="true">
+                        <span class="portfolio-preview-theme" data-preview-theme aria-hidden="true">Tận thế dung nham</span>
+                    </div>
                     <h3>Portfolio cá nhân</h3>
                     <p>
                         Trang web giới thiệu bản thân được xây dựng để thực hành HTML và CSS, trình bày thông tin,
@@ -213,7 +219,6 @@
 
     <footer class="site-footer">
         <div class="container">
-            <p class="pixel-hunt-tip">Mẹo nhỏ: các nhân vật sở hữu chiêu pixel riêng — chạm để tạo vụ nổ!</p>
             <p>&copy; 2026 Bùi Văn Lộc · Portfolio cá nhân</p>
         </div>
     </footer>
@@ -232,8 +237,24 @@
                 themeLabel.title = "Không thể lưu màu giao diện; lựa chọn vẫn hoạt động trong phiên này.";
             }
             document.documentElement.dataset.theme = themePicker.value;
+            const themeSymbol = document.querySelector("[data-theme-symbol]");
+            const themeSymbols = {
+                violet: "✦",
+                ocean: "≋",
+                sunset: "☀",
+                lava: "♨"
+            };
+            const updateThemeSymbol = () => {
+                themeLabel.dataset.theme = themePicker.value;
+                themeSymbol.textContent = themeSymbols[themePicker.value];
+                themeSymbol.classList.remove("is-changing");
+                void themeSymbol.offsetWidth;
+                themeSymbol.classList.add("is-changing");
+            };
+            updateThemeSymbol();
             themePicker.addEventListener("change", () => {
                 document.documentElement.dataset.theme = themePicker.value;
+                updateThemeSymbol();
                 try {
                     localStorage.setItem(themeStorageKey, themePicker.value);
                 } catch {
@@ -272,6 +293,33 @@
             const burstCanvas = document.querySelector("#pixel-burst-layer");
             const burstContext = burstCanvas.getContext("2d");
             const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            const portfolioPreview = document.querySelector("[data-portfolio-preview]");
+            if (portfolioPreview) {
+                const previewImages = [...portfolioPreview.querySelectorAll(".portfolio-preview-image")];
+                const previewTheme = portfolioPreview.querySelector("[data-preview-theme]");
+                let activePreviewIndex = Math.max(
+                    0,
+                    previewImages.findIndex((image) => image.classList.contains("is-active"))
+                );
+                const schedulePreview = () => {
+                    window.setTimeout(() => {
+                        if (!document.hidden && !reducedMotion.matches && previewImages.length > 1) {
+                            let nextIndex = activePreviewIndex;
+                            while (nextIndex === activePreviewIndex) {
+                                nextIndex = Math.floor(Math.random() * previewImages.length);
+                            }
+                            previewImages[activePreviewIndex].classList.remove("is-active");
+                            previewImages[activePreviewIndex].setAttribute("aria-hidden", "true");
+                            activePreviewIndex = nextIndex;
+                            previewImages[activePreviewIndex].classList.add("is-active");
+                            previewImages[activePreviewIndex].removeAttribute("aria-hidden");
+                            previewTheme.textContent = previewImages[activePreviewIndex].dataset.themeName;
+                        }
+                        schedulePreview();
+                    }, 4500 + Math.random() * 3000);
+                };
+                schedulePreview();
+            }
             const characters = [];
             const particles = [];
             const combatShots = [];
