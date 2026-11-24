@@ -20,6 +20,7 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 ### Cập nhật
 
 - Chuẩn hóa thông tin tác giả, hồ sơ GitHub và liên kết GitHub Pages trong `README.md`.
+- Bổ sung liên kết repository chính thức để tra cứu phiên bản, nhánh và commit; cập nhật địa chỉ GitHub Pages sang `Portfolio-BuiVanLocA3`.
 - Ghi rõ vai trò chính của sinh viên và phạm vi hỗ trợ của AI trong `AI_LOG.md`.
 - Ghi nhận yêu cầu bổ sung ảnh và phân biệt ảnh avatar hiện có với ảnh dự án còn cần bổ sung.
 - Cập nhật README, nhật ký AI và danh mục minh chứng để phản ánh đúng trạng thái khởi tạo của dự án web game.

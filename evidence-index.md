@@ -10,8 +10,8 @@ Tài liệu này tập hợp các minh chứng cho quá trình thiết kế, tri
 | 4 | [AI_LOG.md](AI_LOG.md) | Ghi nhận quá trình hỗ trợ bằng AI | Đã có |
 | 5 | `img/avatar.jpg` | Ảnh đang được dùng cho avatar | Đã có |
 | 6 | `img/portfolio-preview.jpg`, `img/ten-du-an.jpg` | Tên file ví dụ cho ảnh dự án; cần thêm ảnh thật vào thư mục `img` | Chưa có |
-| 7 | [GitHub repository](https://github.com/Bui-Loc/BaiTapLon) | Kho lưu trữ và lịch sử mã nguồn | Đã có |
-| 8 | [GitHub Pages](https://bui-loc.github.io/BaiTapLon/) | Địa chỉ công khai sau khi website được triển khai | Cần xác nhận |
+| 7 | [GitHub repository](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) | Kho lưu trữ phiên bản, nhánh và commit | Đã có |
+| 8 | [GitHub Pages](https://bui-loc.github.io/Portfolio-BuiVanLocA3/) | Trang portfolio đã được triển khai và truy cập được | Đã xuất bản |
 | 9 | `../du an game/game.html`, `../du an game/game.css` | Tệp khởi đầu dự án web game; cả hai hiện đang rỗng, chưa có giao diện hoặc chức năng | Đang khởi tạo |
 
 ## Việc tôi cần bổ sung

@@ -6,7 +6,8 @@ Trang portfolio cá nhân giới thiệu thông tin, mục tiêu học tập và
 
 - Họ và tên: Bùi Văn Lộc
 - Hồ sơ GitHub: [github.com/Bui-Loc](https://github.com/Bui-Loc)
-- Trang GitHub Pages: [bui-loc.github.io/BaiTapLon](https://bui-loc.github.io/BaiTapLon/)
+- Nơi lưu trữ phiên bản và các phân nhánh phiên bản,commit: [https://github.com/Bui-Loc/Portfolio-BuiVanLocA3.git]
+- Trang GitHub Pages: [https://bui-loc.github.io/Portfolio-BuiVanLocA3/]
 
 ## Giới thiệu
 
