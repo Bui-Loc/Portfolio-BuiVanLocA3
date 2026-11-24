@@ -18,6 +18,13 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Thêm GitHub Actions workflow để tạo trang chủ từ `Portfolio.html` và triển khai portfolio lên GitHub Pages khi cập nhật nhánh `main`.
 - Thay các tệp game trống bằng prototype arcade 2D chơi được, gồm Flappy Boss, Dash Boss, một boss mỗi lượt, khiên, HUD, tạm dừng, âm thanh tùy chọn và lưu điểm cao.
 - Thêm bộ sprite PNG đã tách nền gồm người chơi, dạng tiến hóa và bốn boss; dùng ảnh trong game thay cho hình vẽ tạm.
+- Thêm ảnh giao diện bắt đầu game ở thẻ dự án web game trên portfolio và liên kết ảnh tới `img/game-start-screen.svg`.
+- Thêm bốn ảnh nền boss và chọn ngẫu nhiên nền cho mỗi trận boss.
+- Thêm các bậc parkour pixel trong Dash; làm mới cột Flappy và gai Dash để đồng bộ phong cách cảnh nền.
+- Thêm đạn nhắm mục tiêu, quạt đạn, loạt đạn và đợt đạn dày; cảnh báo hướng bắn trước khi boss khai hỏa.
+- Tăng dần HP, kích thước, tốc độ đạn và tần suất tấn công của bốn boss.
+- Đồng bộ nền theo từng chặng từ đường tiếp cận đến trận boss; kéo dài các chặng lần lượt 8, 10, 12 và 14 chướng ngại vật.
+- Quy định HP boss tăng chính xác 1,5 lần qua từng trận; tạo chiêu riêng cho từng boss với số đạn và tần suất tấn công tăng dần.
 - Thêm hướng dẫn mở/chạy game và mô tả giới hạn prototype vào `README.md`.
 - Làm nổi bật liên kết mở game bằng nút “Chơi game ngay” trong thẻ dự án portfolio.
 
@@ -34,3 +41,6 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Thay hình nhân vật bo tròn bằng sprite pixel vẽ trực tiếp trên canvas, có mắt, mỏ, hiệu ứng đuôi lửa và biến thể màu khi có khiên.
 - Bổ sung tiến trình bốn boss theo các mốc điểm; thêm vật phẩm tiến hóa để đổi sprite nhân vật sang `player-evolution.png`.
 - Giữ ảnh gốc trong `img/` và tạo các bản sprite nền trong suốt trong `img/game-characters/` để game chỉ hiển thị chủ thể.
+- Bổ sung nền boss được chọn ngẫu nhiên, bục parkour có thể đáp xuống, chướng ngại pixel chi tiết và nhiều kiểu đạn có hướng di chuyển riêng; HP, kích thước và nhịp độ tấn công tăng theo thứ tự boss.
+- Kéo dài đường tiếp cận các boss theo từng chặng, giữ cùng ảnh nền trước và trong trận rồi đổi nền khi sang chặng; HP đặt theo cấp số nhân 1,5x (12, 18, 27, 40,5) và mỗi boss có tên/mẫu chiêu, đường cảnh báo, mật độ đạn và nhịp khai hỏa riêng.
+- Cập nhật thẻ dự án trong portfolio để hiển thị ảnh menu bắt đầu game, sửa đường dẫn nút chơi tới `du an game/game.html` và ghi trạng thái prototype đang tiếp tục được cập nhật.

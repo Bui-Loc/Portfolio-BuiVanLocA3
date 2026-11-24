@@ -25,7 +25,9 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 - `Portfolio.css`: Kiểu dáng và bố cục của trang.
 - `img/avatar.jpg`: Ảnh đang được dùng cho avatar.
 - `img/`: Thư mục lưu ảnh avatar và ảnh minh họa dự án.
+- `img/game-start-screen.svg`: Ảnh giao diện bắt đầu game hiển thị tại thẻ dự án trong portfolio.
 - `img/game-characters/`: Sprite PNG nhân vật và bốn boss đã tách nền, được game nạp trực tiếp.
+- `img/game-backgrounds/`: Bốn ảnh nền được chọn ngẫu nhiên trong các màn boss.
 - `du an game/game.html` và `du an game/game.css`: Prototype web game arcade 2D; mở `game.html` để chơi.
 - `README.md`: Mô tả tổng quan và hướng dẫn sử dụng dự án.
 - `CHANGELOG.md`: Lịch sử các thay đổi.
@@ -74,4 +76,4 @@ python -m http.server 8000
 
 Sau đó truy cập `http://localhost:8000/du%20an%20game/game.html`.
 
-Prototype hiện có hai chế độ, chướng ngại vật, bốn boss xuất hiện lần lượt, bắn tự động/nhấn `F`, khiên, vật phẩm tiến hóa đổi sprite người chơi, hiệu ứng hạt, âm thanh tùy chọn, tạm dừng và lưu kỷ lục cục bộ. Ảnh nhân vật nằm trong `img/game-characters/`; ảnh gốc được giữ riêng trong `img/`.
+Prototype hiện có hai chế độ, chướng ngại vật pixel, bậc parkour trong Dash và bốn boss xuất hiện lần lượt. Ảnh nền được chọn riêng cho mỗi chặng, đồng bộ từ đoạn đường tiếp cận đến trận boss và đổi khi sang chặng mới. Các chặng tăng độ dài từ 8 đến 14 chướng ngại vật; tốc độ, mật độ chướng ngại và độ khó tăng dần. HP boss theo tỷ lệ 1,5 lần boss trước (12, 18, 27, 40,5); mỗi boss có chiêu đặc trưng, tần suất tung đòn và số đạn tăng dần, kèm vùng cảnh báo trước khi bắn. Game có bắn tự động/nhấn `F`, khiên, vật phẩm tiến hóa đổi sprite người chơi, hiệu ứng hạt, âm thanh tùy chọn, tạm dừng và lưu kỷ lục cục bộ. Ảnh giao diện bắt đầu dùng tại portfolio nằm ở `img/game-start-screen.svg`; ảnh nhân vật ở `img/game-characters/`, ảnh nền boss ở `img/game-backgrounds/`. Prototype vẫn đang được cập nhật.

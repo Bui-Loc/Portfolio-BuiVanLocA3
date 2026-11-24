@@ -14,9 +14,11 @@ Tài liệu này tập hợp các minh chứng cho quá trình thiết kế, tri
 | 8 | [GitHub Pages](https://bui-loc.github.io/Portfolio-BuiVanLocA3/) | Trang portfolio đã được triển khai và truy cập được | Đã xuất bản |
 | 9 | [game.html](du%20an%20game/game.html), [game.css](du%20an%20game/game.css) | Prototype hai chế độ với bốn boss lần lượt, vật phẩm tiến hóa, khiên và sprite PNG đã tách nền | Prototype đang phát triển |
 | 10 | `img/game-characters/` | Ảnh player, player-evolution và boss1–boss4 đã xử lý nền trong suốt để dùng trong game | Đã có |
+| 11 | `img/game-backgrounds/` | Bốn ảnh nền dùng xuyên suốt chặng tiếp cận và giao chiến boss; đổi nền khi sang chặng mới | Đã có |
+| 12 | `img/game-start-screen.svg` | Ảnh giao diện menu bắt đầu, hiển thị ở thẻ dự án web game trong portfolio | Đã có |
 
 ## Việc tôi cần bổ sung
 
-- Thêm ảnh chụp hoặc ảnh minh họa thật cho từng dự án vào thư mục `img`.
+- Thêm ảnh chụp hoặc ảnh minh họa thật cho các dự án còn lại vào thư mục `img`.
 - Thay nội dung giữ chỗ trong `Portfolio.html` bằng tên dự án, mô tả và đường dẫn ảnh phù hợp.
-- Bổ sung các power-up khác, nhiều mẫu đòn boss/nhiều màn và cân bằng gameplay; kiểm tra trên nhiều trình duyệt/thiết bị.
+- Bổ sung các power-up ngoài khiên/tiến hóa và tiếp tục cân bằng gameplay; kiểm tra trên nhiều trình duyệt/thiết bị.
