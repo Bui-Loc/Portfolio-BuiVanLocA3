@@ -24,7 +24,7 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 
 ## Cấu trúc dự án
 
-- `Portfolio.html`: Nội dung chính của trang portfolio.
+- `index.html`: Nội dung chính của trang portfolio.
 - `Portfolio.css`: Kiểu dáng và bố cục của trang.
 - `img/avatar.jpg`: Ảnh đang được dùng cho avatar.
 - `img/`: Thư mục lưu ảnh avatar và ảnh minh họa dự án.
@@ -42,7 +42,7 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 
 ### Xem trực tiếp
 
-Mở file `Portfolio.html` bằng trình duyệt.
+Mở file `index.html` bằng trình duyệt.
 
 ### Xem trên GitHub Pages
 
@@ -60,7 +60,7 @@ Sau đó truy cập `http://localhost:8000/Portfolio.html`.
 
 ## Thay ảnh
 
-- Thay ảnh avatar bằng cách đặt ảnh mới tại `img/avatar.jpg` hoặc cập nhật đường dẫn `src` của thẻ ảnh trong `Portfolio.html`.
+- Thay ảnh avatar bằng cách đặt ảnh mới tại `img/avatar.jpg` hoặc cập nhật đường dẫn `src` của thẻ ảnh trong `index.html`.
 - Bốn ảnh chụp portfolio tại `img/portfolio-preview.jpg` và `img/portfolio-preview-{violet,ocean,sunset}.jpg` tự chuyển ngẫu nhiên trong thẻ dự án. Với ảnh dự án khác, thêm ảnh vào thư mục `img` và cập nhật thẻ `<img>` cùng nội dung `alt` trong phần dự án của `Portfolio.html`.
 
 ## Công nghệ
