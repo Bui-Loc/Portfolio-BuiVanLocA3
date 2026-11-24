@@ -24,6 +24,7 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 - `Portfolio.css`: Kiểu dáng và bố cục của trang.
 - `img/avatar.jpg`: Ảnh đang được dùng cho avatar.
 - `img/`: Thư mục lưu ảnh avatar và ảnh minh họa dự án.
+- `../du an game/game.html` và `../du an game/game.css`: Tệp khởi đầu cho dự án web game; hiện chưa có nội dung triển khai.
 - `README.md`: Mô tả tổng quan và hướng dẫn sử dụng dự án.
 - `CHANGELOG.md`: Lịch sử các thay đổi.
 - `evidence-index.md`: Danh mục minh chứng cho quá trình thực hiện.
@@ -56,3 +57,7 @@ Sau đó truy cập `http://localhost:8000/Portfolio.html`.
 - CSS3
 - Git và GitHub
 - GitHub Pages
+
+## Dự án web game
+
+Thư mục `du an game` nằm cạnh thư mục portfolio và hiện có `game.html`, `game.css`. Hai tệp đã được tạo nhưng đang rỗng; giao diện, luật chơi và chức năng chưa được triển khai, vì vậy dự án chưa chạy được.

@@ -192,12 +192,24 @@ a:focus-visible {
     color: #fff;
     font-size: 2.8rem;
     font-weight: 800;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.avatar:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 22px 44px rgb(74 66 182 / 27%);
 }
 
 .avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    animation: image-appear 600ms ease-out both;
+    transition: transform 300ms ease;
+}
+
+.avatar:hover img {
+    transform: scale(1.08);
 }
 
 .profile-name {
@@ -324,6 +336,12 @@ a:focus-visible {
     min-height: 260px;
     flex-direction: column;
     align-items: flex-start;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 38px rgb(32 35 58 / 10%);
 }
 
 .project-image,
@@ -332,11 +350,19 @@ a:focus-visible {
     aspect-ratio: 16 / 9;
     margin-bottom: 20px;
     border-radius: 14px;
+    overflow: hidden;
+    animation: image-appear 600ms ease-out both;
 }
 
 .project-image {
     display: block;
     object-fit: cover;
+    transition: transform 350ms ease, filter 350ms ease;
+}
+
+.project-card:hover .project-image {
+    transform: scale(1.04);
+    filter: saturate(1.08);
 }
 
 .project-image-placeholder {
@@ -346,6 +372,12 @@ a:focus-visible {
     background: #f5f4ff;
     color: var(--muted);
     text-align: center;
+    transition: border-color 220ms ease, background-color 220ms ease;
+}
+
+.project-card:hover .project-image-placeholder {
+    border-color: var(--purple);
+    background: #eeedff;
 }
 
 .project-image-placeholder code {
@@ -382,6 +414,16 @@ a.text-link:hover {
 .project-placeholder {
     border-style: dashed;
     background: #fdfdff;
+}
+
+@keyframes image-appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .learning-layout {
@@ -563,5 +605,7 @@ a.text-link:hover {
     *::before,
     *::after {
         transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }

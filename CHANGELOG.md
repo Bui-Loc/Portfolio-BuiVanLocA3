@@ -13,9 +13,12 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Tạo khung portfolio sinh viên năm nhất trong `Portfolio.html` và `Portfolio.css`.
 - Thêm vị trí ảnh avatar và khung giữ chỗ ảnh cho các dự án trong `Portfolio.html`.
 - Thêm kiểu hiển thị ảnh avatar dạng tròn và ảnh dự án tỷ lệ 16:9 trong `Portfolio.css`.
+- Thêm hiệu ứng xuất hiện, phóng nhẹ khi rê chuột và chuyển động thẻ cho các khu vực ảnh; hỗ trợ tùy chọn giảm chuyển động của hệ điều hành.
+- Thêm mục dự án web game đang khởi tạo vào portfolio; ghi rõ các tệp nguồn hiện chưa có nội dung.
 
 ### Cập nhật
 
 - Chuẩn hóa thông tin tác giả, hồ sơ GitHub và liên kết GitHub Pages trong `README.md`.
 - Ghi rõ vai trò chính của sinh viên và phạm vi hỗ trợ của AI trong `AI_LOG.md`.
 - Ghi nhận yêu cầu bổ sung ảnh và phân biệt ảnh avatar hiện có với ảnh dự án còn cần bổ sung.
+- Cập nhật README, nhật ký AI và danh mục minh chứng để phản ánh đúng trạng thái khởi tạo của dự án web game.
