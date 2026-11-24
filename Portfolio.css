@@ -400,6 +400,10 @@ a:focus-visible {
     margin-bottom: 20px;
 }
 
+.project-play-link {
+    margin-top: auto;
+}
+
 .text-link {
     margin-top: auto;
     color: var(--purple-dark);

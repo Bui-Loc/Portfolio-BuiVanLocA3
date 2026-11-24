@@ -12,10 +12,10 @@ Tài liệu này tập hợp các minh chứng cho quá trình thiết kế, tri
 | 6 | `img/portfolio-preview.jpg`, `img/ten-du-an.jpg` | Tên file ví dụ cho ảnh dự án; cần thêm ảnh thật vào thư mục `img` | Chưa có |
 | 7 | [GitHub repository](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) | Kho lưu trữ phiên bản, nhánh và commit | Đã có |
 | 8 | [GitHub Pages](https://bui-loc.github.io/Portfolio-BuiVanLocA3/) | Trang portfolio đã được triển khai và truy cập được | Đã xuất bản |
-| 9 | `../du an game/game.html`, `../du an game/game.css` | Tệp khởi đầu dự án web game; cả hai hiện đang rỗng, chưa có giao diện hoặc chức năng | Đang khởi tạo |
+| 9 | [game.html](du%20an%20game/game.html), [game.css](du%20an%20game/game.css) | Prototype chơi được với hai chế độ, boss cơ bản, khiên và điều khiển bàn phím/cảm ứng | Prototype v1 |
 
 ## Việc tôi cần bổ sung
 
 - Thêm ảnh chụp hoặc ảnh minh họa thật cho từng dự án vào thư mục `img`.
 - Thay nội dung giữ chỗ trong `Portfolio.html` bằng tên dự án, mô tả và đường dẫn ảnh phù hợp.
-- Triển khai nội dung HTML/CSS, luật chơi và chức năng cho dự án trong thư mục `du an game`; kiểm tra game trước khi ghi nhận là hoàn thành.
+- Bổ sung các power-up khác, nhiều mẫu đòn boss/nhiều màn và cân bằng gameplay; kiểm tra trên nhiều trình duyệt/thiết bị.

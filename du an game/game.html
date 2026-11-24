@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sky & Rhythm: Boss Rush - bản prototype arcade 2D chạy trực tiếp trên trình duyệt.">
+    <title>SKY &amp; RHYTHM: BOSS RUSH</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+    <main class="game-shell">
+        <header class="page-heading">
+            <p class="eyebrow">Prototype arcade 2D</p>
+            <h1>SKY <span>&amp;</span> RHYTHM: <strong>BOSS RUSH</strong></h1>
+        </header>
+
+        <section class="game-panel" aria-label="Khu vực trò chơi">
+            <div class="hud" id="hud" hidden>
+                <div class="hud-item">
+                    <span class="hud-label">Chế độ</span>
+                    <strong id="mode-label">-</strong>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Điểm</span>
+                    <strong id="score-label">0</strong>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Máu</span>
+                    <strong id="health-label">♥ ♥ ♥</strong>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Khiên</span>
+                    <strong id="shield-label">Chưa có</strong>
+                </div>
+                <div class="hud-item boss-hud" id="boss-hud" hidden>
+                    <span class="hud-label">Boss</span>
+                    <strong id="boss-name">-</strong>
+                    <span class="boss-meter"><span id="boss-health-bar"></span></span>
+                </div>
+                <button class="small-button" id="pause-button" type="button" aria-label="Tạm dừng">Ⅱ</button>
+            </div>
+
+            <div class="canvas-wrap">
+                <canvas id="game-canvas" width="960" height="540" aria-label="Màn hình chơi game"></canvas>
+
+                <section class="screen start-screen" id="start-screen">
+                    <div class="screen-card">
+                        <p class="eyebrow">Chọn đường đua</p>
+                        <h2>Sẵn sàng vào trận?</h2>
+                        <p class="screen-copy">Chọn một chế độ. Né chướng ngại vật, bắn trả và hạ boss để thắng.</p>
+                        <div class="mode-buttons">
+                            <button class="mode-button" type="button" data-mode="flappy">
+                                <span class="mode-icon" aria-hidden="true">✦</span>
+                                <strong>Flappy Boss</strong>
+                                <small>Space / W / ↑ / chạm: bay lên · F: bắn</small>
+                            </button>
+                            <button class="mode-button" type="button" data-mode="dash">
+                                <span class="mode-icon" aria-hidden="true">➤</span>
+                                <strong>Dash Boss</strong>
+                                <small>Space / W / ↑ / chạm: nhảy · F: bắn</small>
+                            </button>
+                        </div>
+                        <p class="best-score">Kỷ lục: <span id="menu-best">Flappy 0 · Dash 0</span></p>
+                    </div>
+                </section>
+
+                <section class="screen message-screen" id="message-screen" hidden>
+                    <div class="screen-card compact-card">
+                        <p class="eyebrow" id="message-eyebrow">Tạm dừng</p>
+                        <h2 id="message-title">Đang nghỉ giữa trận</h2>
+                        <p class="screen-copy" id="message-copy">Nhấn P hoặc nút bên dưới để tiếp tục.</p>
+                        <div class="screen-actions">
+                            <button class="primary-button" id="resume-button" type="button">Tiếp tục</button>
+                            <button class="secondary-button" id="restart-button" type="button">Chơi lại</button>
+                            <button class="secondary-button" id="menu-button" type="button">Về menu</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="game-footer">
+                <p id="control-hint">Menu: chọn chế độ bằng chuột hoặc bàn phím · Trong trận: Space / W / ↑ hoặc chạm.</p>
+                <button class="sound-button" id="sound-button" type="button" aria-pressed="false">Âm thanh: Tắt</button>
+            </footer>
+        </section>
+
+        <p class="prototype-note">
+            Bản đầu tiên: có hai chế độ, một boss mỗi lượt và khiên cơ bản. Các kiểu boss, power-up khác,
+            nhiều màn và cân bằng gameplay sẽ được bổ sung sau.
+        </p>
+    </main>
+
+    <script>
+        "use strict";
+
+        const canvas = document.querySelector("#game-canvas");
+        const context = canvas.getContext("2d");
+        const ui = {
+            hud: document.querySelector("#hud"),
+            mode: document.querySelector("#mode-label"),
+            score: document.querySelector("#score-label"),
+            health: document.querySelector("#health-label"),
+            shield: document.querySelector("#shield-label"),
+            bossHud: document.querySelector("#boss-hud"),
+            bossName: document.querySelector("#boss-name"),
+            bossHealth: document.querySelector("#boss-health-bar"),
+            start: document.querySelector("#start-screen"),
+            message: document.querySelector("#message-screen"),
+            messageEyebrow: document.querySelector("#message-eyebrow"),
+            messageTitle: document.querySelector("#message-title"),
+            messageCopy: document.querySelector("#message-copy"),
+            menuBest: document.querySelector("#menu-best"),
+            hint: document.querySelector("#control-hint"),
+            soundButton: document.querySelector("#sound-button"),
+            pauseButton: document.querySelector("#pause-button")
+        };
+
+        const WIDTH = canvas.width;
+        const HEIGHT = canvas.height;
+        const FLOOR = 454;
+        const STORAGE_KEY = "skyRhythmBossRushBest";
+        const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+        class SoundManager {
+            constructor() {
+                this.enabled = false;
+                this.audio = null;
+            }
+
+            toggle() {
+                this.enabled = !this.enabled;
+                if (this.enabled && !this.audio) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) this.audio = new AudioContextClass();
+                }
+                if (this.enabled && this.audio?.state === "suspended") this.audio.resume();
+                ui.soundButton.textContent = `Âm thanh: ${this.enabled ? "Bật" : "Tắt"}`;
+                ui.soundButton.setAttribute("aria-pressed", String(this.enabled));
+                this.play(520, 0.07);
+            }
+
+            play(frequency = 440, duration = 0.08) {
+                if (!this.enabled || !this.audio) return;
+                const oscillator = this.audio.createOscillator();
+                const gain = this.audio.createGain();
+                oscillator.type = "triangle";
+                oscillator.frequency.value = frequency;
+                gain.gain.setValueAtTime(0.055, this.audio.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.audio.currentTime + duration);
+                oscillator.connect(gain);
+                gain.connect(this.audio.destination);
+                oscillator.start();
+                oscillator.stop(this.audio.currentTime + duration);
+            }
+        }
+
+        class Player {
+            constructor(mode) {
+                this.mode = mode;
+                this.x = 150;
+                this.y = mode === "flappy" ? 255 : FLOOR - 48;
+                this.width = 42;
+                this.height = 42;
+                this.velocityY = 0;
+                this.health = 3;
+                this.shield = false;
+                this.invulnerable = 0;
+                this.jumpHeld = false;
+                this.shotCooldown = 0;
+            }
+
+            flap() {
+                if (this.mode === "flappy") this.velocityY = -390;
+                else if (this.y >= FLOOR - this.height - 1) this.velocityY = -570;
+            }
+
+            update(dt, engine) {
+                this.invulnerable = Math.max(0, this.invulnerable - dt);
+                this.shotCooldown -= dt;
+                if (this.mode === "flappy") {
+                    this.velocityY += 980 * dt;
+                    this.y += this.velocityY * dt;
+                    this.y = clamp(this.y, 20, FLOOR - this.height);
+                } else {
+                    this.velocityY += 1500 * dt;
+                    this.y += this.velocityY * dt;
+                    if (this.y + this.height >= FLOOR) {
+                        this.y = FLOOR - this.height;
+                        this.velocityY = 0;
+                        if (this.jumpHeld) this.flap();
+                    }
+                }
+                if (this.shotCooldown <= 0) {
+                    engine.projectiles.push(new Projectile(this.x + this.width, this.y + this.height / 2, 560, true));
+                    this.shotCooldown = 0.52;
+                    engine.sound.play(680, 0.045);
+                }
+            }
+
+            draw(ctx, time) {
+                if (this.invulnerable > 0 && Math.floor(time * 18) % 2 === 0) return;
+                ctx.save();
+                ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+                ctx.rotate(this.mode === "flappy" ? clamp(this.velocityY / 700, -0.5, 0.65) : 0);
+                ctx.fillStyle = this.shield ? "#77e9ff" : "#ffd166";
+                ctx.strokeStyle = "#fff4d1";
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.roundRect(-this.width / 2, -this.height / 2, this.width, this.height, 12);
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = "#20233a";
+                ctx.beginPath();
+                ctx.arc(7, -5, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            get hitbox() {
+                return { x: this.x + 7, y: this.y + 6, width: this.width - 14, height: this.height - 12 };
+            }
+        }
+
+        class Obstacle {
+            constructor(mode, x, gapY = 270) {
+                this.mode = mode;
+                this.x = x;
+                this.passed = false;
+                this.width = mode === "flappy" ? 76 : 38;
+                this.gapY = gapY;
+                this.gap = 176;
+                this.height = mode === "flappy" ? gapY - this.gap / 2 : 46;
+            }
+
+            update(dt, speed) {
+                this.x -= speed * dt;
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = this.mode === "flappy" ? "#4dd4ac" : "#ff6482";
+                ctx.strokeStyle = this.mode === "flappy" ? "#a1ffe1" : "#ffc0cd";
+                ctx.lineWidth = 3;
+                if (this.mode === "flappy") {
+                    const bottomY = this.gapY + this.gap / 2;
+                    ctx.fillRect(this.x, 0, this.width, this.height);
+                    ctx.fillRect(this.x, bottomY, this.width, FLOOR - bottomY);
+                    ctx.strokeRect(this.x, 0, this.width, this.height);
+                    ctx.strokeRect(this.x, bottomY, this.width, FLOOR - bottomY);
+                } else {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, FLOOR);
+                    ctx.lineTo(this.x + this.width / 2, FLOOR - this.height);
+                    ctx.lineTo(this.x + this.width, FLOOR);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            }
+
+            get hitboxes() {
+                if (this.mode === "flappy") {
+                    const bottomY = this.gapY + this.gap / 2;
+                    return [
+                        { x: this.x + 6, y: 0, width: this.width - 12, height: this.height },
+                        { x: this.x + 6, y: bottomY, width: this.width - 12, height: FLOOR - bottomY }
+                    ];
+                }
+                return [{ x: this.x + 8, y: FLOOR - this.height + 12, width: this.width - 16, height: this.height - 12 }];
+            }
+        }
+
+        class Boss {
+            constructor(mode) {
+                this.mode = mode;
+                this.x = 710;
+                this.y = mode === "flappy" ? 235 : FLOOR - 126;
+                this.width = 112;
+                this.height = 112;
+                this.maxHealth = 12;
+                this.health = this.maxHealth;
+                this.attackTimer = 1.6;
+                this.telegraph = 0;
+                this.attackY = this.y + this.height / 2;
+                this.shotTimer = 0;
+            }
+
+            update(dt, engine) {
+                this.y = this.mode === "flappy"
+                    ? 220 + Math.sin(engine.elapsed * 1.5) * 92
+                    : FLOOR - 125 + Math.sin(engine.elapsed * 1.1) * 12;
+
+                if (this.telegraph > 0) {
+                    this.telegraph -= dt;
+                    if (this.telegraph <= 0) {
+                        engine.hostileProjectiles.push(new Projectile(this.x, this.attackY, -320, false));
+                        this.attackTimer = 1.65;
+                        engine.shake = 0.12;
+                        engine.sound.play(180, 0.16);
+                    }
+                } else {
+                    this.attackTimer -= dt;
+                    if (this.attackTimer <= 0) {
+                        this.telegraph = 0.75;
+                        this.attackY = engine.player.y + engine.player.height / 2;
+                        engine.particles.burst(this.x + 25, this.y + this.height / 2, "#ff6482", 12);
+                    }
+                }
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.fillStyle = this.telegraph > 0 ? "#ff6482" : "#ba73ff";
+                ctx.strokeStyle = "#f4d8ff";
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.ellipse(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = "#292044";
+                ctx.beginPath();
+                ctx.arc(this.x + 38, this.y + 42, 7, 0, Math.PI * 2);
+                ctx.arc(this.x + 72, this.y + 42, 7, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = this.telegraph > 0 ? "#ff6482" : "#dcb5ff";
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(this.x + 10, this.attackY);
+                ctx.lineTo(0, this.attackY);
+                ctx.stroke();
+                if (this.telegraph > 0) {
+                    ctx.fillStyle = "#ffb3c2";
+                    ctx.font = "bold 15px system-ui";
+                    ctx.fillText("CẢNH BÁO", this.x - 6, this.y - 12);
+                }
+                ctx.restore();
+            }
+
+            get hitbox() {
+                return { x: this.x + 12, y: this.y + 12, width: this.width - 24, height: this.height - 24 };
+            }
+        }
+
+        class Projectile {
+            constructor(x, y, velocityX, friendly) {
+                this.x = x;
+                this.y = y;
+                this.velocityX = velocityX;
+                this.friendly = friendly;
+                this.radius = friendly ? 6 : 9;
+                this.dead = false;
+            }
+
+            update(dt) {
+                this.x += this.velocityX * dt;
+                if (this.x < -20 || this.x > WIDTH + 20) this.dead = true;
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = this.friendly ? "#fff08a" : "#ff6482";
+                ctx.shadowColor = ctx.fillStyle;
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            get hitbox() {
+                return { x: this.x - this.radius, y: this.y - this.radius, width: this.radius * 2, height: this.radius * 2 };
+            }
+        }
+
+        class PowerUp {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 15;
+                this.dead = false;
+                this.phase = 0;
+            }
+
+            update(dt, speed) {
+                this.x -= speed * dt;
+                this.phase += dt * 4;
+                if (this.x < -30) this.dead = true;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.translate(this.x, this.y + Math.sin(this.phase) * 5);
+                ctx.fillStyle = "#70e1ff";
+                ctx.shadowColor = "#70e1ff";
+                ctx.shadowBlur = 16;
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = "#17213c";
+                ctx.font = "bold 17px system-ui";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("S", 0, 1);
+                ctx.restore();
+            }
+
+            get hitbox() {
+                return { x: this.x - 10, y: this.y - 10, width: 20, height: 20 };
+            }
+        }
+
+        class ParticleSystem {
+            constructor() {
+                this.items = [];
+            }
+
+            burst(x, y, color, count = 18) {
+                for (let i = 0; i < count; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 55 + Math.random() * 190;
+                    this.items.push({
+                        x, y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        life: 0.35 + Math.random() * 0.45,
+                        maxLife: 0.8,
+                        color,
+                        size: 2 + Math.random() * 4
+                    });
+                }
+            }
+
+            update(dt) {
+                this.items = this.items.filter((item) => {
+                    item.life -= dt;
+                    item.x += item.vx * dt;
+                    item.y += item.vy * dt;
+                    item.vx *= 0.98;
+                    item.vy *= 0.98;
+                    return item.life > 0;
+                });
+            }
+
+            draw(ctx) {
+                for (const item of this.items) {
+                    ctx.globalAlpha = clamp(item.life / item.maxLife, 0, 1);
+                    ctx.fillStyle = item.color;
+                    ctx.fillRect(item.x, item.y, item.size, item.size);
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        class GameEngine {
+            constructor() {
+                this.sound = new SoundManager();
+                this.particles = new ParticleSystem();
+                this.state = "menu";
+                this.mode = "flappy";
+                this.player = null;
+                this.boss = null;
+                this.obstacles = [];
+                this.projectiles = [];
+                this.hostileProjectiles = [];
+                this.powerUps = [];
+                this.score = 0;
+                this.elapsed = 0;
+                this.spawnTimer = 0;
+                this.powerUpTimer = 5;
+                this.bossSpawned = false;
+                this.shake = 0;
+                this.best = this.loadBest();
+                this.lastFrame = 0;
+                this.frame = this.frame.bind(this);
+                requestAnimationFrame(this.frame);
+                this.updateBestLabel();
+            }
+
+            loadBest() {
+                try {
+                    const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+                    return { flappy: Number(value.flappy) || 0, dash: Number(value.dash) || 0 };
+                } catch {
+                    return { flappy: 0, dash: 0 };
+                }
+            }
+
+            saveBest() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.best));
+                } catch {
+                    ui.hint.textContent = "Không thể lưu kỷ lục trong chế độ duyệt web hiện tại.";
+                }
+            }
+
+            updateBestLabel() {
+                ui.menuBest.textContent = `Flappy ${this.best.flappy} · Dash ${this.best.dash}`;
+            }
+
+            start(mode) {
+                this.mode = mode;
+                this.state = "playing";
+                this.player = new Player(mode);
+                this.boss = null;
+                this.obstacles = [];
+                this.projectiles = [];
+                this.hostileProjectiles = [];
+                this.powerUps = [];
+                this.score = 0;
+                this.elapsed = 0;
+                this.spawnTimer = 0.65;
+                this.powerUpTimer = 5;
+                this.bossSpawned = false;
+                this.shake = 0;
+                this.particles.items = [];
+                ui.start.hidden = true;
+                ui.message.hidden = true;
+                ui.hud.hidden = false;
+                ui.bossHud.hidden = true;
+                ui.mode.textContent = mode === "flappy" ? "Flappy Boss" : "Dash Boss";
+                ui.hint.textContent = mode === "flappy"
+                    ? "Space / W / ↑ / chạm: bay lên · F: bắn · P / Esc: tạm dừng"
+                    : "Space / W / ↑ / chạm: nhảy · F: bắn · P / Esc: tạm dừng";
+                this.refreshHud();
+            }
+
+            setPause(paused) {
+                if (paused && this.state === "playing") {
+                    this.state = "paused";
+                    this.showMessage("Tạm dừng", "Đang nghỉ giữa trận", "Nhấn P hoặc nút bên dưới để tiếp tục.", true);
+                } else if (!paused && this.state === "paused") {
+                    this.state = "playing";
+                    ui.message.hidden = true;
+                }
+            }
+
+            showMessage(eyebrow, title, copy, canResume = false) {
+                ui.message.hidden = false;
+                ui.messageEyebrow.textContent = eyebrow;
+                ui.messageTitle.textContent = title;
+                ui.messageCopy.textContent = copy;
+                document.querySelector("#resume-button").hidden = !canResume;
+                document.querySelector("#restart-button").hidden = canResume;
+            }
+
+            end(won) {
+                this.state = won ? "won" : "gameover";
+                const key = this.mode;
+                if (won) this.score += 100;
+                if (this.score > this.best[key]) {
+                    this.best[key] = this.score;
+                    this.saveBest();
+                    this.updateBestLabel();
+                }
+                const heading = won ? "Boss đã bị đánh bại!" : "Thử lại nhé!";
+                const detail = won
+                    ? `Bạn đã hoàn thành ${this.mode === "flappy" ? "Flappy Boss" : "Dash Boss"} với ${this.score} điểm.`
+                    : `Bạn đạt ${this.score} điểm. Kỷ lục ${this.mode === "flappy" ? "Flappy" : "Dash"}: ${this.best[key]}.`;
+                this.showMessage(won ? "Chiến thắng" : "Game over", heading, detail);
+                ui.hud.hidden = true;
+                this.particles.burst(this.player.x + 20, this.player.y + 20, won ? "#70e1b5" : "#ff6482", 30);
+            }
+
+            update(dt) {
+                if (this.state !== "playing") {
+                    this.particles.update(dt);
+                    return;
+                }
+                this.elapsed += dt;
+                this.shake = Math.max(0, this.shake - dt);
+                this.player.update(dt, this);
+
+                const speed = this.mode === "flappy" ? 235 : 330;
+                this.powerUpTimer -= dt;
+                if (this.powerUpTimer <= 0 && !this.player.shield) {
+                    const pickupY = this.mode === "flappy" ? 160 + Math.random() * 230 : FLOOR - 95;
+                    this.powerUps.push(new PowerUp(WIDTH + 20, pickupY));
+                    this.powerUpTimer = 8;
+                }
+                if (!this.bossSpawned) {
+                    this.spawnTimer -= dt;
+                    if (this.spawnTimer <= 0) {
+                        const gapY = 190 + Math.random() * 150;
+                        this.obstacles.push(new Obstacle(this.mode, WIDTH + 20, gapY));
+                        this.spawnTimer = this.mode === "flappy" ? 1.55 : 1.1;
+                    }
+                }
+
+                for (const obstacle of this.obstacles) {
+                    obstacle.update(dt, speed);
+                    if (!obstacle.passed && obstacle.x + obstacle.width < this.player.x) {
+                        obstacle.passed = true;
+                        this.score += 1;
+                        this.refreshHud();
+                        if (this.score >= 6 && !this.bossSpawned) this.spawnBoss();
+                    }
+                    for (const hitbox of obstacle.hitboxes) {
+                        if (this.overlaps(this.player.hitbox, hitbox)) this.damagePlayer();
+                    }
+                }
+                this.obstacles = this.obstacles.filter((item) => item.x + item.width > -10);
+
+                for (const powerUp of this.powerUps) {
+                    powerUp.update(dt, speed);
+                    if (this.overlaps(this.player.hitbox, powerUp.hitbox)) {
+                        powerUp.dead = true;
+                        this.player.shield = true;
+                        this.particles.burst(powerUp.x, powerUp.y, "#70e1ff", 14);
+                        this.sound.play(900, 0.12);
+                        this.refreshHud();
+                    }
+                }
+                this.powerUps = this.powerUps.filter((item) => !item.dead);
+
+                if (this.boss) {
+                    this.boss.update(dt, this);
+                    ui.bossHealth.style.width = `${(this.boss.health / this.boss.maxHealth) * 100}%`;
+                }
+
+                for (const projectile of this.projectiles) {
+                    projectile.update(dt);
+                    if (this.boss && this.overlaps(projectile.hitbox, this.boss.hitbox)) {
+                        projectile.dead = true;
+                        this.boss.health -= 1;
+                        this.particles.burst(projectile.x, projectile.y, "#fff08a", 5);
+                        this.sound.play(340, 0.04);
+                        if (this.boss.health <= 0) {
+                            this.particles.burst(this.boss.x + 50, this.boss.y + 50, "#ba73ff", 34);
+                            this.boss = null;
+                            this.end(true);
+                        }
+                    }
+                }
+                this.projectiles = this.projectiles.filter((item) => !item.dead);
+
+                for (const projectile of this.hostileProjectiles) {
+                    projectile.update(dt);
+                    if (this.overlaps(projectile.hitbox, this.player.hitbox)) {
+                        projectile.dead = true;
+                        this.damagePlayer();
+                    }
+                }
+                this.hostileProjectiles = this.hostileProjectiles.filter((item) => !item.dead);
+                this.particles.update(dt);
+            }
+
+            spawnBoss() {
+                this.bossSpawned = true;
+                this.boss = new Boss(this.mode);
+                this.obstacles = [];
+                ui.bossHud.hidden = false;
+                ui.bossName.textContent = "Rhythm Core";
+                ui.hint.textContent = "Boss sắp tấn công: né đạn đỏ và tiếp tục bắn!";
+                this.sound.play(240, 0.3);
+            }
+
+            damagePlayer() {
+                if (this.player.invulnerable > 0 || this.state !== "playing") return;
+                if (this.player.shield) {
+                    this.player.shield = false;
+                    ui.shield.textContent = "Đã dùng";
+                } else {
+                    this.player.health -= 1;
+                }
+                this.player.invulnerable = 1;
+                this.shake = 0.22;
+                this.particles.burst(this.player.x + 20, this.player.y + 20, "#ff6482", 14);
+                this.sound.play(110, 0.18);
+                this.refreshHud();
+                if (this.player.health <= 0) this.end(false);
+            }
+
+            refreshHud() {
+                ui.score.textContent = String(this.score);
+                ui.health.textContent = "♥ ".repeat(Math.max(0, this.player?.health || 0)).trim() || "0";
+                ui.shield.textContent = this.player?.shield ? "Sẵn sàng" : "Chưa có";
+            }
+
+            overlaps(a, b) {
+                return a.x < b.x + b.width && a.x + a.width > b.x
+                    && a.y < b.y + b.height && a.y + a.height > b.y;
+            }
+
+            drawBackground(ctx) {
+                const gradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+                gradient.addColorStop(0, "#171b3c");
+                gradient.addColorStop(1, "#29264d");
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, WIDTH, HEIGHT);
+                ctx.fillStyle = "rgba(255,255,255,.55)";
+                for (let i = 0; i < 42; i++) {
+                    const x = (i * 197 + 40 - this.elapsed * (this.mode === "dash" ? 50 : 16)) % WIDTH;
+                    const y = (i * 83 + 27) % 390;
+                    ctx.fillRect((x + WIDTH) % WIDTH, y, i % 4 === 0 ? 3 : 2, 2);
+                }
+                ctx.fillStyle = "#20233a";
+                ctx.fillRect(0, FLOOR, WIDTH, HEIGHT - FLOOR);
+                ctx.fillStyle = "#4dd4ac";
+                ctx.fillRect(0, FLOOR, WIDTH, 4);
+                ctx.fillStyle = "rgba(255,255,255,.12)";
+                const offset = (this.elapsed * (this.mode === "dash" ? 330 : 80)) % 70;
+                for (let x = -70; x < WIDTH; x += 70) ctx.fillRect(x - offset, FLOOR + 30, 34, 3);
+            }
+
+            draw() {
+                context.save();
+                if (this.shake > 0) {
+                    const amount = this.shake * 18;
+                    context.translate((Math.random() - 0.5) * amount, (Math.random() - 0.5) * amount);
+                }
+                this.drawBackground(context);
+                for (const obstacle of this.obstacles) obstacle.draw(context);
+                for (const powerUp of this.powerUps) powerUp.draw(context);
+                for (const projectile of this.projectiles) projectile.draw(context);
+                for (const projectile of this.hostileProjectiles) projectile.draw(context);
+                if (this.boss) this.boss.draw(context);
+                if (this.player) this.player.draw(context, this.elapsed);
+                this.particles.draw(context);
+                if (this.state === "menu") {
+                    context.fillStyle = "rgba(255,255,255,.75)";
+                    context.font = "600 19px system-ui";
+                    context.textAlign = "center";
+                    context.fillText("Chọn chế độ để bắt đầu", WIDTH / 2, HEIGHT - 44);
+                }
+                context.restore();
+            }
+
+            frame(timestamp) {
+                const dt = this.lastFrame ? Math.min((timestamp - this.lastFrame) / 1000, 0.035) : 0;
+                this.lastFrame = timestamp;
+                this.update(dt);
+                this.draw();
+                requestAnimationFrame(this.frame);
+            }
+
+            handleAction() {
+                if (this.state === "menu") return;
+                if (this.state === "playing") this.player.flap();
+            }
+
+            handleShoot() {
+                if (this.state === "playing") {
+                    this.projectiles.push(new Projectile(this.player.x + this.player.width, this.player.y + this.player.height / 2, 650, true));
+                    this.sound.play(820, 0.05);
+                }
+            }
+        }
+
+        const game = new GameEngine();
+
+        document.querySelectorAll("[data-mode]").forEach((button) => {
+            button.addEventListener("click", () => game.start(button.dataset.mode));
+        });
+        document.querySelector("#pause-button").addEventListener("click", () => game.setPause(true));
+        document.querySelector("#resume-button").addEventListener("click", () => game.setPause(false));
+        document.querySelector("#restart-button").addEventListener("click", () => game.start(game.mode));
+        document.querySelector("#menu-button").addEventListener("click", () => {
+            game.state = "menu";
+            ui.message.hidden = true;
+            ui.start.hidden = false;
+            ui.hud.hidden = true;
+            game.updateBestLabel();
+        });
+        ui.soundButton.addEventListener("click", () => game.sound.toggle());
+
+        window.addEventListener("keydown", (event) => {
+            if (["Space", "ArrowUp"].includes(event.code)) event.preventDefault();
+            if (event.repeat && ["Space", "ArrowUp", "KeyW"].includes(event.code)) return;
+            if (["Space", "ArrowUp", "KeyW"].includes(event.code)) {
+                if (game.player) game.player.jumpHeld = true;
+                game.handleAction();
+            }
+            if (event.code === "KeyF") game.handleShoot();
+            if (event.code === "KeyP" || event.code === "Escape") game.setPause(game.state === "playing");
+        });
+        window.addEventListener("keyup", (event) => {
+            if (["Space", "ArrowUp", "KeyW"].includes(event.code) && game.player) game.player.jumpHeld = false;
+        });
+
+        canvas.addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            if (game.state === "playing") {
+                game.player.jumpHeld = true;
+                game.handleAction();
+                if (game.mode === "flappy") game.handleShoot();
+            }
+        });
+        window.addEventListener("pointerup", () => {
+            if (game.player) game.player.jumpHeld = false;
+        });
+    </script>
+</body>
+</html>

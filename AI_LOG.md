@@ -21,6 +21,8 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | Tôi (Bùi Văn Lộc) | Tạo/định hướng dự án web game trong thư mục `du an game` và yêu cầu ghi nhận dự án tại các mục báo cáo tương ứng. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu xuất bản portfolio lên GitHub Pages. |
 | Tôi (Bùi Văn Lộc) | Cập nhật README với liên kết repository để tra cứu phiên bản/nhánh/commit và địa chỉ GitHub Pages theo tên repository `Portfolio-BuiVanLocA3`. |
+| Tôi (Bùi Văn Lộc) | Đưa ra yêu cầu thiết kế game “SKY & RHYTHM: BOSS RUSH” với hai chế độ arcade và chỉ định đây là bản đầu tiên còn sơ khai, chưa cần hoàn thiện mọi tính năng nâng cao. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu thêm liên kết có thể nhấn từ thẻ dự án trên portfolio để mở trò chơi. |
 | Tôi (Bùi Văn Lộc) | Chịu trách nhiệm bổ sung thông tin cá nhân, ảnh và dự án thật, kiểm tra liên kết, rà soát nội dung và hoàn thiện sản phẩm cuối cùng trước khi nộp. |
 | GitHub Copilot | Hỗ trợ soạn bản nháp README, changelog, danh mục minh chứng và nhật ký AI theo yêu cầu. |
 | GitHub Copilot | Tạo khung ban đầu cho `Portfolio.html` và `Portfolio.css`, gồm các khu vực phổ biến của portfolio và bố cục đáp ứng màn hình. |
@@ -28,6 +30,8 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | GitHub Copilot | Theo yêu cầu của tôi, thêm hiệu ứng xuất hiện và tương tác rê chuột cho avatar, ảnh/khung ảnh dự án; tôn trọng cài đặt giảm chuyển động. |
 | GitHub Copilot | Ghi nhận dự án web game trong portfolio và tài liệu dự án; kiểm tra thấy `game.html` và `game.css` đang rỗng nên đánh dấu là đang khởi tạo, chưa có chức năng chơi. |
 | GitHub Copilot | Thêm workflow GitHub Actions để tạo `index.html` từ `Portfolio.html`, đưa CSS/ảnh vào gói triển khai và xuất bản GitHub Pages từ nhánh `main`. |
+| GitHub Copilot | Viết prototype trong `du an game/game.html` và `game.css`: vòng lặp `requestAnimationFrame` có delta time, hai chế độ, chướng ngại vật, boss telegraph một kiểu đạn, tự bắn/nhấn `F`, khiên, máu, hạt, rung màn hình, Web Audio tùy chọn, pause và high score bằng localStorage. |
+| GitHub Copilot | Làm nút “Chơi game ngay” trong thẻ dự án trỏ tới `du an game/game.html` bằng liên kết tương đối để mở game cùng dự án. |
 
 ## Nội dung AI hỗ trợ trong phiên làm việc
 
@@ -36,6 +40,7 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 - Thêm vị trí ảnh cho avatar và ảnh dự án; các khung dự án hiện là chỗ giữ chỗ, chưa phải ảnh dự án thật.
 - Ghi nhận dự án web game ở trạng thái khởi tạo; AI chỉ cập nhật mục báo cáo, không tạo nội dung trò chơi trong lần cập nhật này.
 - README hiện có thông tin nơi lưu trữ phiên bản và địa chỉ Pages mới; các liên kết cần được kiểm tra khi đổi tên repository hoặc cấu hình xuất bản.
+- Prototype game là một lượt chơi cơ bản; power-up ngoài khiên, nhiều mẫu tấn công/boss, nhiều màn, phá chướng ngại vật và cân bằng nâng cao chưa được làm.
 - Gợi ý nội dung mẫu phù hợp với portfolio của sinh viên năm nhất làm bài tập giữa kỳ.
 - Cập nhật các tài liệu dự án,báo cáo lên các mục .
 

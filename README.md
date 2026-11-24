@@ -25,7 +25,7 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 - `Portfolio.css`: Kiểu dáng và bố cục của trang.
 - `img/avatar.jpg`: Ảnh đang được dùng cho avatar.
 - `img/`: Thư mục lưu ảnh avatar và ảnh minh họa dự án.
-- `../du an game/game.html` và `../du an game/game.css`: Tệp khởi đầu cho dự án web game; hiện chưa có nội dung triển khai.
+- `du an game/game.html` và `du an game/game.css`: Prototype web game arcade 2D; mở `game.html` để chơi.
 - `README.md`: Mô tả tổng quan và hướng dẫn sử dụng dự án.
 - `CHANGELOG.md`: Lịch sử các thay đổi.
 - `evidence-index.md`: Danh mục minh chứng cho quá trình thực hiện.
@@ -39,7 +39,7 @@ Mở file `Portfolio.html` bằng trình duyệt.
 
 ### Xem trên GitHub Pages
 
-Trang được triển khai tự động từ nhánh `main` tại [bui-loc.github.io/BaiTapLon](https://bui-loc.github.io/BaiTapLon/) sau khi GitHub Actions hoàn tất.
+Trang được triển khai từ repository [Portfolio-BuiVanLocA3](https://github.com/Bui-Loc/Portfolio-BuiVanLocA3) tại [bui-loc.github.io/Portfolio-BuiVanLocA3](https://bui-loc.github.io/Portfolio-BuiVanLocA3/).
 
 ### Chạy bằng máy chủ cục bộ
 
@@ -65,4 +65,12 @@ Sau đó truy cập `http://localhost:8000/Portfolio.html`.
 
 ## Dự án web game
 
-Thư mục `du an game` nằm cạnh thư mục portfolio và hiện có `game.html`, `game.css`. Hai tệp đã được tạo nhưng đang rỗng; giao diện, luật chơi và chức năng chưa được triển khai, vì vậy dự án chưa chạy được.
+Mở `du an game/game.html` trực tiếp bằng trình duyệt để chơi, hoặc chạy máy chủ cục bộ từ thư mục dự án:
+
+```bash
+python -m http.server 8000
+```
+
+Sau đó truy cập `http://localhost:8000/du%20an%20game/game.html`.
+
+Prototype hiện có hai chế độ, chướng ngại vật, một boss mỗi lượt, bắn tự động/nhấn `F`, khiên, hiệu ứng hạt, âm thanh tùy chọn, tạm dừng và lưu kỷ lục cục bộ. Các power-up khác, nhiều boss/nhiều màn và cân bằng nâng cao chưa được triển khai.
