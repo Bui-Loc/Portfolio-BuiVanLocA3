@@ -30,6 +30,8 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | Tôi (Bùi Văn Lộc) | Cung cấp bốn ảnh nền boss và yêu cầu nền giao chiến ngẫu nhiên, thêm bậc parkour Dash, làm đẹp chướng ngại Flappy và tăng dần độ lớn/độ khó/HP cùng nhiều kiểu đạn boss. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu đồng bộ nền từ đường đi đến boss đến màn giao chiến, kéo dài đường tiếp cận và tăng thử thách theo chặng; HP mỗi boss phải gấp 1,5 lần boss trước, mỗi boss có chiêu riêng với tần suất và số đạn tăng dần. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu hiển thị hình giao diện bắt đầu trò chơi tại phần dự án trong portfolio, sửa lại liên kết và ghi rõ dự án sẽ còn được cập nhật. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu thêm hiệu ứng tương tác và chuyển động bắt mắt cho avatar trong portfolio. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu trận cuối có cả bốn boss tham chiến, boss cuối có thêm đòn nhắm người chơi, và vật phẩm tiến hóa/khiên/hồi máu/thêm máu/tăng sát thương xuất hiện thường xuyên hơn. |
 | Tôi (Bùi Văn Lộc) | Chịu trách nhiệm bổ sung thông tin cá nhân, ảnh và dự án thật, kiểm tra liên kết, rà soát nội dung và hoàn thiện sản phẩm cuối cùng trước khi nộp. |
 | GitHub Copilot | Hỗ trợ soạn bản nháp README, changelog, danh mục minh chứng và nhật ký AI theo yêu cầu. |
 | GitHub Copilot | Tạo khung ban đầu cho `Portfolio.html` và `Portfolio.css`, gồm các khu vực phổ biến của portfolio và bố cục đáp ứng màn hình. |
@@ -46,6 +48,8 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | GitHub Copilot | Thêm bốn ảnh nền boss chọn ngẫu nhiên, bậc platform có thể đáp xuống cho Dash, chướng ngại pixel chi tiết và bốn cấp boss tăng dần về kích thước, HP, tốc độ/tần suất đạn cùng mẫu tấn công có đường cảnh báo. |
 | GitHub Copilot | Giữ nền được chọn xuyên suốt từng chặng tiếp cận và boss, đặt mốc lần lượt 8/18/30/44 vật cản, tăng tốc độ/mật độ sau mỗi boss, đặt HP theo tỷ lệ 1,5x và thiết kế bốn chiêu đặc trưng có cảnh báo hướng bắn. |
 | GitHub Copilot | Thêm hình minh họa SVG menu chọn Flappy Boss/Dash Boss vào thẻ dự án, giữ liên kết chơi đúng tới game.html và cập nhật mô tả trạng thái prototype đang tiếp tục được phát triển. |
+| GitHub Copilot | Tạo chuyển động nổi nhẹ, vòng quỹ đạo và điểm sáng cho avatar; thêm phản hồi hover/focus/nhấn, hỗ trợ bàn phím và tôn trọng cài đặt giảm chuyển động. |
+| GitHub Copilot | Cập nhật chặng cuối thành trận chiến đồng thời bốn boss với thanh máu tổng; thêm biến thể đạn nhắm người chơi cho boss cuối, vật phẩm hồi máu/thêm máu/tăng 50% sát thương trong 12 giây và tăng tần suất vật phẩm trong trận cuối. |
 
 ## Nội dung AI hỗ trợ trong phiên làm việc
 
@@ -55,7 +59,7 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 - Prototype game có giao diện pixel thích nghi màn hình; đã kiểm tra menu, HUD và màn tạm dừng ở các cỡ điện thoại, desktop và landscape, không thấy trang tràn ngang/dọc.
 - Nhân vật và boss trong game dùng sprite PNG đã tách nền; vật phẩm tiến hóa đổi sprite người chơi từ `player.png` sang `player-evolution.png`.
 - README hiện có thông tin nơi lưu trữ phiên bản và địa chỉ Pages mới; các liên kết cần được kiểm tra khi đổi tên repository hoặc cấu hình xuất bản.
-- Prototype có bốn boss theo lượt với nền đồng bộ theo chặng, đường tiếp cận dài dần, parkour trong Dash, bốn chiêu boss riêng có cảnh báo và HP tăng 1,5x; power-up ngoài khiên/tiến hóa, phá chướng ngại vật và cân bằng nâng cao vẫn chưa được làm.
+- Prototype có ba boss đầu theo lượt và chặng cuối cả bốn boss cùng tham chiến; nền đồng bộ theo chặng, đường tiếp cận dài dần, parkour trong Dash, chiêu boss riêng có cảnh báo và HP tăng 1,5x. Trận cuối có khiên, tiến hóa, hồi máu, thêm máu và tăng sát thương; phá chướng ngại vật và cân bằng nâng cao vẫn chưa được làm.
 - Gợi ý nội dung mẫu phù hợp với portfolio của sinh viên năm nhất làm bài tập giữa kỳ.
 - Cập nhật các tài liệu dự án,báo cáo lên các mục .
 

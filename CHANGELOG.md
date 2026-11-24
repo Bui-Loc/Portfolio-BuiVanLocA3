@@ -13,6 +13,7 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Tạo khung portfolio sinh viên năm nhất trong `Portfolio.html` và `Portfolio.css`.
 - Thêm vị trí ảnh avatar và khung giữ chỗ ảnh cho các dự án trong `Portfolio.html`.
 - Thêm kiểu hiển thị ảnh avatar dạng tròn và ảnh dự án tỷ lệ 16:9 trong `Portfolio.css`.
+- Thêm chuyển động nổi nhẹ, vòng quỹ đạo, ánh sáng nhấp nháy và hiệu ứng nâng/phóng khi rê chuột hoặc focus bàn phím cho avatar.
 - Thêm hiệu ứng xuất hiện, phóng nhẹ khi rê chuột và chuyển động thẻ cho các khu vực ảnh; hỗ trợ tùy chọn giảm chuyển động của hệ điều hành.
 - Thêm mục dự án web game đang khởi tạo vào portfolio; ghi rõ các tệp nguồn hiện chưa có nội dung.
 - Thêm GitHub Actions workflow để tạo trang chủ từ `Portfolio.html` và triển khai portfolio lên GitHub Pages khi cập nhật nhánh `main`.
@@ -27,6 +28,8 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Quy định HP boss tăng chính xác 1,5 lần qua từng trận; tạo chiêu riêng cho từng boss với số đạn và tần suất tấn công tăng dần.
 - Thêm hướng dẫn mở/chạy game và mô tả giới hạn prototype vào `README.md`.
 - Làm nổi bật liên kết mở game bằng nút “Chơi game ngay” trong thẻ dự án portfolio.
+- Thêm trận đại chiến cuối với cả bốn boss cùng hiện diện và tấn công; boss cuối luân phiên bắn vòng đạn, quạt đạn nhắm mục tiêu và loạt đạn tập trung.
+- Thêm vật phẩm hồi máu, tăng máu tối đa, tăng 50% sát thương trong 12 giây; tăng nhịp xuất hiện vật phẩm ở trận cuối lên mỗi 3,2 giây.
 
 ### Cập nhật
 
@@ -44,3 +47,4 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Bổ sung nền boss được chọn ngẫu nhiên, bục parkour có thể đáp xuống, chướng ngại pixel chi tiết và nhiều kiểu đạn có hướng di chuyển riêng; HP, kích thước và nhịp độ tấn công tăng theo thứ tự boss.
 - Kéo dài đường tiếp cận các boss theo từng chặng, giữ cùng ảnh nền trước và trong trận rồi đổi nền khi sang chặng; HP đặt theo cấp số nhân 1,5x (12, 18, 27, 40,5) và mỗi boss có tên/mẫu chiêu, đường cảnh báo, mật độ đạn và nhịp khai hỏa riêng.
 - Cập nhật thẻ dự án trong portfolio để hiển thị ảnh menu bắt đầu game, sửa đường dẫn nút chơi tới `du an game/game.html` và ghi trạng thái prototype đang tiếp tục được cập nhật.
+- Cập nhật trận cuối để chỉ chiến thắng sau khi hạ đủ cả bốn boss; thanh HP hiển thị tổng máu nhóm boss, HUD thể hiện máu hiện tại/tối đa và thời gian buff sát thương.

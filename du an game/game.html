@@ -85,9 +85,8 @@
         </section>
 
         <p class="prototype-note">
-            Bốn boss và hai dạng nhân vật dùng ảnh PNG đã tách nền; vật phẩm tiến hóa đổi nhân vật trong lượt chơi.
-            Mỗi lần gặp boss có nền ngẫu nhiên; Dash có bậc parkour, còn boss mạnh dần với nhiều mẫu đạn và vùng cảnh báo.
-            Các power-up ngoài khiên và tiến hóa vẫn có thể được bổ sung sau.
+        Bốn boss và hai dạng nhân vật dùng sprite PNG trong suốt; tiến hóa đổi sprite người chơi. Nền chọn ngẫu nhiên theo chặng, Dash có bục parkour.
+        Trận cuối có cả bốn boss cùng đánh; khiên, hồi máu, thêm mạng và tăng sát thương xuất hiện thường xuyên hơn.
         </p>
     </main>
 
@@ -149,7 +148,7 @@
             { name: "Mèo Bóng Đêm", sprite: "boss1", health: 12, size: 150, attackInterval: 2.05, attack: "shadow-lance", attackName: "Ảnh thương", projectileSpeed: 330 },
             { name: "Gà Mèo Hỏa", sprite: "boss2", health: 18, size: 174, attackInterval: 1.7, attack: "ember-fan", attackName: "Quạt lửa", projectileSpeed: 365 },
             { name: "Mèo Hổ", sprite: "boss3", health: 27, size: 202, attackInterval: 1.35, attack: "tiger-cross", attackName: "Hổ trảo chữ thập", projectileSpeed: 400 },
-            { name: "Báo Tuyết", sprite: "boss4", health: 40.5, size: 232, attackInterval: 1.05, attack: "blizzard-ring", attackName: "Bão tuyết tám hướng", projectileSpeed: 430 }
+            { name: "Báo Tuyết", sprite: "boss4", health: 40.5, size: 232, attackInterval: 1.05, attack: "blizzard-ring", attackName: "Bão tuyết biến chiêu", projectileSpeed: 430 }
         ];
         const stageObstacleCounts = [8, 10, 12, 14];
         const PLAYER_SPRITE = [
@@ -207,12 +206,15 @@
                 this.height = 42;
                 this.velocityY = 0;
                 this.health = 3;
+                this.maxHealth = 3;
                 this.shield = false;
                 this.evolved = false;
                 this.invulnerable = 0;
                 this.jumpHeld = false;
                 this.onGround = mode === "dash";
                 this.shotCooldown = 0;
+                this.damageMultiplier = 1;
+                this.damageBoostTimer = 0;
             }
 
             flap() {
@@ -226,6 +228,8 @@
             update(dt, engine) {
                 this.invulnerable = Math.max(0, this.invulnerable - dt);
                 this.shotCooldown -= dt;
+                this.damageBoostTimer = Math.max(0, this.damageBoostTimer - dt);
+                if (this.damageBoostTimer === 0) this.damageMultiplier = 1;
                 if (this.mode === "flappy") {
                     this.velocityY += 980 * dt;
                     this.y += this.velocityY * dt;
@@ -257,7 +261,13 @@
                     if (this.onGround && this.jumpHeld) this.flap();
                 }
                 if (this.shotCooldown <= 0) {
-                    engine.projectiles.push(new Projectile(this.x + this.width, this.y + this.height / 2, 560, true));
+                    engine.projectiles.push(new Projectile(
+                        this.x + this.width,
+                        this.y + this.height / 2,
+                        560,
+                        true,
+                        { damage: this.damageMultiplier }
+                    ));
                     this.shotCooldown = 0.52;
                     engine.sound.play(680, 0.045);
                 }
@@ -452,19 +462,20 @@
         }
 
         class Boss {
-            constructor(mode, bossIndex, background) {
+            constructor(mode, bossIndex, background, formation = null) {
                 this.mode = mode;
                 this.definition = bossRoster[bossIndex];
                 this.index = bossIndex;
                 this.sprite = sprites[this.definition.sprite];
                 this.background = background;
-                this.width = this.definition.size;
-                this.height = this.definition.size;
-                this.x = WIDTH - this.width - 98;
-                this.y = mode === "flappy" ? 235 : FLOOR - this.height;
-                this.maxHealth = this.definition.health;
+                this.formation = formation;
+                this.width = this.definition.size * (formation?.scale || 1);
+                this.height = this.definition.size * (formation?.scale || 1);
+                this.x = formation?.x ?? WIDTH - this.width - 98;
+                this.y = formation?.y ?? (mode === "flappy" ? 235 : FLOOR - this.height);
+                this.maxHealth = formation?.health ?? this.definition.health;
                 this.health = this.maxHealth;
-                this.attackTimer = this.definition.attackInterval;
+                this.attackTimer = this.definition.attackInterval + (formation?.attackDelay || 0);
                 this.telegraph = 0;
                 this.attackY = this.y + this.height / 2;
                 this.attackCount = 0;
@@ -472,24 +483,29 @@
             }
 
             update(dt, engine) {
-                this.x = WIDTH - this.width - 98 + Math.sin(engine.elapsed * 0.75) * 18;
-                this.y = this.mode === "flappy"
-                    ? clamp(
-                        220 + Math.sin(engine.elapsed * (1.5 + this.index * 0.12)) * (92 - this.index * 6) - this.height / 2,
-                        48,
-                        FLOOR - this.height
-                    )
-                    : clamp(
-                        FLOOR - this.height + Math.sin(engine.elapsed * 1.1) * 8,
-                        FLOOR - this.height - 8,
-                        FLOOR - this.height
-                    );
+                if (this.formation) {
+                    this.x = this.formation.x + Math.sin(engine.elapsed * 0.8 + this.index) * 5;
+                    this.y = this.formation.y + Math.sin(engine.elapsed * 1.3 + this.index * 1.5) * 7;
+                } else {
+                    this.x = WIDTH - this.width - 98 + Math.sin(engine.elapsed * 0.75) * 18;
+                    this.y = this.mode === "flappy"
+                        ? clamp(
+                            220 + Math.sin(engine.elapsed * (1.5 + this.index * 0.12)) * (92 - this.index * 6) - this.height / 2,
+                            48,
+                            FLOOR - this.height
+                        )
+                        : clamp(
+                            FLOOR - this.height + Math.sin(engine.elapsed * 1.1) * 8,
+                            FLOOR - this.height - 8,
+                            FLOOR - this.height
+                        );
+                }
 
                 if (this.telegraph > 0) {
                     this.telegraph -= dt;
                     if (this.telegraph <= 0) {
                         this.fireAttack(engine);
-                        this.attackTimer = this.definition.attackInterval;
+                        this.attackTimer = this.definition.attackInterval * (engine.finalBossRush ? 0.72 : 1);
                         engine.shake = 0.12;
                         engine.sound.play(180, 0.16);
                     }
@@ -502,7 +518,14 @@
                             this.attackY - (this.y + this.height * 0.45),
                             engine.player.x + engine.player.width / 2 - (this.x + this.width * 0.3)
                         );
-                        if (this.definition.attack === "shadow-lance") {
+                        if (engine.finalBossRush && this.index === 3) {
+                            const pattern = this.attackCount % 3;
+                            this.attackAngles = pattern === 0
+                                ? Array.from({ length: 8 }, (_, shot) => aim + shot * Math.PI / 4)
+                                : pattern === 1
+                                    ? Array.from({ length: 9 }, (_, shot) => aim + (shot / 8 - 0.5) * 1.05)
+                                    : [aim - 0.14, aim, aim + 0.14];
+                        } else if (this.definition.attack === "shadow-lance") {
                             this.attackAngles = [aim - 0.09, aim + 0.09];
                         } else if (this.definition.attack === "ember-fan") {
                             this.attackAngles = Array.from({ length: 5 }, (_, shot) => aim + (shot / 4 - 0.5) * 0.8);
@@ -600,6 +623,7 @@
                 this.radius = style.radius || (friendly ? 6 : 9);
                 this.type = style.type || (friendly ? "shot" : "orb");
                 this.color = style.color || (friendly ? "#fff08a" : "#ff6482");
+                this.damage = style.damage || 1;
                 this.dead = false;
             }
 
@@ -683,9 +707,17 @@
             }
 
             draw(ctx) {
+                const powerUpStyles = {
+                    evolution: { color: "#ffd166", symbol: "E" },
+                    shield: { color: "#70e1ff", symbol: "S" },
+                    heal: { color: "#ff7d9d", symbol: "+" },
+                    life: { color: "#ff9f43", symbol: "♥" },
+                    damage: { color: "#c89bff", symbol: "D" }
+                };
+                const style = powerUpStyles[this.type];
                 ctx.save();
                 ctx.translate(this.x, this.y + Math.sin(this.phase) * 5);
-                ctx.fillStyle = this.type === "evolution" ? "#ffd166" : "#70e1ff";
+                ctx.fillStyle = style.color;
                 ctx.shadowColor = ctx.fillStyle;
                 ctx.shadowBlur = 16;
                 ctx.fillRect(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
@@ -694,7 +726,7 @@
                 ctx.font = "bold 17px monospace";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText(this.type === "evolution" ? "E" : "S", 0, 1);
+                ctx.fillText(style.symbol, 0, 1);
                 ctx.restore();
             }
 
@@ -753,6 +785,9 @@
                 this.mode = "flappy";
                 this.player = null;
                 this.boss = null;
+                this.bosses = [];
+                this.finalBossRush = false;
+                this.finalBossMaxHealth = 0;
                 this.obstacles = [];
                 this.platforms = [];
                 this.projectiles = [];
@@ -802,6 +837,9 @@
                 this.state = "playing";
                 this.player = new Player(mode);
                 this.boss = null;
+                this.bosses = [];
+                this.finalBossRush = false;
+                this.finalBossMaxHealth = 0;
                 this.obstacles = [];
                 this.platforms = [];
                 this.projectiles = [];
@@ -812,6 +850,7 @@
                 this.spawnTimer = 0.65;
                 this.powerUpTimer = 5;
                 this.powerUpCount = 0;
+                this.lastDamageSeconds = 0;
                 this.platformTimer = 3.8;
                 this.bossIndex = 0;
                 this.stageProgress = 0;
@@ -890,15 +929,31 @@
                 for (const platform of this.platforms) platform.update(dt, speed);
                 this.platforms = this.platforms.filter((platform) => platform.x + platform.width > -10);
                 this.player.update(dt, this);
+                const damageSeconds = Math.ceil(this.player.damageBoostTimer);
+                if (damageSeconds !== this.lastDamageSeconds) {
+                    this.lastDamageSeconds = damageSeconds;
+                    this.refreshHud();
+                }
                 this.powerUpTimer -= dt;
                 if (this.powerUpTimer <= 0) {
-                    const type = !this.player.evolved && this.powerUpCount % 2 === 0 ? "evolution" : "shield";
-                    const pickupY = this.mode === "flappy" ? 160 + Math.random() * 230 : FLOOR - 95;
-                    if (type !== "shield" || !this.player.shield) {
-                        this.powerUps.push(new PowerUp(WIDTH + 20, pickupY, type));
+                    const finalFight = this.finalBossRush && this.bosses.length > 0;
+                    let type;
+                    if (finalFight) {
+                        const finalTypes = ["evolution", "shield", "heal", "life", "damage"];
+                        type = finalTypes[this.powerUpCount % finalTypes.length];
+                        if (type === "evolution" && this.player.evolved) type = "damage";
+                        if (type === "shield" && this.player.shield) type = "heal";
+                        if (type === "life" && this.player.maxHealth >= 6) type = "heal";
+                        if (type === "heal" && this.player.health >= this.player.maxHealth) {
+                            type = this.player.maxHealth < 6 ? "life" : "damage";
+                        }
+                    } else {
+                        type = !this.player.evolved && this.powerUpCount % 2 === 0 ? "evolution" : "shield";
                     }
+                    const pickupY = this.mode === "flappy" ? 160 + Math.random() * 230 : FLOOR - 95;
+                    this.powerUps.push(new PowerUp(WIDTH + 20, pickupY, type));
                     this.powerUpCount += 1;
-                    this.powerUpTimer = 8;
+                    this.powerUpTimer = finalFight ? 3.2 : 8;
                 }
                 if (!this.bossSpawned) {
                     this.spawnTimer -= dt;
@@ -943,36 +998,64 @@
                     powerUp.update(dt, speed);
                     if (this.overlaps(this.player.hitbox, powerUp.hitbox)) {
                         powerUp.dead = true;
-                        if (powerUp.type === "evolution") {
-                            this.player.evolved = true;
-                        } else {
-                            this.player.shield = true;
-                        }
-                        const pickupColor = powerUp.type === "evolution" ? "#ffd166" : "#70e1ff";
-                        this.particles.burst(powerUp.x, powerUp.y, pickupColor, 14);
+                        const effects = {
+                            evolution: () => { this.player.evolved = true; },
+                            shield: () => { this.player.shield = true; },
+                            heal: () => {
+                                this.player.health = Math.min(this.player.maxHealth, this.player.health + 1);
+                            },
+                            life: () => {
+                                this.player.maxHealth = Math.min(6, this.player.maxHealth + 1);
+                                this.player.health = Math.min(this.player.maxHealth, this.player.health + 1);
+                            },
+                            damage: () => {
+                                this.player.damageMultiplier = 1.5;
+                                this.player.damageBoostTimer = 12;
+                            }
+                        };
+                        effects[powerUp.type]();
+                        const names = {
+                            evolution: "Tiến hóa thành công! Nhân vật đã thay đổi hình dạng.",
+                            shield: "Đã nhặt khiên! Khiên hấp thụ một lần va chạm.",
+                            heal: "Hồi máu: đã khôi phục 1 điểm máu.",
+                            life: "Thêm mạng: tăng 1 máu tối đa và hồi phục 1 điểm.",
+                            damage: "Tăng sát thương 50% trong 12 giây!"
+                        };
+                        const colors = {
+                            evolution: "#ffd166", shield: "#70e1ff", heal: "#ff7d9d",
+                            life: "#ff9f43", damage: "#c89bff"
+                        };
+                        this.particles.burst(powerUp.x, powerUp.y, colors[powerUp.type], 14);
                         this.sound.play(900, 0.12);
                         this.refreshHud();
-                        ui.hint.textContent = powerUp.type === "evolution"
-                            ? "Tiến hóa thành công! Nhân vật đã thay đổi hình dạng."
-                            : "Đã nhặt khiên! Khiên hấp thụ một lần va chạm.";
+                        ui.hint.textContent = names[powerUp.type];
                     }
                 }
                 this.powerUps = this.powerUps.filter((item) => !item.dead);
 
-                if (this.boss) {
-                    this.boss.update(dt, this);
-                    ui.bossHealth.style.width = `${(this.boss.health / this.boss.maxHealth) * 100}%`;
+                for (const boss of this.bosses) {
+                    boss.update(dt, this);
+                }
+                if (this.bosses.length) {
+                    const totalHealth = this.bosses.reduce((sum, boss) => sum + boss.health, 0);
+                    const totalMaxHealth = this.finalBossRush
+                        ? this.finalBossMaxHealth
+                        : this.bosses.reduce((sum, boss) => sum + boss.maxHealth, 0);
+                    ui.bossHealth.style.width = `${(totalHealth / totalMaxHealth) * 100}%`;
                 }
 
                 for (const projectile of this.projectiles) {
                     projectile.update(dt);
-                    if (this.boss && this.overlaps(projectile.hitbox, this.boss.hitbox)) {
+                    const target = this.bosses.find((boss) => this.overlaps(projectile.hitbox, boss.hitbox));
+                    if (target) {
                         projectile.dead = true;
-                        this.boss.health -= 1;
+                        target.health = Math.max(0, target.health - projectile.damage);
                         this.particles.burst(projectile.x, projectile.y, "#fff08a", 5);
                         this.sound.play(340, 0.04);
-                        if (this.boss.health <= 0) {
-                            this.defeatBoss();
+                        if (target.health <= 0) {
+                            this.particles.burst(target.x + target.width / 2, target.y + target.height / 2, "#ba73ff", 34);
+                            this.bosses = this.bosses.filter((boss) => boss !== target);
+                            if (this.bosses.length === 0) this.defeatBoss();
                         }
                     }
                 }
@@ -991,20 +1074,46 @@
 
             spawnBoss() {
                 this.bossSpawned = true;
-                this.boss = new Boss(this.mode, this.bossIndex, this.stageBackground);
+                this.finalBossRush = this.bossIndex === bossRoster.length - 1;
+                if (this.finalBossRush) {
+                    const formation = [
+                        { x: 585, y: 82, scale: 0.72, attackDelay: 0 },
+                        { x: 760, y: 86, scale: 0.75, attackDelay: 0.3 },
+                        { x: 585, y: 270, scale: 0.78, attackDelay: 0.6 },
+                        { x: 760, y: 250, scale: 0.8, attackDelay: 0.9 }
+                    ];
+                    this.bosses = bossRoster.map((definition, index) => new Boss(
+                        this.mode,
+                        index,
+                        this.stageBackground,
+                        { ...formation[index], health: definition.health }
+                    ));
+                    this.finalBossMaxHealth = this.bosses.reduce((sum, boss) => sum + boss.maxHealth, 0);
+                    this.boss = this.bosses[3];
+                    this.powerUpTimer = 0.8;
+                } else {
+                    this.boss = new Boss(this.mode, this.bossIndex, this.stageBackground);
+                    this.bosses = [this.boss];
+                }
                 this.obstacles = [];
                 this.platforms = [];
                 ui.bossHud.hidden = false;
-                ui.bossName.textContent = `${this.boss.definition.name} (${this.bossIndex + 1}/4)`;
+                ui.bossName.textContent = this.finalBossRush
+                    ? "Đại chiến cuối · 4 boss"
+                    : `${this.boss.definition.name} (${this.bossIndex + 1}/4)`;
                 ui.bossHealth.style.width = "100%";
-                ui.hint.textContent = `Chiêu riêng: ${this.boss.definition.attackName}. Đọc hướng cảnh báo, né đạn và phản công!`;
+                ui.hint.textContent = this.finalBossRush
+                    ? "Đại chiến cuối: cả bốn boss cùng tấn công! Vật phẩm hỗ trợ xuất hiện thường xuyên hơn."
+                    : `Chiêu riêng: ${this.boss.definition.attackName}. Đọc hướng cảnh báo, né đạn và phản công!`;
                 this.sound.play(240, 0.3);
             }
 
             defeatBoss() {
                 const defeated = this.boss;
-                this.particles.burst(defeated.x + defeated.width / 2, defeated.y + defeated.height / 2, "#ba73ff", 34);
                 this.boss = null;
+                this.bosses = [];
+                this.finalBossRush = false;
+                this.finalBossMaxHealth = 0;
                 this.bossIndex += 1;
                 this.hostileProjectiles = [];
                 this.projectiles = [];
@@ -1042,10 +1151,15 @@
 
             refreshHud() {
                 ui.score.textContent = String(this.score);
-                ui.health.textContent = "♥ ".repeat(Math.max(0, this.player?.health || 0)).trim() || "0";
+                ui.health.textContent = this.player
+                    ? `♥ ${this.player.health}/${this.player.maxHealth}`
+                    : "0";
                 const upgrades = [];
                 if (this.player?.shield) upgrades.push("Khiên");
                 if (this.player?.evolved) upgrades.push("Tiến hóa");
+                if (this.player?.damageBoostTimer > 0) {
+                    upgrades.push(`Sát thương ${Math.ceil(this.player.damageBoostTimer)}s`);
+                }
                 ui.shield.textContent = upgrades.join(" + ") || "Chưa có";
             }
 
@@ -1093,7 +1207,7 @@
                 for (const powerUp of this.powerUps) powerUp.draw(context);
                 for (const projectile of this.projectiles) projectile.draw(context);
                 for (const projectile of this.hostileProjectiles) projectile.draw(context);
-                if (this.boss) this.boss.draw(context);
+                for (const boss of this.bosses) boss.draw(context);
                 if (this.player) this.player.draw(context, this.elapsed);
                 this.particles.draw(context);
                 if (this.state === "menu") {
@@ -1120,7 +1234,13 @@
 
             handleShoot() {
                 if (this.state === "playing") {
-                    this.projectiles.push(new Projectile(this.player.x + this.player.width, this.player.y + this.player.height / 2, 650, true));
+                    this.projectiles.push(new Projectile(
+                        this.player.x + this.player.width,
+                        this.player.y + this.player.height / 2,
+                        650,
+                        true,
+                        { damage: this.player.damageMultiplier }
+                    ));
                     this.sound.play(820, 0.05);
                 }
             }
