@@ -19,12 +19,14 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | Tôi (Bùi Văn Lộc) | Yêu cầu bổ sung vị trí có thể chèn ảnh chân dung/avatar và ảnh minh họa cho từng dự án; xác định đây là cập nhật tiếp theo của portfolio. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu thêm hiệu ứng động cho các khu vực có thể gán ảnh. |
 | Tôi (Bùi Văn Lộc) | Tạo/định hướng dự án web game trong thư mục `du an game` và yêu cầu ghi nhận dự án tại các mục báo cáo tương ứng. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu xuất bản portfolio lên GitHub Pages. |
 | Tôi (Bùi Văn Lộc) | Chịu trách nhiệm bổ sung thông tin cá nhân, ảnh và dự án thật, kiểm tra liên kết, rà soát nội dung và hoàn thiện sản phẩm cuối cùng trước khi nộp. |
 | GitHub Copilot | Hỗ trợ soạn bản nháp README, changelog, danh mục minh chứng và nhật ký AI theo yêu cầu. |
 | GitHub Copilot | Tạo khung ban đầu cho `Portfolio.html` và `Portfolio.css`, gồm các khu vực phổ biến của portfolio và bố cục đáp ứng màn hình. |
 | GitHub Copilot | Theo yêu cầu của tôi, thêm thẻ ảnh avatar dùng `img/avatar.jpg`, khung giữ chỗ ảnh dự án cùng ví dụ đường dẫn và CSS để hiển thị/cắt ảnh. |
 | GitHub Copilot | Theo yêu cầu của tôi, thêm hiệu ứng xuất hiện và tương tác rê chuột cho avatar, ảnh/khung ảnh dự án; tôn trọng cài đặt giảm chuyển động. |
 | GitHub Copilot | Ghi nhận dự án web game trong portfolio và tài liệu dự án; kiểm tra thấy `game.html` và `game.css` đang rỗng nên đánh dấu là đang khởi tạo, chưa có chức năng chơi. |
+| GitHub Copilot | Thêm workflow GitHub Actions để tạo `index.html` từ `Portfolio.html`, đưa CSS/ảnh vào gói triển khai và xuất bản GitHub Pages từ nhánh `main`. |
 
 ## Nội dung AI hỗ trợ trong phiên làm việc
 

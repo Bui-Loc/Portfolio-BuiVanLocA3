@@ -36,6 +36,10 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 
 Mở file `Portfolio.html` bằng trình duyệt.
 
+### Xem trên GitHub Pages
+
+Trang được triển khai tự động từ nhánh `main` tại [bui-loc.github.io/BaiTapLon](https://bui-loc.github.io/BaiTapLon/) sau khi GitHub Actions hoàn tất.
+
 ### Chạy bằng máy chủ cục bộ
 
 Tại thư mục dự án, mở terminal và chạy:

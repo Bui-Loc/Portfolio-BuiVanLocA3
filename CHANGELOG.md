@@ -15,6 +15,7 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Thêm kiểu hiển thị ảnh avatar dạng tròn và ảnh dự án tỷ lệ 16:9 trong `Portfolio.css`.
 - Thêm hiệu ứng xuất hiện, phóng nhẹ khi rê chuột và chuyển động thẻ cho các khu vực ảnh; hỗ trợ tùy chọn giảm chuyển động của hệ điều hành.
 - Thêm mục dự án web game đang khởi tạo vào portfolio; ghi rõ các tệp nguồn hiện chưa có nội dung.
+- Thêm GitHub Actions workflow để tạo trang chủ từ `Portfolio.html` và triển khai portfolio lên GitHub Pages khi cập nhật nhánh `main`.
 
 ### Cập nhật
 
