@@ -20,7 +20,10 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 
 ## Cấu trúc dự án
 
-- `main.html`: Nội dung chính của trang portfolio.
+- `Portfolio.html`: Nội dung chính của trang portfolio.
+- `Portfolio.css`: Kiểu dáng và bố cục của trang.
+- `img/avatar.jpg`: Ảnh đang được dùng cho avatar.
+- `img/`: Thư mục lưu ảnh avatar và ảnh minh họa dự án.
 - `README.md`: Mô tả tổng quan và hướng dẫn sử dụng dự án.
 - `CHANGELOG.md`: Lịch sử các thay đổi.
 - `evidence-index.md`: Danh mục minh chứng cho quá trình thực hiện.
@@ -30,7 +33,7 @@ Portfolio được xây dựng để trình bày hồ sơ cá nhân, kỹ năng,
 
 ### Xem trực tiếp
 
-Mở file `main.html` bằng trình duyệt.
+Mở file `Portfolio.html` bằng trình duyệt.
 
 ### Chạy bằng máy chủ cục bộ
 
@@ -40,7 +43,12 @@ Tại thư mục dự án, mở terminal và chạy:
 python -m http.server 8000
 ```
 
-Sau đó truy cập `http://localhost:8000/main.html`.
+Sau đó truy cập `http://localhost:8000/Portfolio.html`.
+
+## Thay ảnh
+
+- Thay ảnh avatar bằng cách đặt ảnh mới tại `img/avatar.jpg` hoặc cập nhật đường dẫn `src` của thẻ ảnh trong `Portfolio.html`.
+- Thêm ảnh dự án vào thư mục `img`, rồi thay khung giữ chỗ trong `Portfolio.html` bằng thẻ `<img>` mẫu ở ngay phần dự án. Cập nhật `src` và nội dung `alt` cho đúng ảnh.
 
 ## Công nghệ
 
