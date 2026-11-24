@@ -5,7 +5,7 @@ Tài liệu này tập hợp các minh chứng cho quá trình thiết kế, tri
 | STT | Tệp hoặc tài nguyên | Mô tả | Trạng thái |
 |---:|---|---|---|
 | 1 | [README.md](README.md) | Mô tả tác giả, mục tiêu, cấu trúc và cách chạy dự án | Đã có |
-| 2 | [Portfolio.html](Portfolio.html) và [Portfolio.css](Portfolio.css) | Trang portfolio và giao diện; có vùng avatar và khung giữ chỗ ảnh dự án | Đã có khung |
+| 2 | [Portfolio.html](Portfolio.html) và [Portfolio.css](Portfolio.css) | Portfolio có avatar động, bộ chọn bốn bảng màu, hiệu ứng cuộn và nhân vật pixel nhỏ bay vào, né con trỏ, kéo-thả/tương tác | Đã có |
 | 3 | [CHANGELOG.md](CHANGELOG.md) | Lịch sử thay đổi của dự án | Đã có |
 | 4 | [AI_LOG.md](AI_LOG.md) | Ghi nhận quá trình hỗ trợ bằng AI | Đã có |
 | 5 | `img/avatar.jpg` | Ảnh đang được dùng cho avatar | Đã có |

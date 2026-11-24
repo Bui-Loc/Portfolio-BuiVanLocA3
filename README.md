@@ -66,6 +66,10 @@ Sau đó truy cập `http://localhost:8000/Portfolio.html`.
 - Git và GitHub
 - GitHub Pages
 
+## Tương tác giao diện portfolio
+
+Trên thanh điều hướng, chọn một trong bốn bảng màu (tím, đại dương, hoàng hôn, bạc hà); lựa chọn được lưu trên trình duyệt. Các mục nội dung có hiệu ứng xuất hiện khi cuộn. Nhân vật và boss pixel kích thước nhỏ bay vào từ ngoài mép màn hình, né con trỏ chuột, tự di chuyển và có thể kéo-thả bằng chuột hoặc cảm ứng; nhấn hoặc chạm để tạo hiệu ứng nổ pixel. Các chuyển động tuân theo thiết lập giảm chuyển động của thiết bị.
+
 ## Dự án web game
 
 Mở `du an game/game.html` trực tiếp bằng trình duyệt để chơi, hoặc chạy máy chủ cục bộ từ thư mục dự án:

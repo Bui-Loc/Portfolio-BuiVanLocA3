@@ -32,6 +32,9 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | Tôi (Bùi Văn Lộc) | Yêu cầu hiển thị hình giao diện bắt đầu trò chơi tại phần dự án trong portfolio, sửa lại liên kết và ghi rõ dự án sẽ còn được cập nhật. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu thêm hiệu ứng tương tác và chuyển động bắt mắt cho avatar trong portfolio. |
 | Tôi (Bùi Văn Lộc) | Yêu cầu trận cuối có cả bốn boss tham chiến, boss cuối có thêm đòn nhắm người chơi, và vật phẩm tiến hóa/khiên/hồi máu/thêm máu/tăng sát thương xuất hiện thường xuyên hơn. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu trang portfolio sinh động hơn, có thể đổi bảng màu và có nhân vật pixel ngẫu nhiên để nhấn tiêu diệt kèm hiệu ứng nổ. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu thu nhỏ các hình nhân vật pixel và cho phép chúng di chuyển trên trang. |
+| Tôi (Bùi Văn Lộc) | Yêu cầu nhân vật pixel bay vào từ ngoài màn hình và né con trỏ chuột để khó bị nhấn trúng hơn. |
 | Tôi (Bùi Văn Lộc) | Chịu trách nhiệm bổ sung thông tin cá nhân, ảnh và dự án thật, kiểm tra liên kết, rà soát nội dung và hoàn thiện sản phẩm cuối cùng trước khi nộp. |
 | GitHub Copilot | Hỗ trợ soạn bản nháp README, changelog, danh mục minh chứng và nhật ký AI theo yêu cầu. |
 | GitHub Copilot | Tạo khung ban đầu cho `Portfolio.html` và `Portfolio.css`, gồm các khu vực phổ biến của portfolio và bố cục đáp ứng màn hình. |
@@ -50,6 +53,9 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 | GitHub Copilot | Thêm hình minh họa SVG menu chọn Flappy Boss/Dash Boss vào thẻ dự án, giữ liên kết chơi đúng tới game.html và cập nhật mô tả trạng thái prototype đang tiếp tục được phát triển. |
 | GitHub Copilot | Tạo chuyển động nổi nhẹ, vòng quỹ đạo và điểm sáng cho avatar; thêm phản hồi hover/focus/nhấn, hỗ trợ bàn phím và tôn trọng cài đặt giảm chuyển động. |
 | GitHub Copilot | Cập nhật chặng cuối thành trận chiến đồng thời bốn boss với thanh máu tổng; thêm biến thể đạn nhắm người chơi cho boss cuối, vật phẩm hồi máu/thêm máu/tăng 50% sát thương trong 12 giây và tăng tần suất vật phẩm trong trận cuối. |
+| GitHub Copilot | Thêm bộ chọn bốn bảng màu lưu trên thiết bị, hiệu ứng xuất hiện khi cuộn và thẻ tương tác; tạo nhân vật pixel xuất hiện/ngẫu nhiên di chuyển, có thể nhấn để tạo nổ pixel, đồng thời hỗ trợ giảm chuyển động. |
+| GitHub Copilot | Thu nhỏ sprite trang trí còn khoảng 34–46 px và bổ sung kéo-thả bằng chuột/cảm ứng; sprite vẫn tiếp tục chuyển động sau khi được thả. |
+| GitHub Copilot | Cho sprite đi vào từ mép trái/phải/dưới màn hình, giới hạn chuyển động trong vùng nhìn và thêm lực đẩy tránh con trỏ gần nhân vật. |
 
 ## Nội dung AI hỗ trợ trong phiên làm việc
 

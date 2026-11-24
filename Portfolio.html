@@ -18,8 +18,21 @@
                 <li><a href="#hoc-tap">Học tập</a></li>
                 <li><a href="#lien-he">Liên hệ</a></li>
             </ul>
+            <label class="theme-control" for="theme-picker">
+                <span aria-hidden="true">✦</span>
+                <span class="sr-only">Màu giao diện</span>
+                <select id="theme-picker" aria-label="Chọn màu giao diện">
+                    <option value="violet">Tím mộng mơ</option>
+                    <option value="ocean">Đại dương</option>
+                    <option value="sunset">Hoàng hôn</option>
+                    <option value="mint">Bạc hà</option>
+                </select>
+            </label>
         </nav>
     </header>
+
+    <div class="pixel-hunt" id="pixel-hunt" aria-label="Nhân vật pixel tương tác"></div>
+    <canvas class="pixel-burst-layer" id="pixel-burst-layer" aria-hidden="true"></canvas>
 
     <main>
         <section class="hero container" id="trang-chu" aria-labelledby="hero-title">
@@ -186,8 +199,284 @@
 
     <footer class="site-footer">
         <div class="container">
+            <p class="pixel-hunt-tip">Mẹo nhỏ: chạm vào các nhân vật pixel đang bay để tạo hiệu ứng nổ!</p>
             <p>&copy; 2026 Bùi Văn Lộc · Portfolio cá nhân</p>
         </div>
     </footer>
+    <script>
+        (() => {
+            const themePicker = document.querySelector("#theme-picker");
+            const themeLabel = document.querySelector(".theme-control");
+            const themeStorageKey = "portfolio-color-theme";
+            try {
+                const savedTheme = localStorage.getItem(themeStorageKey);
+                if (savedTheme && [...themePicker.options].some((option) => option.value === savedTheme)) {
+                    themePicker.value = savedTheme;
+                }
+            } catch {
+                themeLabel.title = "Không thể lưu màu giao diện; lựa chọn vẫn hoạt động trong phiên này.";
+            }
+            document.documentElement.dataset.theme = themePicker.value;
+            themePicker.addEventListener("change", () => {
+                document.documentElement.dataset.theme = themePicker.value;
+                try {
+                    localStorage.setItem(themeStorageKey, themePicker.value);
+                } catch {
+                    themeLabel.title = "Không thể lưu màu giao diện; lựa chọn vẫn hoạt động trong phiên này.";
+                }
+            });
+
+            const revealItems = document.querySelectorAll(
+                ".section-heading, .card, .skill-card, .timeline li, .contact-card"
+            );
+            if ("IntersectionObserver" in window) {
+                const revealObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    });
+                }, { threshold: 0.12 });
+                revealItems.forEach((item) => {
+                    item.classList.add("scroll-reveal");
+                    revealObserver.observe(item);
+                });
+            }
+
+            const sprites = [
+                ["player.png", "Người chơi"],
+                ["player-evolution.png", "Người chơi tiến hóa"],
+                ["boss1.png", "Boss bóng đêm"],
+                ["boss2.png", "Boss hỏa"],
+                ["boss3.png", "Boss hổ"],
+                ["boss4.png", "Boss báo tuyết"]
+            ];
+            const layer = document.querySelector("#pixel-hunt");
+            const burstCanvas = document.querySelector("#pixel-burst-layer");
+            const burstContext = burstCanvas.getContext("2d");
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            const characters = [];
+            const particles = [];
+            let nextSpawn = 1.8;
+            let previousFrame = 0;
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            let pixelRatio = 1;
+            const pointer = { x: -1000, y: -1000, active: false };
+
+            window.addEventListener("pointermove", (event) => {
+                if (event.pointerType === "touch") return;
+                pointer.x = event.clientX;
+                pointer.y = event.clientY;
+                pointer.active = true;
+            });
+            window.addEventListener("pointerleave", () => {
+                pointer.active = false;
+            });
+
+            function resizeBurstCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+                burstCanvas.width = Math.round(width * pixelRatio);
+                burstCanvas.height = Math.round(height * pixelRatio);
+                burstCanvas.style.width = `${width}px`;
+                burstCanvas.style.height = `${height}px`;
+                burstContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+            }
+
+            function spawnCharacter() {
+                if (characters.length >= 3) return;
+                const [file, name] = sprites[Math.floor(Math.random() * sprites.length)];
+                const size = 34 + Math.random() * 12;
+                const button = document.createElement("button");
+                button.className = "pixel-character";
+                button.type = "button";
+                button.setAttribute("aria-label", `Chạm để tiêu diệt ${name}`);
+                button.title = `Chạm để tiêu diệt ${name}`;
+                const image = document.createElement("img");
+                image.src = `img/game-characters/${file}`;
+                image.alt = "";
+                image.draggable = false;
+                button.append(image);
+
+                const safeTop = (document.querySelector(".site-header")?.getBoundingClientRect().bottom || 72) + 12;
+                const safeBottom = Math.max(safeTop, height - 28);
+                const edge = Math.floor(Math.random() * 3);
+                const y = safeTop + Math.random() * Math.max(0, safeBottom - safeTop - size);
+                const x = edge === 0 ? -size
+                    : edge === 1 ? width
+                        : Math.random() * Math.max(0, width - size);
+                const vx = edge === 0 ? 75 + Math.random() * 45
+                    : edge === 1 ? -(75 + Math.random() * 45)
+                        : (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 35);
+                const vy = edge === 2 ? -(65 + Math.random() * 45)
+                    : (Math.random() < 0.5 ? -1 : 1) * (28 + Math.random() * 38);
+                const character = {
+                    button,
+                    x,
+                    y,
+                    size,
+                    vx,
+                    vy,
+                    phase: Math.random() * Math.PI * 2,
+                    dragging: false,
+                    dragOffsetX: 0,
+                    dragOffsetY: 0,
+                    dragStartX: 0,
+                    dragStartY: 0,
+                    movedDuringDrag: false
+                };
+                button.style.width = `${size}px`;
+                button.style.height = `${size}px`;
+                button.style.transform = `translate(${x}px, ${y}px)`;
+                button.addEventListener("pointerdown", (event) => {
+                    if (event.button !== 0) return;
+                    character.dragging = true;
+                    character.movedDuringDrag = false;
+                    character.dragStartX = event.clientX;
+                    character.dragStartY = event.clientY;
+                    character.dragOffsetX = event.clientX - character.x;
+                    character.dragOffsetY = event.clientY - character.y;
+                    button.setPointerCapture(event.pointerId);
+                    button.classList.add("is-dragging");
+                    event.preventDefault();
+                });
+                button.addEventListener("pointermove", (event) => {
+                    if (!character.dragging) return;
+                    if (Math.hypot(
+                        event.clientX - character.dragStartX,
+                        event.clientY - character.dragStartY
+                    ) > 6) {
+                        character.movedDuringDrag = true;
+                    }
+                    character.x = Math.max(8, Math.min(
+                        width - character.size - 8,
+                        event.clientX - character.dragOffsetX
+                    ));
+                    const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom || 72;
+                    character.y = Math.max(headerBottom + 8, Math.min(
+                        height - character.size - 28,
+                        event.clientY - character.dragOffsetY
+                    ));
+                    character.button.style.transform = `translate(${character.x}px, ${character.y}px)`;
+                });
+                const finishDrag = () => {
+                    character.dragging = false;
+                    button.classList.remove("is-dragging");
+                };
+                button.addEventListener("pointerup", finishDrag);
+                button.addEventListener("pointercancel", finishDrag);
+                button.addEventListener("click", () => {
+                    if (character.movedDuringDrag) {
+                        character.movedDuringDrag = false;
+                        return;
+                    }
+                    burst(character.x + size / 2, character.y + size / 2);
+                    button.remove();
+                    characters.splice(characters.indexOf(character), 1);
+                    layer.setAttribute("aria-label", "Nhân vật pixel bị tiêu diệt bằng hiệu ứng nổ pixel!");
+                    window.setTimeout(() => layer.setAttribute("aria-label", "Nhân vật pixel tương tác"), 1200);
+                });
+                layer.append(button);
+                characters.push(character);
+            }
+
+            function burst(x, y) {
+                const colors = ["#fff1a8", "#8cebd1", "#a99bff", "#ff8aa0", "#ffffff"];
+                const particleCount = reducedMotion.matches ? 10 : 26;
+                for (let index = 0; index < particleCount; index++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = reducedMotion.matches ? 16 + Math.random() * 28 : 65 + Math.random() * 210;
+                    particles.push({
+                        x, y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        life: reducedMotion.matches ? 0.18 : 0.42 + Math.random() * 0.35,
+                        size: reducedMotion.matches ? 2 : 3 + Math.random() * 5,
+                        color: colors[Math.floor(Math.random() * colors.length)]
+                    });
+                }
+            }
+
+            function animate(timestamp) {
+                const dt = previousFrame ? Math.min((timestamp - previousFrame) / 1000, 0.04) : 0;
+                previousFrame = timestamp;
+                nextSpawn -= dt;
+                if (nextSpawn <= 0) {
+                    spawnCharacter();
+                    nextSpawn = 2.8 + Math.random() * 2.6;
+                }
+
+                const floor = Math.max(90, height - 90);
+                const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom || 72;
+                characters.forEach((character) => {
+                    character.phase += dt * 5;
+                    if (!reducedMotion.matches && !character.dragging) {
+                        const centerX = character.x + character.size / 2;
+                        const centerY = character.y + character.size / 2;
+                        const awayX = centerX - pointer.x;
+                        const awayY = centerY - pointer.y;
+                        const distance = Math.hypot(awayX, awayY);
+                        if (pointer.active && distance < 145) {
+                            const strength = 1 - distance / 145;
+                            const directionX = distance > 0 ? awayX / distance : (Math.random() < 0.5 ? -1 : 1);
+                            const directionY = distance > 0 ? awayY / distance : -1;
+                            character.vx += directionX * 620 * strength * dt;
+                            character.vy += directionY * 620 * strength * dt;
+                        }
+                        const speed = Math.hypot(character.vx, character.vy);
+                        const maxSpeed = pointer.active && distance < 145 ? 230 : 125;
+                        if (speed > maxSpeed) {
+                            character.vx = character.vx / speed * maxSpeed;
+                            character.vy = character.vy / speed * maxSpeed;
+                        }
+                        character.x += character.vx * dt;
+                        character.y += character.vy * dt + Math.sin(character.phase) * 0.45;
+                        if (character.x < 8 && character.vx < 0) {
+                            character.vx *= -1;
+                            character.x = 8;
+                        } else if (character.x + character.size > width - 8 && character.vx > 0) {
+                            character.vx *= -1;
+                            character.x = width - character.size - 8;
+                        }
+                        if (character.y < headerBottom + 8 && character.vy < 0) {
+                            character.vy *= -1;
+                            character.y = headerBottom + 8;
+                        } else if (character.y + character.size > floor && character.vy > 0) {
+                            character.vy *= -1;
+                            character.y = floor - character.size;
+                        }
+                        character.x = Math.max(8, Math.min(width - character.size - 8, character.x));
+                        character.y = Math.max(headerBottom + 8, Math.min(floor - character.size, character.y));
+                    }
+                    character.button.style.transform = `translate(${character.x}px, ${character.y}px)`;
+                });
+
+                burstContext.clearRect(0, 0, width, height);
+                for (let index = particles.length - 1; index >= 0; index--) {
+                    const particle = particles[index];
+                    particle.life -= dt;
+                    particle.x += particle.vx * dt;
+                    particle.y += particle.vy * dt;
+                    particle.vx *= 0.97;
+                    particle.vy *= 0.97;
+                    if (particle.life <= 0) {
+                        particles.splice(index, 1);
+                        continue;
+                    }
+                    burstContext.globalAlpha = Math.min(1, particle.life * 2);
+                    burstContext.fillStyle = particle.color;
+                    burstContext.fillRect(particle.x, particle.y, particle.size, particle.size);
+                }
+                burstContext.globalAlpha = 1;
+                window.requestAnimationFrame(animate);
+            }
+
+            window.addEventListener("resize", resizeBurstCanvas);
+            resizeBurstCanvas();
+            window.requestAnimationFrame(animate);
+        })();
+    </script>
 </body>
 </html>

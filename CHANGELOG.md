@@ -30,6 +30,10 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Làm nổi bật liên kết mở game bằng nút “Chơi game ngay” trong thẻ dự án portfolio.
 - Thêm trận đại chiến cuối với cả bốn boss cùng hiện diện và tấn công; boss cuối luân phiên bắn vòng đạn, quạt đạn nhắm mục tiêu và loạt đạn tập trung.
 - Thêm vật phẩm hồi máu, tăng máu tối đa, tăng 50% sát thương trong 12 giây; tăng nhịp xuất hiện vật phẩm ở trận cuối lên mỗi 3,2 giây.
+- Thêm bộ chọn bốn bảng màu cho portfolio và lưu lựa chọn trên thiết bị.
+- Thêm hiệu ứng xuất hiện khi cuộn, chuyển động nhẹ cho thẻ kỹ năng và các nhân vật pixel ngẫu nhiên có thể nhấn để tạo vụ nổ hạt pixel.
+- Thu nhỏ nhân vật pixel nổi trên trang và cho phép kéo-thả bằng chuột hoặc cảm ứng; sau khi thả, nhân vật tiếp tục tự di chuyển.
+- Cho nhân vật pixel xuất hiện từ ngoài mép màn hình và đổi hướng tránh con trỏ khi con trỏ đến gần.
 
 ### Cập nhật
 
@@ -48,3 +52,4 @@ Mọi thay đổi đáng chú ý của dự án được ghi nhận trong tài l
 - Kéo dài đường tiếp cận các boss theo từng chặng, giữ cùng ảnh nền trước và trong trận rồi đổi nền khi sang chặng; HP đặt theo cấp số nhân 1,5x (12, 18, 27, 40,5) và mỗi boss có tên/mẫu chiêu, đường cảnh báo, mật độ đạn và nhịp khai hỏa riêng.
 - Cập nhật thẻ dự án trong portfolio để hiển thị ảnh menu bắt đầu game, sửa đường dẫn nút chơi tới `du an game/game.html` và ghi trạng thái prototype đang tiếp tục được cập nhật.
 - Cập nhật trận cuối để chỉ chiến thắng sau khi hạ đủ cả bốn boss; thanh HP hiển thị tổng máu nhóm boss, HUD thể hiện máu hiện tại/tối đa và thời gian buff sát thương.
+- Tôn trọng thiết lập giảm chuyển động của hệ điều hành trong các hiệu ứng trang và chuyển động nhân vật pixel.
