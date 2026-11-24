@@ -101,7 +101,7 @@ Tôi là người thực hiện chính và chịu trách nhiệm về nội dung
 - Giới hạn khoảng cách vùng an toàn theo 72% quãng đường người chơi có thể di chuyển trong thời gian cảnh báo; tăng sát thương boss theo thứ tự, boss khổng lồ gây 15 sát thương, thêm né bằng `J` (0,42 giây miễn sát thương, hồi chiêu 1,35 giây) và đổi phím bắn thành `I`.
 - Thêm xu vàng trong các chặng trước boss, mỗi xu cộng 10 điểm; thêm bảng xếp hạng Flappy/Dash với đối thủ mô phỏng và kỷ lục cá nhân lưu trong trình duyệt, không kết nối bảng xếp hạng trực tuyến.
 - Làm hiệu ứng nền động riêng theo bốn chủ đề portfolio và cập nhật biểu tượng đặc trưng (tia sao, sóng biển, mặt trời, hơi nóng) khi đổi bảng màu.
-- Khôi phục workflow GitHub Actions triển khai portfolio cùng ảnh và game sau khi phát hiện Pages chỉ được deploy ở commit cũ; thêm query phiên bản stylesheet để tránh cache CSS cũ trên điện thoại.
+- Khôi phục workflow GitHub Actions triển khai portfolio cùng ảnh và game sau khi phát hiện Pages chỉ được deploy ở commit cũ; thêm quyền đọc artifact và query phiên bản stylesheet để tránh cache CSS cũ trên điện thoại.
 - Ẩn lớp nhân vật pixel bay ở màn hình nhỏ để tránh che nội dung, tinh chỉnh khoảng cách điều hướng di động và cập nhật phiên bản cache CSS; kiểm tra bố cục ở viewport điện thoại.
 - Gợi ý nội dung mẫu phù hợp với portfolio của sinh viên năm nhất làm bài tập giữa kỳ.
 - Cập nhật các tài liệu dự án,báo cáo lên các mục .
